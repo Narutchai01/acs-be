@@ -19,4 +19,28 @@ model Role {
   name      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  users User[]
+
+  @@map("roles") // Optional: maps the model to a table named "roles" in the database
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  firstNameTh String
+  lastNameTh  String
+  firstNameEn String
+  lastNameEn  String
+  email       String   @unique
+  nickName    String
+  imageUrl    String?
+  password    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  roleId      Int
+  createdBy   Int?
+  updatedBy   Int?
+  role        Role     @relation(fields: [roleId], references: [id])
+
+  @@map("users") // Optional: maps the model to a table named "users" in the database
 }
