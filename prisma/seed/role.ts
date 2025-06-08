@@ -1,5 +1,4 @@
 import * as dayjs from 'dayjs';
-// import { Role, PrismaClient } from 'generated/prisma';
 import { PrismaClient, Role } from '@prisma/client';
 
 const now = dayjs().toDate();
@@ -23,6 +22,12 @@ export const roles: Array<Omit<Role, 'id'>> = [
 ];
 
 export const executeRole = async (prisma: PrismaClient): Promise<void> => {
+  const existingRoles = await prisma.role.findMany({});
+
+  if (existingRoles.length > 0) {
+    console.log('Roles already exist, skipping creation.');
+    return;
+  }
   const results = await prisma.role.createMany({ data: roles });
   console.dir({ results });
 };

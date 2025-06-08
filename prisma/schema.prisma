@@ -57,3 +57,24 @@ model Admin {
 
   @@map("admins") // Optional: maps the model to a table named "admins" in the database
 }
+
+model Type {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  ListType  ListType[]
+
+  @@map("types") // Optional: maps the model to a table named "types" in the database
+}
+
+model ListType {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  typeId    Int
+  type      Type     @relation(fields: [typeId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("list_types") // Optional: maps the model to a table named "list_types" in the database
+}

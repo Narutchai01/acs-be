@@ -1,5 +1,4 @@
-import { Role } from 'generated/prisma';
-
+import { Role } from '@prisma/client';
 export class RoleEntity implements Role {
   createdAt: Date;
   updatedAt: Date;
