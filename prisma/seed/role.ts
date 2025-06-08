@@ -1,5 +1,6 @@
 import * as dayjs from 'dayjs';
-import { Role, PrismaClient } from 'generated/prisma';
+// import { Role, PrismaClient } from 'generated/prisma';
+import { PrismaClient, Role } from '@prisma/client';
 
 const now = dayjs().toDate();
 

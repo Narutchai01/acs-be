@@ -1,5 +1,6 @@
 import { executeRole } from './role';
-import { PrismaClient } from 'generated/prisma';
+import { PrismaClient } from '@prisma/client';
+// import { PrismaClient } from 'generated/prisma';
 const prisma = new PrismaClient();
 
 async function main() {
