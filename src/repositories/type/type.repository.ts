@@ -16,8 +16,14 @@ export class TypeRepository implements ITypeRepositoty {
     return this.typeFactory.mapTypeEntitiesToTypeModels(data);
   }
 
-  async getListTypes(): Promise<ListTypeModel[]> {
-    const data = await this.prisma.listType.findMany();
+  async getListTypes(type: string): Promise<ListTypeModel[]> {
+    const data = await this.prisma.listType.findMany({
+      where: {
+        type: {
+          name: type,
+        },
+      },
+    });
 
     return this.typeFactory.mapListTypeEntitiesToListTypeModels(data);
   }

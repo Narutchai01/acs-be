@@ -15,33 +15,41 @@ datasource db {
 }
 
 model Role {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  users User[]
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  UserRole  UserRole[]
 
   @@map("roles") // Optional: maps the model to a table named "roles" in the database
 }
 
+model UserRole {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  roleId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  role      Role     @relation(fields: [roleId], references: [id])
+  Admin     Admin?
+}
+
 model User {
-  id          Int      @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   firstNameTh String
   lastNameTh  String
   firstNameEn String
   lastNameEn  String
-  email       String   @unique
+  email       String     @unique
   nickName    String
   imageUrl    String?
   password    String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  roleId      Int
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
   createdBy   Int?
   updatedBy   Int?
-  role        Role     @relation(fields: [roleId], references: [id])
-  Admin       Admin?
+  UserRole    UserRole[]
 
   @@map("users") // Optional: maps the model to a table named "users" in the database
 }
@@ -53,7 +61,7 @@ model Admin {
   updatedAt DateTime @updatedAt
   createdBy Int?
   updatedBy Int?
-  user      User     @relation(fields: [userId], references: [id])
+  user      UserRole @relation(fields: [userId], references: [id])
 
   @@map("admins") // Optional: maps the model to a table named "admins" in the database
 }

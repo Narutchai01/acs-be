@@ -9,7 +9,7 @@ export class TypeService {
     return this.typeRepository.getTypes();
   }
 
-  async getListtype() {
-    return this.typeRepository.getListTypes();
+  async getListType(type: string) {
+    return this.typeRepository.getListTypes(type);
   }
 }

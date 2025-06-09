@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { TypeService } from './type.service';
 
 @Controller('type')
@@ -11,7 +11,7 @@ export class TypeController {
   }
 
   @Get('/list')
-  getListType() {
-    return this.typeService.getListtype();
+  getListType(@Query('type') type: string) {
+    return this.typeService.getListType(type);
   }
 }
