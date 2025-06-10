@@ -8,9 +8,17 @@ import { RepositoriesModule } from './repositories/repositories.module';
 import { TypeController } from './modules/type/type.controller';
 import { TypeService } from './modules/type/type.service';
 import { TypeModule } from './modules/type/type.module';
+import { RoleModule } from './modules/role/role.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
-  imports: [PrismaModule, RepositoriesModule, TypeModule],
+  imports: [
+    PrismaModule,
+    RepositoriesModule,
+    TypeModule,
+    RoleModule,
+    UsersModule,
+  ],
   controllers: [AppController, HealthController, TypeController],
   providers: [AppService, TypeService],
 })
