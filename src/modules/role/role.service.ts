@@ -8,4 +8,8 @@ export class RoleService {
   async getList(): Promise<RoleModel[] | Error> {
     return this.roleRepository.getList();
   }
+
+  async getByName(name: string): Promise<RoleModel | Error> {
+    return this.roleRepository.getByName(name);
+  }
 }

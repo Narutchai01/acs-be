@@ -7,6 +7,9 @@ import { TypeRepository } from './type/type.repository';
 import { IRoleRepository } from './role/role.abtract';
 import { RoleRepository } from './role/role.repository';
 import { RoleFactory } from './role/role.factory';
+import { UserFactory } from './user/user.factory';
+import { IUserRepository } from './user/user.abstract';
+import { UserRepository } from './user/user.repository';
 
 @Module({
   imports: [PrismaModule],
@@ -19,9 +22,14 @@ import { RoleFactory } from './role/role.factory';
       provide: IRoleRepository,
       useClass: RoleRepository,
     },
+    {
+      provide: IUserRepository,
+      useClass: UserRepository,
+    },
     RoleFactory,
     TypeFactory,
+    UserFactory,
   ],
-  exports: [ITypeRepositoty, IRoleRepository],
+  exports: [ITypeRepositoty, IRoleRepository, IUserRepository],
 })
 export class RepositoriesModule {}
