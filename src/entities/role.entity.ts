@@ -1,4 +1,4 @@
-import { Role } from '@prisma/client';
+import { Role, UserRole } from '@prisma/client';
 import { UserEntity } from './user.entity';
 export class RoleEntity implements Role {
   id: number;
@@ -6,7 +6,7 @@ export class RoleEntity implements Role {
   createdAt: Date;
   updatedAt: Date;
 }
-export class UserRoleEntity {
+export class UserRoleEntity implements UserRole {
   id: number;
   userId: number;
   roleId: number;
