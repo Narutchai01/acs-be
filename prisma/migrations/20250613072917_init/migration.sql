@@ -23,7 +23,7 @@ CREATE TABLE "Example" (
     "description" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "DeletedAt" TIMESTAMP(3),
+    "deletedAt" TIMESTAMP(3),
     "createdBy" INTEGER,
     "updatedBy" INTEGER,
 
