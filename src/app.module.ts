@@ -10,6 +10,7 @@ import { TypeService } from './modules/type/type.service';
 import { TypeModule } from './modules/type/type.module';
 import { RoleModule } from './modules/role/role.module';
 import { UsersModule } from './modules/users/users.module';
+import { ExampleModule } from './modules/example/example.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { UsersModule } from './modules/users/users.module';
     TypeModule,
     RoleModule,
     UsersModule,
+    ExampleModule,
   ],
   controllers: [AppController, HealthController, TypeController],
   providers: [AppService, TypeService],

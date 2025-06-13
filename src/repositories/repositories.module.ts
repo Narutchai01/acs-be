@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { PrismaModule } from 'src/provider/database/prisma/prisma.module';
-
 import { TypeFactory } from './type/type.factory';
 import { ITypeRepositoty } from './type/type.abstact';
 import { TypeRepository } from './type/type.repository';
@@ -26,6 +25,7 @@ import { UserRepository } from './user/user.repository';
       provide: IUserRepository,
       useClass: UserRepository,
     },
+
     RoleFactory,
     TypeFactory,
     UserFactory,
