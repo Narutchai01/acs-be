@@ -29,6 +29,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^11.0.1",
     "@prisma/client": "^6.9.0",
+    "@supabase/supabase-js": "^2.50.0",
     "dayjs": "^1.11.13",
     "husky": "^9.1.7",
     "prisma": "^6.9.0",
