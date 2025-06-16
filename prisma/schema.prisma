@@ -75,7 +75,7 @@ model Admin {
   userRoleId Int       @unique
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
-  DeletedAt  DateTime?
+  deletedAt  DateTime?
   createdBy  Int?
   updatedBy  Int?
   userRole   UserRole  @relation(fields: [userRoleId], references: [id])
