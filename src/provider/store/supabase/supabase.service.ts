@@ -21,12 +21,12 @@ export class SupabaseService {
 
   async uploadFile(file: File, dirName: string): Promise<string> {
     const filePath = `${dirName}/${file.name}`;
-    const { data, error } = await this.storage
+    const { error } = await this.storage
       .from(this.bucketName)
       .upload(filePath, file);
     if (error) {
       throw error;
     }
-    return this.getUrl(data.path);
+    return this.getUrl(filePath);
   }
 }
