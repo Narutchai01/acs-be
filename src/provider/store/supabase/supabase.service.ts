@@ -8,9 +8,18 @@ export class SupabaseService {
   private storage: SupabaseClient['storage'];
   private readonly bucketName: string;
   constructor() {
-    this.supabaseUrl = process.env.SUPABASE_URL || '';
-    this.supabaseKey = process.env.SUPABASE_KEY || '';
-    this.bucketName = process.env.SUPABASE_BUCKET || '';
+    if (!process.env.SUPABASE_URL) {
+      throw new Error('Environment variable SUPABASE_URL is required but not set.');
+    }
+    if (!process.env.SUPABASE_KEY) {
+      throw new Error('Environment variable SUPABASE_KEY is required but not set.');
+    }
+    if (!process.env.SUPABASE_BUCKET) {
+      throw new Error('Environment variable SUPABASE_BUCKET is required but not set.');
+    }
+    this.supabaseUrl = process.env.SUPABASE_URL;
+    this.supabaseKey = process.env.SUPABASE_KEY;
+    this.bucketName = process.env.SUPABASE_BUCKET;
     this.storage = createClient(this.supabaseUrl, this.supabaseKey).storage;
   }
 
