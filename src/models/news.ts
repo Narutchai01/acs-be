@@ -1,11 +1,11 @@
 import { ListTypeModel } from './type';
 import { UserModel } from './user';
 
-export interface NewModel {
+export interface NewsModel {
     id: number;
-    title: String;
-    image: String;
-    detail: String;
+    title: string;
+    image: string;
+    detail: string;
     categoryId: ListTypeModel;
     createdAt: Date;
     updatedAt?: Date | null;
