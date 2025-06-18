@@ -12,6 +12,9 @@ import { UserRepository } from './user/user.repository';
 import { AdminFactory } from './admin/admin.factory';
 import { IAdminRepository } from './admin/admin.abstract';
 import { AdminRepository } from './admin/admin.repository';
+import { ExampleFactory } from './example/example.factory';
+import { IExampleRepository } from './example/example.abstract';
+import { ExampleRepository } from './example/example.repository';
 
 @Module({
   imports: [PrismaModule],
@@ -32,17 +35,23 @@ import { AdminRepository } from './admin/admin.repository';
       provide: IAdminRepository,
       useClass: AdminRepository,
     },
+    {
+      provide: IExampleRepository,
+      useClass: ExampleRepository,
+    },
 
     RoleFactory,
     TypeFactory,
     UserFactory,
     AdminFactory,
+    ExampleFactory,
   ],
   exports: [
     ITypeRepositoty,
     IRoleRepository,
     IUserRepository,
     IAdminRepository,
+    IExampleRepository,
   ],
 })
 export class RepositoriesModule {}
