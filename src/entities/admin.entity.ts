@@ -1,4 +1,5 @@
 import { Admin } from '@prisma/client';
+import { UserRoleEntity } from './role.entity';
 
 export class AdminEntity implements Admin {
   id: number;
@@ -8,4 +9,5 @@ export class AdminEntity implements Admin {
   deletedAt: Date | null;
   createdBy: number | null;
   updatedBy: number | null;
+  userRole: UserRoleEntity;
 }

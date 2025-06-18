@@ -1,0 +1,32 @@
+import { Injectable } from '@nestjs/common';
+import { IAdminRepository } from './admin.abstract';
+import { AdminFactory } from './admin.factory';
+import { PrismaService } from 'src/provider/database/prisma/prisma.service';
+import { AdminModel } from 'src/models/admin';
+
+@Injectable()
+export class AdminRepository implements IAdminRepository {
+  constructor(
+    private adminFactory: AdminFactory,
+    private prisma: PrismaService,
+  ) {}
+
+  async create(admin: number): Promise<AdminModel | Error> {
+    const createdAdmin = await this.prisma.admin.create({
+      data: {
+        userRoleId: admin,
+        createdBy: admin,
+      },
+      include: {
+        userRole: {
+          include: {
+            user: true,
+            role: true,
+          },
+        },
+      },
+    });
+
+    return this.adminFactory.mapAdminEntityToAdminModel(createdAdmin);
+  }
+}
