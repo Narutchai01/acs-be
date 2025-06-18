@@ -120,6 +120,8 @@ model New {
   createUser User     @relation("CreatedByUser", fields: [createdBy], references: [id])
   updatedBy  Int
   updateUser User     @relation("UpdatedByUser", fields: [updatedBy], references: [id])
+  startDate  DateTime 
+  dueDate    DateTime
 
   @@map("news")
 }

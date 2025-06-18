@@ -1,4 +1,4 @@
-import { Injectable, Inject, forwardRef } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { NewsEntity } from 'src/entities/news.entity';
 import { NewsModel } from 'src/models/news';
 
