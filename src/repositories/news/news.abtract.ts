@@ -7,5 +7,5 @@ export abstract class INewsRepository {
     abstract getNewsById(id: number): Promise<NewsModel | Error>;
     abstract createNews(data: NewsModelCreate): Promise<NewsModel | Error>;
     abstract updateNews(data: NewsModelUpdate): Promise<NewsModel | Error>;
-    abstract deleteNews(id: number): Promise<Error>;
+    abstract deleteNews(id: number): Promise<boolean>;
 }

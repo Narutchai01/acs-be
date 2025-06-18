@@ -8,6 +8,7 @@ export interface NewsModelCreate {
     categoryId: ListTypeModel;
     createdAt: Date;
     createdBy: UserModel;
+    updatedBy: UserModel;
     startDate: Date;
     dueDate: Date;
 }

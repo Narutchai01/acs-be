@@ -16,10 +16,7 @@ export class NewsRepository implements INewsRepository {
             const data = await this.prisma.new.findMany();
             return this.newsFactory.mapNewsEntitiesToNewsModels(data);
         } catch (error) {
-            throw new Error(
-                error instanceof Error
-                ? error.message
-                : `Failed to fetch news`);
+            throw new Error(`Failed to fetch news ${error}`);
         }
     }
 
@@ -39,21 +36,47 @@ export class NewsRepository implements INewsRepository {
 
     async createNews(data: NewsModelCreate): Promise<NewsModel> {
         try {
-            const created = await this.prisma.new.create({ data });
+            const created = await this.prisma.new.create({
+                data: {
+                    title: data.title,
+                    image: data.image,
+                    detail: data.detail,
+                    categoryId: data.categoryId.id,
+                    createdBy: data.createdBy.id,
+                    createdAt: data.createdAt,
+                    startDate: data.startDate,
+                    updatedBy: data.updatedBy.id,
+                    dueDate: data.dueDate,
+                },
+            });
             return this.newsFactory.mapNewsEntityToNewsModel(created);
         } catch (error) {
             throw new Error(`Failed to create news: ${error}`);
         }
     }
 
-    async updateNews(data: NewsModelUpdate): Promise<NewsModel> {
-        try {
-            const updated = await this.prisma.new.update({ where: { id: data.id }, data, });
-            return this.newsFactory.mapNewsEntityToNewsModel(updated);
-        } catch (error) {
-            throw new Error(`Failed to update news with ID ${data.id}: ${error}`);
-        }
+
+   async updateNews(data: NewsModelUpdate): Promise<NewsModel> {
+    try {
+        const updated = await this.prisma.new.update({
+            where: { id: data.id },
+            data: {
+                title: data.title,
+                image: data.image,
+                detail: data.detail,
+                categoryId: data.categoryId.id,
+                updatedBy: data.updatedBy.id,
+                updatedAt: data.updatedAt,
+                startDate: data.startDate,
+                dueDate: data.dueDate,
+            },
+        });
+        return this.newsFactory.mapNewsEntityToNewsModel(updated);
+    } catch (error) {
+        throw new Error(`Failed to update news with ID ${data.id}: ${error}`);
     }
+}
+
 
     async deleteNews(id: number): Promise<boolean> {
         try {

@@ -10,7 +10,7 @@ export interface UserModel {
   imageUrl?: string | null;
   password: string;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt?: Date | null;
   deletedAt?: Date | null;
   createdBy?: number | null;
   updatedBy?: number | null;

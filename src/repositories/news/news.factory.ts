@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { NewsEntity } from 'src/entities/news.entity';
 import { NewsModel } from 'src/models/news';
+import { ListTypeModel } from 'src/models/type';
+import { UserModel } from 'src/models/user';
 
 @Injectable()
 export class NewsFactory {
@@ -14,11 +16,13 @@ export class NewsFactory {
             title: data.title,
             image: data.image,
             detail: data.detail,
-            categoryId: data.categoryId,
+            categoryId: { id: data.categoryId } as ListTypeModel,
             createdAt: data.createdAt,
-            updatedAt: data.updatedAt || null,
-            createdBy: data.createdBy,
-            updatedBy: data.updatedBy || null,
-        }
+            updatedAt: data.updatedAt ?? null,
+            createdBy: { id: data.createdBy } as UserModel,
+            updatedBy: data.updatedBy ? { id: data.updatedBy } as UserModel : undefined,
+            startDate: data.startDate,
+            dueDate: data.dueDate,
+        };
     }
 }

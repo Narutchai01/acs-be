@@ -1,17 +1,14 @@
 import { New } from '@prisma/client';
-import { UserEntity } from './user.entity';
-import { ListTypeEntity } from './type.entity';
-
 export class NewsEntity implements New {
     id: number;
     title: string;
     image: string;
     detail: string;
-    categoryId: ListTypeEntity;
+    categoryId: number;
     createdAt: Date;
-    updatedAt: Date | null;
-    createdBy: UserEntity;
-    updatedBy: UserEntity | null;
+    updatedAt: Date; 
+    createdBy: number; 
+    updatedBy: number;
     startDate: Date;
-    dueDate :Date;
+    dueDate: Date;
 }

@@ -1,12 +1,11 @@
-export class CreateNewsDto {
+export class UpdateNewsDto {
     id: number; 
     title: string;
     image: string;
     detail: string;
     categoryId: number;
-    createdAt: Date;
-    createdBy: number;
     updatedBy: number;
+    updatedAt:Date;
     startDate: Date;
     dueDate: Date;
 }
