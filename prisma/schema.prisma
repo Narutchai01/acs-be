@@ -42,7 +42,7 @@ model UserRole {
   roleId    Int
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  DeletedAt DateTime?
+  deletedAt DateTime?
   user      User      @relation(fields: [userId], references: [id])
   role      Role      @relation(fields: [roleId], references: [id])
   Admin     Admin?
@@ -61,7 +61,7 @@ model User {
   imageUrl    String?
   password    String
   createdAt   DateTime   @default(now())
-  updatedAt   DateTime?  @updatedAt
+  updatedAt   DateTime   @updatedAt
   deletedAt   DateTime?
   createdBy   Int?
   updatedBy   Int?
@@ -77,7 +77,7 @@ model Admin {
   userRoleId Int       @unique
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
-  DeletedAt  DateTime?
+  deletedAt  DateTime?
   createdBy  Int?
   updatedBy  Int?
   userRole   UserRole  @relation(fields: [userRoleId], references: [id])
