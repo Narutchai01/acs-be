@@ -13,7 +13,7 @@ export class NewsRepository implements INewsRepository {
 
     async getNews(): Promise<NewsModel[]> {
         try {
-            const data = await this.prisma.new.findMany();
+            const data = await this.prisma.news.findMany();
             return this.newsFactory.mapNewsEntitiesToNewsModels(data);
         } catch (error) {
             throw new Error(`Failed to fetch news ${error}`);
@@ -22,7 +22,7 @@ export class NewsRepository implements INewsRepository {
 
     async getNewsById(id: number): Promise<NewsModel> {
         try {
-            const data = await this.prisma.new.findUnique({ where: { id } });
+            const data = await this.prisma.news.findUnique({ where: { id } });
 
             if (!data) {
                 throw new Error(`News with ID ${id} not found`);
@@ -36,19 +36,21 @@ export class NewsRepository implements INewsRepository {
 
     async createNews(data: NewsModelCreate): Promise<NewsModel> {
         try {
-            const created = await this.prisma.new.create({
+            const created = await this.prisma.news.create({
                 data: {
                     title: data.title,
                     image: data.image,
                     detail: data.detail,
                     categoryId: data.categoryId.id,
                     createdBy: data.createdBy.id,
-                    createdAt: data.createdAt,
-                    startDate: data.startDate,
                     updatedBy: data.updatedBy.id,
+                    createdAt: data.createdAt,
+                    updatedAt: data.updatedAt,
+                    startDate: data.startDate,
                     dueDate: data.dueDate,
                 },
             });
+
             return this.newsFactory.mapNewsEntityToNewsModel(created);
         } catch (error) {
             throw new Error(`Failed to create news: ${error}`);
@@ -56,31 +58,32 @@ export class NewsRepository implements INewsRepository {
     }
 
 
-   async updateNews(data: NewsModelUpdate): Promise<NewsModel> {
-    try {
-        const updated = await this.prisma.new.update({
-            where: { id: data.id },
-            data: {
-                title: data.title,
-                image: data.image,
-                detail: data.detail,
-                categoryId: data.categoryId.id,
-                updatedBy: data.updatedBy.id,
-                updatedAt: data.updatedAt,
-                startDate: data.startDate,
-                dueDate: data.dueDate,
-            },
-        });
-        return this.newsFactory.mapNewsEntityToNewsModel(updated);
-    } catch (error) {
-        throw new Error(`Failed to update news with ID ${data.id}: ${error}`);
+    async updateNews(data: NewsModelUpdate): Promise<NewsModel> {
+        try {
+            const updated = await this.prisma.news.update({
+                where: { id: data.id },
+                data: {
+                    title: data.title,
+                    image: data.image,
+                    detail: data.detail,
+                    categoryId: data.categoryId.id,
+                    updatedBy: data.updatedBy.id,
+                    updatedAt: data.updatedAt,
+                    startDate: data.startDate,
+                    dueDate: data.dueDate,
+                },
+            });
+
+            return this.newsFactory.mapNewsEntityToNewsModel(updated);
+        } catch (error) {
+            throw new Error(`Failed to update news with ID ${data.id}: ${error}`);
+        }
     }
-}
 
 
     async deleteNews(id: number): Promise<boolean> {
         try {
-            await this.prisma.new.delete({ where: { id } });
+            await this.prisma.news.delete({ where: { id } });
             return true;
         } catch (error) {
             throw new Error(`Failed to delete news with ID ${id}: ${error}`);

@@ -1,14 +1,16 @@
 import { ListTypeModel } from './type';
-import { UserModel } from './user';
+import { UserRefModel } from './user';
+import { ListTypeModelRef } from './type';
 
 export interface NewsModelCreate {
     title: string;
     image: string;
     detail: string;
-    categoryId: ListTypeModel;
+    categoryId: ListTypeModelRef;
     createdAt: Date;
-    createdBy: UserModel;
-    updatedBy: UserModel;
+    updatedAt: Date;
+    createdBy: UserRefModel;
+    updatedBy: UserRefModel;
     startDate: Date;
     dueDate: Date;
 }
@@ -18,9 +20,9 @@ export interface NewsModelUpdate {
     title: string;
     image: string;
     detail: string;
-    categoryId: ListTypeModel;
+    categoryId: ListTypeModelRef;
     updatedAt: Date;
-    updatedBy: UserModel;
+    updatedBy: UserRefModel;
     startDate: Date;
     dueDate: Date;
 }
@@ -30,11 +32,11 @@ export interface NewsModel {
     title: string;
     image: string;
     detail: string;
-    categoryId: ListTypeModel;
+    categoryId: ListTypeModelRef;
     createdAt: Date;
-    updatedAt?: Date | null;
-    createdBy: UserModel;
-    updatedBy?: UserModel;
+    updatedAt: Date;
+    createdBy: UserRefModel;
+    updatedBy: UserRefModel;
     startDate: Date;
     dueDate: Date;
 }

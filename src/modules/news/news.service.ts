@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {NewsModel, NewsModelCreate, NewsModelUpdate,} from 'src/models/news';
+import { NewsModel, NewsModelCreate, NewsModelUpdate } from 'src/models/news';
 import { INewsRepository } from 'src/repositories/news/news.abtract';
 
 @Injectable()

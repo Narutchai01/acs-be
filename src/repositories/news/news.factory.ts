@@ -18,9 +18,9 @@ export class NewsFactory {
             detail: data.detail,
             categoryId: { id: data.categoryId } as ListTypeModel,
             createdAt: data.createdAt,
-            updatedAt: data.updatedAt ?? null,
+            updatedAt: data.updatedAt,
             createdBy: { id: data.createdBy } as UserModel,
-            updatedBy: data.updatedBy ? { id: data.updatedBy } as UserModel : undefined,
+            updatedBy: { id: data.updatedBy } as UserModel,
             startDate: data.startDate,
             dueDate: data.dueDate,
         };

@@ -1,5 +1,6 @@
-import { New } from '@prisma/client';
-export class NewsEntity implements New {
+import { News } from '@prisma/client';
+
+export class NewsEntity implements News {
     id: number;
     title: string;
     image: string;

@@ -2,21 +2,20 @@ import { Injectable } from '@nestjs/common';
 import { NewsModel } from 'src/models/news';
 
 @Injectable()
-export class UsersFactory {
-    constructor() {}
-
-    mapUserModelToUserDto(data: NewsModel): any {
-        return {
-            id: data.id,
-            title: data.title,
-            image: data.image,
-            detail: data.detail,
-            categoryId: data.categoryId.id,
-            createdAt: data.createdAt,
-            createdBy: data.createdBy.id,
-            updatedBy: data.updatedBy?.id,
-            startDate: data.startDate,
-            dueDate: data.dueDate,
-        };
-    }
+export class NewsFactory {
+  mapNewsModelToDto(data: NewsModel): NewsModel {
+    return {
+      id: data.id,
+      title: data.title,
+      image: data.image,
+      detail: data.detail,
+      categoryId: data.categoryId,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+      createdBy: data.createdBy,
+      updatedBy: data.updatedBy,
+      startDate: data.startDate,
+      dueDate: data.dueDate,
+    };
+  }
 }

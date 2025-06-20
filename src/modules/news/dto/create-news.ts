@@ -1,12 +1,12 @@
 export class CreateNewsDto {
-    id: number; 
     title: string;
     image: string;
     detail: string;
     categoryId: number;
-    createdAt: Date;
-    createdBy: number;
-    updatedBy: number;
+    createdBy?: number;
+    updatedBy?: number;
+    createdAt?: Date;
+    updatedAt?: Date;
     startDate: Date;
     dueDate: Date;
 }

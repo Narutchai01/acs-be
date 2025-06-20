@@ -66,8 +66,8 @@ model User {
   createdBy   Int?
   updatedBy   Int?
   UserRole    UserRole[]
-  createdNew  New[]      @relation("CreatedByUser")
-  updatedNew  New[]      @relation("UpdatedByUser")
+  createdNews  News[]      @relation("CreatedByUser")
+  updatedNews  News[]      @relation("UpdatedByUser")
 
   @@map("users") // Optional: maps the model to a table named "users" in the database
 }
@@ -102,12 +102,12 @@ model ListType {
   type      Type     @relation(fields: [typeId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  New       New[]
+  News      News[]
 
   @@map("list_types") // Optional: maps the model to a table named "list_types" in the database
 }
 
-model New {
+model News {
   id         Int      @id @default(autoincrement())
   title      String   @db.VarChar(255)
   image      String
