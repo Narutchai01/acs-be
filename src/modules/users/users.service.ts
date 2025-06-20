@@ -4,6 +4,7 @@ import { IUserRepository } from 'src/repositories/user/user.abstract';
 import { CreateUserDto } from './dto/create-user';
 import { IRoleRepository } from 'src/repositories/role/role.abtract';
 import { IAdminRepository } from 'src/repositories/admin/admin.abstract';
+import { hashPassword } from 'src/core/utils/passwordManagement';
 
 @Injectable()
 export class UsersService {
@@ -24,7 +25,11 @@ export class UsersService {
     if (!roleResult) {
       throw new Error(`Role '${role}' not found`);
     }
-    const user = await this.userRepository.createUser(data);
+    const newData = {
+      ...data,
+      password: await hashPassword(data.password),
+    };
+    const user = await this.userRepository.createUser(newData);
 
     const UserRoles = await this.roleRepository.createUserRole({
       userId: user.id,
