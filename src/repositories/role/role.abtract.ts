@@ -9,4 +9,5 @@ export abstract class IRoleRepository {
   abstract createUserRole(
     data: { userId: number; roleId: number } | Prisma.UserRoleCreateInput,
   ): Promise<UserRoleModel>;
+  abstract validateUserRole(userId: number, role: string): Promise<boolean>;
 }

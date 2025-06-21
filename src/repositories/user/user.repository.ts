@@ -18,4 +18,12 @@ export class UserRepository implements IUserRepository {
     });
     return this.userFactory.mapUserEntityToUserModel(newUser);
   }
+
+  async getUserEmail(email: string): Promise<UserModel | Error> {
+    const user = await this.prisma.user.findFirst({ where: { email } });
+    if (!user) {
+      return new Error(`User with email ${email} not found`);
+    }
+    return this.userFactory.mapUserEntityToUserModel(user);
+  }
 }
