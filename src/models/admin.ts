@@ -8,5 +8,5 @@ export interface AdminModel {
   updatedAt: Date;
   deletedAt: Date | null;
   createdBy: number | null;
-  updatedBy: number | nul;
+  updatedBy: number | null;
 }
