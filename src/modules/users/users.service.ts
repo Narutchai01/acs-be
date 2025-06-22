@@ -37,7 +37,7 @@ export class UsersService {
     });
 
     if (role === 'admin') {
-      const admin = await this.adminRepository.create(UserRoles.id);
+      const admin = await this.adminRepository.create(user.id);
 
       if (admin instanceof Error) {
         throw new Error(`Failed to create admin: ${admin.message}`);
