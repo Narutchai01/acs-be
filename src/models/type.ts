@@ -12,6 +12,6 @@ export interface ListTypeModel {
   updatedDate?: Date;
 }
 
-export interface ListTypeModelRef{
+export interface ListTypeModelRef {
   id: number;
 }

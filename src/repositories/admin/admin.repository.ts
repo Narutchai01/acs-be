@@ -12,21 +12,15 @@ export class AdminRepository implements IAdminRepository {
   ) {}
 
   async create(admin: number): Promise<AdminModel | Error> {
-    const createdAdmin = await this.prisma.admin.create({
+    const newAdmin = await this.prisma.admin.create({
       data: {
-        userRoleId: admin,
-        createdBy: admin,
+        userId: admin,
       },
       include: {
-        userRole: {
-          include: {
-            user: true,
-            role: true,
-          },
-        },
+        user: true,
       },
     });
 
-    return this.adminFactory.mapAdminEntityToAdminModel(createdAdmin);
+    return this.adminFactory.mapAdminEntityToAdminModel(newAdmin);
   }
 }

@@ -27,10 +27,10 @@ model Example {
 }
 
 model Role {
-  id        Int        @id @default(autoincrement())
-  name      String     @unique
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  id        Int        @id @default(autoincrement()) @map("id")
+  name      String     @unique @map("name")
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
   UserRole  UserRole[]
 
   @@map("roles") // Optional: maps the model to a table named "roles" in the database
@@ -43,44 +43,43 @@ model UserRole {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
-  user      User      @relation(fields: [userId], references: [id])
   role      Role      @relation(fields: [roleId], references: [id])
-  Admin     Admin?
+  user      User      @relation(fields: [userId], references: [id])
 
   @@map("user_roles") // Optional: maps the model to a table named "user_roles" in the database
 }
 
 model User {
   id          Int        @id @default(autoincrement())
-  firstNameTh String
-  lastNameTh  String
-  firstNameEn String?
-  lastNameEn  String?
-  email       String     @unique
-  nickName    String?
-  imageUrl    String?
-  password    String
+  firstNameTh String     @map("first_name_th")
+  lastNameTh  String     @map("last_name_th")
+  firstNameEn String?    @map("first_name_en")
+  lastNameEn  String?    @map("last_name_en")
+  email       String     @unique @map("email")
+  nickName    String?    @map("nick_name")
+  imageUrl    String?    @map("image_url")
+  password    String     @map("password")
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  deletedAt   DateTime?
-  createdBy   Int?
-  updatedBy   Int?
+  deletedAt   DateTime?  @map("deleted_at")
+  createdBy   Int?       @map("created_by")
+  updatedBy   Int?       @map("updated_by")
   UserRole    UserRole[]
-  createdNews  News[]      @relation("CreatedByUser")
-  updatedNews  News[]      @relation("UpdatedByUser")
+  Admin       Admin?
+  News        News[]
 
   @@map("users") // Optional: maps the model to a table named "users" in the database
 }
 
 model Admin {
-  id         Int       @id @default(autoincrement())
-  userRoleId Int       @unique
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  deletedAt  DateTime?
-  createdBy  Int?
-  updatedBy  Int?
-  userRole   UserRole  @relation(fields: [userRoleId], references: [id])
+  id        Int       @id @default(autoincrement())
+  userId    Int       @unique @map("user_id")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  createdBy Int?
+  updatedBy Int?
+  user      User      @relation(fields: [userId], references: [id])
 
   @@map("admins") // Optional: maps the model to a table named "admins" in the database
 }
@@ -97,31 +96,31 @@ model Type {
 
 model ListType {
   id        Int      @id @default(autoincrement())
-  name      String   @unique
-  typeId    Int
+  name      String   @unique @map("name")
+  typeId    Int      @map("type_id")
   type      Type     @relation(fields: [typeId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
   News      News[]
 
-  @@map("list_types") // Optional: maps the model to a table named "list_types" in the database
+  @@map("list_types")
 }
 
 model News {
-  id         Int      @id @default(autoincrement())
-  title      String   @db.VarChar(255)
-  image      String
-  detail     String
-  categoryId Int
-  category   ListType @relation(fields: [categoryId], references: [id])
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  createdBy  Int
-  createUser User     @relation("CreatedByUser", fields: [createdBy], references: [id])
-  updatedBy  Int
-  updateUser User     @relation("UpdatedByUser", fields: [updatedBy], references: [id])
-  startDate  DateTime 
-  dueDate    DateTime
+  id         Int       @id @default(autoincrement())
+  title      String    @map("title")
+  image      String    @map("image")
+  detail     String    @map("detail")
+  categoryId Int       @map("category_id")
+  startDate  DateTime  @map("start_date")
+  dueDate    DateTime  @map("due_date")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  deletedAt  DateTime? @map("deleted_at")
+  createdBy  Int       @map("created_by")
+  updatedBy  Int       @map("updated_by")
+  category   ListType  @relation(fields: [categoryId], references: [id])
+  user       User      @relation(fields: [updatedBy], references: [id])
 
   @@map("news")
 }

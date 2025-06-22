@@ -11,10 +11,10 @@ import { TypeModule } from './modules/type/type.module';
 import { RoleModule } from './modules/role/role.module';
 import { UsersModule } from './modules/users/users.module';
 import { ExampleModule } from './modules/example/example.module';
-import { NewsController } from './modules/news/news.controller';
-import { NewsModule } from './modules/news/news.module';
-import { NewsService } from './modules/news/news.service';
+
 import { SupabaseModule } from './provider/store/supabase/supabase.module';
+import { AdminModule } from './modules/admin/admin.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -24,15 +24,11 @@ import { SupabaseModule } from './provider/store/supabase/supabase.module';
     RoleModule,
     UsersModule,
     ExampleModule,
-    NewsModule,
     SupabaseModule,
+    AdminModule,
+    AuthModule,
   ],
-  controllers: [
-    AppController, 
-    HealthController, 
-    TypeController , 
-    NewsController
-  ],
-  providers: [AppService, TypeService, NewsService],
+  controllers: [AppController, HealthController, TypeController],
+  providers: [AppService, TypeService],
 })
 export class AppModule {}
