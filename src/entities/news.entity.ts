@@ -3,7 +3,6 @@ import { ListTypeEntity } from './type.entity';
 import { UserEntity } from './user.entity';
 
 export class NewsEntity implements News {
-  id: number;
   title: string;
   image: string;
   detail: string;
@@ -15,6 +14,7 @@ export class NewsEntity implements News {
   deletedAt: Date | null;
   createdBy: number;
   updatedBy: number;
+  id: number;
   category: ListTypeEntity;
   user: UserEntity;
 }
