@@ -36,6 +36,9 @@ export class UsersService {
       roleId: roleResult.id,
     });
 
+    if (UserRoles instanceof Error) {
+      throw new Error(`Failed to assign role to user: ${UserRoles.message}`);
+    }
     if (role === 'admin') {
       const admin = await this.adminRepository.create(user.id);
 
