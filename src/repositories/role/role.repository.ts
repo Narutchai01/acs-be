@@ -50,4 +50,19 @@ export class RoleRepository implements IRoleRepository {
     });
     return this.roleFactory.mapUserRoleEntityToUserRoleModel(userRole);
   }
+
+  async validateUserRole(userId: number, role: string): Promise<boolean> {
+    const userRole = await this.prisma.userRole.findFirst({
+      where: {
+        userId: userId,
+        role: {
+          name: role,
+        },
+      },
+    });
+    if (!userRole) {
+      return false;
+    }
+    return true;
+  }
 }

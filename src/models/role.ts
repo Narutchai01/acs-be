@@ -6,6 +6,7 @@ export interface RoleModel {
 }
 
 export interface UserRoleModel {
+  id: number;
   userId: number;
   roleId: number;
   role: RoleModel;
