@@ -7,11 +7,10 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
-    "prepare": "husky",
+    "prepare": "husky install",
     "prebuild": "rm -rf dist || rmdir /s /q dist 2>nul || true",
     "postinstall": "prisma generate",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "seed": "npx ts-node -r tsconfig-paths/register prisma/seed/seed.ts",
     "db:seed": "npm run seed",

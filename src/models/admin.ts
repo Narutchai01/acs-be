@@ -1,9 +1,9 @@
-import { UserRoleModel } from './role';
+import { UserModel } from './user';
 
 export interface AdminModel {
   id: number;
-  userRoleId: number;
-  userRole: UserRoleModel;
+  userId: number;
+  user: UserModel;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;

@@ -1,13 +1,13 @@
 import { Admin } from '@prisma/client';
-import { UserRoleEntity } from './role.entity';
+import { UserEntity } from './user.entity';
 
 export class AdminEntity implements Admin {
   id: number;
-  userRoleId: number;
+  userId: number;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;
   createdBy: number | null;
   updatedBy: number | null;
-  userRole: UserRoleEntity;
+  user: UserEntity;
 }
