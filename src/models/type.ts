@@ -11,3 +11,7 @@ export interface ListTypeModel {
   createdDate?: Date;
   updatedDate?: Date;
 }
+
+export interface ListTypeModelRef {
+  id: number;
+}

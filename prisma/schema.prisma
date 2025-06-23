@@ -66,6 +66,7 @@ model User {
   updatedBy   Int?       @map("updated_by")
   UserRole    UserRole[]
   Admin       Admin?
+  News        News[]
 
   @@map("users") // Optional: maps the model to a table named "users" in the database
 }
@@ -100,6 +101,26 @@ model ListType {
   type      Type     @relation(fields: [typeId], references: [id])
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+  News      News[]
 
-  @@map("list_types") // Optional: maps the model to a table named "list_types" in the database
+  @@map("list_types")
+}
+
+model News {
+  id         Int       @id @default(autoincrement())
+  title      String    @map("title")
+  image      String    @map("image")
+  detail     String    @map("detail")
+  categoryId Int       @map("category_id")
+  startDate  DateTime  @map("start_date")
+  dueDate    DateTime? @map("due_date")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  deletedAt  DateTime? @map("deleted_at")
+  createdBy  Int       @map("created_by")
+  updatedBy  Int       @map("updated_by")
+  category   ListType  @relation(fields: [categoryId], references: [id])
+  user       User      @relation(fields: [updatedBy], references: [id])
+
+  @@map("news")
 }
