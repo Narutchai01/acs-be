@@ -81,7 +81,7 @@ export class NewsRepository implements INewsRepository {
         },
       });
       if (!newsEntity) {
-        throw new Error('News not found');
+        throw new Error(`News not found for ID ${id}`);
       }
       return this.newsFactory.mapNewsEntityToNewsModel(newsEntity);
     } catch (error: unknown) {
