@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class SupabaseService {
@@ -34,11 +35,18 @@ export class SupabaseService {
     return data.publicUrl;
   }
 
-  async uploadFile(file: File, dirName: string): Promise<string> {
-    const filePath = `${dirName}/${file.name}`;
+  async uploadFile(
+    fileBuffer: Express.Multer.File,
+    dirName: string,
+  ): Promise<string> {
+    const fileName = `${uuidv4()}`;
+    const filePath = `${dirName}/${fileName}.jpg`; // Assuming the file is a JPEG image, adjust as necessary
     const { error } = await this.storage
       .from(this.bucketName)
-      .upload(filePath, file);
+      .upload(filePath, fileBuffer.buffer, {
+        contentType: 'image/jpeg',
+        cacheControl: '3600',
+      });
     if (error) {
       throw error;
     }

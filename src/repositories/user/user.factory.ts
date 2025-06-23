@@ -30,11 +30,9 @@ export class UserFactory {
       deletedAt: data.deletedAt || null,
       createdBy: data.createdBy || null,
       updatedBy: data.updatedBy || null,
-      roles: data.UserRole
-        ? data.UserRole.map((userRole) =>
-            this.roleFactory.mapUserRoleEntityToUserRoleModel(userRole),
-          )
-        : undefined,
+      userRole: this.roleFactory.mapUserRoleEntitiesToUserRoleModels(
+        data.UserRole || [],
+      ),
     };
   }
 }

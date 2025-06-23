@@ -19,10 +19,5 @@ export interface UserModel {
   deletedAt?: Date | null;
   createdBy?: number | null;
   updatedBy?: number | null;
-  roles?: UserRoleModel[];
+  userRole: UserRoleModel[];
 }
-
-export type PublicUserModel = Omit<
-  UserModel,
-  'password' | 'deletedAt' | 'createdBy' | 'updatedBy'
->;
