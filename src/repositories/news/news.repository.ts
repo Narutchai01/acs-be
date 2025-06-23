@@ -70,4 +70,28 @@ export class NewsRepository implements INewsRepository {
       }
     }
   }
+
+  async getNewsById(id: number): Promise<NewsModel> {
+    try {
+      const newsEntity = await this.prisma.news.findUnique({
+        where: { id: id },
+        include: {
+          category: true,
+          user: true,
+        },
+      });
+      if (!newsEntity) {
+        throw new Error(`News not found for ID ${id}`);
+      }
+      return this.newsFactory.mapNewsEntityToNewsModel(newsEntity);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Get news by ID failed:', error.message);
+        throw new Error(`Unable to get news by ID: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to get news by ID: Unknown error occurred');
+      }
+    }
+  }
 }

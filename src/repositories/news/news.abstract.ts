@@ -7,4 +7,5 @@ export abstract class INewsRepository {
   constructor() {}
   abstract createNews(data: CreateNewsModel): Promise<NewsModel>;
   abstract getNews(query: QueryNewsDto): Promise<NewsModel[]>;
+  abstract getNewsById(id: number): Promise<NewsModel>;
 }

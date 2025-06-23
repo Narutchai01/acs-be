@@ -36,4 +36,8 @@ export class NewsService {
   async getNews(query: QueryNewsDto): Promise<NewsModel[]> {
     return this.newsRespository.getNews(query);
   }
+
+  async getNewsById(id: number): Promise<NewsModel> {
+    return this.newsRespository.getNewsById(id);
+  }
 }
