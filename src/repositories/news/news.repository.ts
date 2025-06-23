@@ -37,12 +37,13 @@ export class NewsRepository implements INewsRepository {
   async getNews(quey: QueryNewsDto): Promise<NewsModel[]> {
     try {
       const { page, pageSize, category } = quey;
-      const categories = category.split(',').map((cat) => cat.trim());
+      const safeCategory = category ?? '';
+      const categories = safeCategory.split(',').map((cat) => cat.trim());
 
       // condition query
       const whereClause = {
         deletedAt: null,
-        ...(category !== '' && {
+        ...(safeCategory !== '' && {
           category: {
             name: { in: categories },
           },
