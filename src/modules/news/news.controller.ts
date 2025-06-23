@@ -9,6 +9,7 @@ import {
   UseGuards,
   UseInterceptors,
   Query,
+  Param,
 } from '@nestjs/common';
 import { NewsService } from './news.service';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -57,6 +58,18 @@ export class NewsController {
     return res.json({
       status: true,
       data: dtos,
+      error: null,
+    });
+  }
+
+  @Get(':id')
+  async getNewsById(@Res() res: Response, @Param('id') id: string) {
+    const IdNumber = Number(id);
+    const news = await this.newsService.getNewsById(IdNumber);
+    const dto = this.newsFactory.mapNewsModelToNewsDto(news);
+    return res.json({
+      status: true,
+      data: dto,
       error: null,
     });
   }
