@@ -10,6 +10,6 @@ export class QueryNewsDto {
   @Transform(({ value }) => parseInt(value))
   pageSize: number;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   category: string;
 }
