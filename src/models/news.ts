@@ -8,8 +8,6 @@ export interface CreateNewsModel {
   categoryId: number;
   startDate: Date;
   dueDate: Date | null;
-  createdAt: Date;
-  updatedAt: Date;
   createdBy: number;
   updatedBy: number;
 }

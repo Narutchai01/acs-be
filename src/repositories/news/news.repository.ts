@@ -3,6 +3,8 @@ import { INewsRepository } from './news.abstract';
 import { CreateNewsModel, NewsModel } from 'src/models/news';
 import { PrismaService } from 'src/provider/database/prisma/prisma.service';
 import { NewsFactory } from './news.factory';
+import { QueryNewsDto } from 'src/modules/news/dto/get-news.dto';
+import calculatePagination from 'src/core/utils/calculatePagination';
 
 @Injectable()
 export class NewsRepository implements INewsRepository {
@@ -28,6 +30,42 @@ export class NewsRepository implements INewsRepository {
       } else {
         console.error('Unknown error:', error);
         throw new Error('Unable to create news: Unknown error occurred');
+      }
+    }
+  }
+
+  async getNews(quey: QueryNewsDto): Promise<NewsModel[]> {
+    try {
+      const { page, pageSize, category } = quey;
+      const categories = category.split(',').map((cat) => cat.trim());
+
+      // condition query
+      const whereClause = {
+        deletedAt: null,
+        ...(category !== '' && {
+          category: {
+            name: { in: categories },
+          },
+        }),
+      };
+
+      const newsEntities = await this.prisma.news.findMany({
+        where: whereClause,
+        include: {
+          category: true,
+          user: true,
+        },
+        take: pageSize,
+        skip: calculatePagination(page, pageSize),
+      });
+      return this.newsFactory.mapNewsEntitiesToNewsModels(newsEntities);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Get news failed:', error.message);
+        throw new Error(`Unable to get news: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to get news: Unknown error occurred');
       }
     }
   }

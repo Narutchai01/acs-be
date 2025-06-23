@@ -13,6 +13,10 @@ export class NewsFactory {
     private userFactory: UserFactory,
   ) {}
 
+  mapNewsEntitiesToNewsModels(entities: NewsEntity[]): NewsModel[] {
+    return entities.map((entity) => this.mapNewsEntityToNewsModel(entity));
+  }
+
   mapNewsEntityToNewsModel(data: NewsEntity): NewsModel {
     const newsModel = {
       id: data.id,
