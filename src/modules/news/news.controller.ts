@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   Query,
   Param,
+  Patch,
 } from '@nestjs/common';
 import { NewsService } from './news.service';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -72,5 +73,25 @@ export class NewsController {
       data: dto,
       error: null,
     });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id')
+  @UseInterceptors(FileInterceptor('image'))
+  async updateNews(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+    @Body() body: CreateNewsDto,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    const IdNumber = Number(id);
+    const result = await this.newsService.updateNews(
+      IdNumber,
+      body,
+      file,
+      req.user.userId,
+    );
+
+    return result;
   }
 }

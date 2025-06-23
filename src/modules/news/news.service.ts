@@ -40,4 +40,30 @@ export class NewsService {
   async getNewsById(id: number): Promise<NewsModel> {
     return this.newsRespository.getNewsById(id);
   }
+
+  async updateNews(
+    id: number,
+    data: CreateNewsDto,
+    file: Express.Multer.File,
+    userId: number,
+  ): Promise<NewsModel> {
+    const exixingNews = await this.newsRespository.getNewsById(id);
+    let image_url: string = exixingNews.image;
+
+    if (file) {
+      image_url = await this.storage.uploadFile(file, 'news');
+    }
+
+    const updateData = {
+      title: data.title || exixingNews.title,
+      detail: data.detail || exixingNews.detail,
+      startDate: data.startDate || exixingNews.startDate,
+      dueDate: data.dueDate || exixingNews.dueDate,
+      image: image_url,
+      categoryId: Number(data.categoryId) || exixingNews.categoryId,
+      updatedBy: userId,
+    };
+
+    return this.newsRespository.updateNews(id, updateData);
+  }
 }

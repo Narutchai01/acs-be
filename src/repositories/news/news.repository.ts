@@ -94,4 +94,26 @@ export class NewsRepository implements INewsRepository {
       }
     }
   }
+
+  async updateNews(id: number, data: CreateNewsModel): Promise<NewsModel> {
+    try {
+      const newsEntity = await this.prisma.news.update({
+        where: { id: id },
+        data: data,
+        include: {
+          category: true,
+          user: true,
+        },
+      });
+      return this.newsFactory.mapNewsEntityToNewsModel(newsEntity);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Update news failed:', error.message);
+        throw new Error(`Unable to update news: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to update news: Unknown error occurred');
+      }
+    }
+  }
 }
