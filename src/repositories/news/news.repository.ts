@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { INewsRepository } from './news.abstract';
-import { CreateNewsModel, NewsModel } from 'src/models/news';
+import { CreateNewsModel, NewsModel, UpdateNewsModel } from 'src/models/news';
 import { PrismaService } from 'src/provider/database/prisma/prisma.service';
 import { NewsFactory } from './news.factory';
 import { QueryNewsDto } from 'src/modules/news/dto/get-news.dto';
@@ -97,9 +97,14 @@ export class NewsRepository implements INewsRepository {
 
   async updateNews(id: number, data: UpdateNewsModel): Promise<NewsModel> {
     try {
+      // Ensure updatedBy is undefined instead of null for Prisma compatibility
+      const updateData = {
+        ...data,
+        updatedBy: data.updatedBy === null ? undefined : data.updatedBy,
+      };
       const newsEntity = await this.prisma.news.update({
         where: { id: id },
-        data: data,
+        data: updateData,
         include: {
           category: true,
           user: true,
@@ -122,7 +127,7 @@ export class NewsRepository implements INewsRepository {
       const newsEntity = await this.prisma.news.update({
         where: { id: id },
         data: {
-          deletedDate: new Date(),
+          deletedAt: new Date(),
           updatedBy: userId,
         },
         include: {

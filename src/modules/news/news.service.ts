@@ -4,6 +4,7 @@ import { NewsModel } from 'src/models/news';
 import { INewsRepository } from 'src/repositories/news/news.abstract';
 import { SupabaseService } from 'src/provider/store/supabase/supabase.service';
 import { QueryNewsDto } from './dto/get-news.dto';
+import { UpdateNewsDto } from './dto/update-news.dto';
 
 @Injectable()
 export class NewsService {
