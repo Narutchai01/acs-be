@@ -20,7 +20,7 @@ export class NewsFactory {
       dueDate: data.dueDate,
       createdDate: data.createdAt,
       updatedDate: data.updatedAt,
-      deletedDate: data.deletedAt,
+      // deletedDate: data.deletedAt,
       createdBy: data.createdBy,
       updatedBy: data.updatedBy,
       category: data.category,
