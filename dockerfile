@@ -14,7 +14,7 @@ COPY prisma ./prisma/
 RUN npm install --no-audit --no-fund
 
 # Generate Prisma Client for the container architecture
-RUN npx prisma generate
+RUN npx prisma db push
 
 COPY . ./
 
