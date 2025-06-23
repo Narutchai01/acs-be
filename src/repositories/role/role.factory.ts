@@ -21,6 +21,12 @@ export class RoleFactory {
     };
   }
 
+  mapUserRoleEntitiesToUserRoleModels(data: UserRoleEntity[]): UserRoleModel[] {
+    return data.map((userRole) =>
+      this.mapUserRoleEntityToUserRoleModel(userRole),
+    );
+  }
+
   mapUserRoleEntityToUserRoleModel(data: UserRoleEntity): UserRoleModel {
     return {
       id: data.id,

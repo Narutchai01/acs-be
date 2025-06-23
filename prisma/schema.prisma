@@ -101,6 +101,7 @@ model ListType {
   type      Type     @relation(fields: [typeId], references: [id])
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+  // News      News[]
   News      News[]
 
   @@map("list_types")
