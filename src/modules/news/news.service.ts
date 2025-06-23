@@ -66,4 +66,8 @@ export class NewsService {
 
     return this.newsRespository.updateNews(id, updateData);
   }
+
+  async deleteNews(id: number, userId: number): Promise<NewsModel> {
+    return this.newsRespository.deleteNews(id, userId);
+  }
 }
