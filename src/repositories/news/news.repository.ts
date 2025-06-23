@@ -95,7 +95,7 @@ export class NewsRepository implements INewsRepository {
     }
   }
 
-  async updateNews(id: number, data: CreateNewsModel): Promise<NewsModel> {
+  async updateNews(id: number, data: UpdateNewsModel): Promise<NewsModel> {
     try {
       const newsEntity = await this.prisma.news.update({
         where: { id: id },
