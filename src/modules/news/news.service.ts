@@ -43,7 +43,7 @@ export class NewsService {
 
   async updateNews(
     id: number,
-    data: CreateNewsDto,
+    data: UpdateNewsDto,
     file: Express.Multer.File,
     userId: number,
   ): Promise<NewsModel> {
