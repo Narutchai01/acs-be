@@ -47,20 +47,20 @@ export class NewsService {
     file: Express.Multer.File,
     userId: number,
   ): Promise<NewsModel> {
-    const exixingNews = await this.newsRespository.getNewsById(id);
-    let image_url: string = exixingNews.image;
+    const existingNews = await this.newsRespository.getNewsById(id);
+    let image_url: string = existingNews.image;
 
     if (file) {
       image_url = await this.storage.uploadFile(file, 'news');
     }
 
     const updateData = {
-      title: data.title || exixingNews.title,
-      detail: data.detail || exixingNews.detail,
-      startDate: data.startDate || exixingNews.startDate,
-      dueDate: data.dueDate || exixingNews.dueDate,
+      title: data.title || existingNews.title,
+      detail: data.detail || existingNews.detail,
+      startDate: data.startDate || existingNews.startDate,
+      dueDate: data.dueDate || existingNews.dueDate,
       image: image_url,
-      categoryId: Number(data.categoryId) || exixingNews.categoryId,
+      categoryId: Number(data.categoryId) || existingNews.categoryId,
       updatedBy: userId,
     };
 
