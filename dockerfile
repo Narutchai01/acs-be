@@ -14,13 +14,16 @@ COPY prisma ./prisma/
 RUN npm install --no-audit --no-fund
 
 # Generate Prisma Client for the container architecture
-RUN npx prisma db push
+RUN npx prisma generate
 
 COPY . ./
 
 RUN npm run prebuild && npm run build
 
-CMD ["npm", "run", "start"]
+# Make scripts executable
+RUN chmod +x scripts/start.sh
+
+CMD ["./scripts/start.sh"]
 
 # Production image
 FROM base AS production
@@ -36,5 +39,9 @@ RUN npm ci --production
 RUN npx prisma generate
 
 COPY --from=development /usr/src/app/dist ./dist
+COPY --from=development /usr/src/app/scripts ./scripts
 
-CMD ["npm", "run", "start:prod"]
+# Make scripts executable
+RUN chmod +x scripts/start-prod.sh
+
+CMD ["./scripts/start-prod.sh"]
