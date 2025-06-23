@@ -11,6 +11,7 @@ import {
   Query,
   Param,
   Patch,
+  Delete,
 } from '@nestjs/common';
 import { NewsService } from './news.service';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -92,6 +93,17 @@ export class NewsController {
       req.user.userId,
     );
 
+    return result;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  async deleteNews(
+    @Param('id') id: string,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    const IdNumber = Number(id);
+    const result = await this.newsService.deleteNews(IdNumber, req.user.userId);
     return result;
   }
 }

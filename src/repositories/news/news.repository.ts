@@ -95,7 +95,7 @@ export class NewsRepository implements INewsRepository {
     }
   }
 
-  async updateNews(id: number, data: CreateNewsModel): Promise<NewsModel> {
+  async updateNews(id: number, data: UpdateNewsModel): Promise<NewsModel> {
     try {
       const newsEntity = await this.prisma.news.update({
         where: { id: id },
@@ -113,6 +113,31 @@ export class NewsRepository implements INewsRepository {
       } else {
         console.error('Unknown error:', error);
         throw new Error('Unable to update news: Unknown error occurred');
+      }
+    }
+  }
+
+  async deleteNews(id: number, userId: number): Promise<NewsModel> {
+    try {
+      const newsEntity = await this.prisma.news.update({
+        where: { id: id },
+        data: {
+          deletedDate: new Date(),
+          updatedBy: userId,
+        },
+        include: {
+          category: true,
+          user: true,
+        },
+      });
+      return this.newsFactory.mapNewsEntityToNewsModel(newsEntity);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Delete news failed:', error.message);
+        throw new Error(`Unable to delete news: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to delete news: Unknown error occurred');
       }
     }
   }
