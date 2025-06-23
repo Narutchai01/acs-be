@@ -127,7 +127,7 @@ export class NewsRepository implements INewsRepository {
       const newsEntity = await this.prisma.news.update({
         where: { id: id },
         data: {
-          deletedAt: new Date(),
+          deletedDate: new Date(),
           updatedBy: userId,
         },
         include: {
