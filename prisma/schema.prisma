@@ -67,6 +67,7 @@ model User {
   UserRole    UserRole[]
   Admin       Admin?
   News        News[]
+  Course      Course[]
 
   @@map("users") // Optional: maps the model to a table named "users" in the database
 }
@@ -124,4 +125,18 @@ model News {
   user        User      @relation(fields: [updatedBy], references: [id])
 
   @@map("news")
+}
+
+model Course {
+  id           Int      @id @default(autoincrement())
+  courseId     String   @map("course_id")
+  courseName   String   @map("course_name")
+  courseDetail String   @map("course_detail")
+  createdDate  DateTime @default(now()) @map("created_date")
+  updatedDate  DateTime @updatedAt @map("updated_date")
+  createdBy    Int      @map("created_by")
+  updatedBy    Int      @map("updated_by")
+  User         User     @relation(fields: [updatedBy], references: [id])
+
+  @@map("courses")
 }
