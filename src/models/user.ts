@@ -1,4 +1,9 @@
 import { UserRoleModel } from './role';
+
+export interface UserRefModel {
+  id: number;
+}
+
 export interface UserModel {
   id: number;
   firstNameTh: string;
@@ -10,7 +15,7 @@ export interface UserModel {
   imageUrl?: string | null;
   password: string;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt?: Date | null;
   deletedAt?: Date | null;
   createdBy?: number | null;
   updatedBy?: number | null;

@@ -23,6 +23,7 @@ export class RoleFactory {
 
   mapUserRoleEntityToUserRoleModel(data: UserRoleEntity): UserRoleModel {
     return {
+      id: data.id,
       user: this.userFactory.mapUserEntityToUserModel(data.user),
       role: this.mapRoleEntityToRoleModel(data.role),
       userId: data.userId,

@@ -12,6 +12,10 @@ import { RoleModule } from './modules/role/role.module';
 import { UsersModule } from './modules/users/users.module';
 import { ExampleModule } from './modules/example/example.module';
 
+import { SupabaseModule } from './provider/store/supabase/supabase.module';
+import { AdminModule } from './modules/admin/admin.module';
+import { AuthModule } from './modules/auth/auth.module';
+
 @Module({
   imports: [
     PrismaModule,
@@ -20,6 +24,9 @@ import { ExampleModule } from './modules/example/example.module';
     RoleModule,
     UsersModule,
     ExampleModule,
+    SupabaseModule,
+    AdminModule,
+    AuthModule,
   ],
   controllers: [AppController, HealthController, TypeController],
   providers: [AppService, TypeService],
