@@ -20,7 +20,10 @@ COPY . ./
 
 RUN npm run prebuild && npm run build
 
-CMD ["npm", "run", "start"]
+# Make scripts executable
+RUN chmod +x scripts/start.sh
+
+CMD ["./scripts/start.sh"]
 
 # Production image
 FROM base AS production
@@ -36,5 +39,9 @@ RUN npm ci --production
 RUN npx prisma generate
 
 COPY --from=development /usr/src/app/dist ./dist
+COPY --from=development /usr/src/app/scripts ./scripts
 
-CMD ["npm", "run", "start:prod"]
+# Make scripts executable
+RUN chmod +x scripts/start-prod.sh
+
+CMD ["./scripts/start-prod.sh"]

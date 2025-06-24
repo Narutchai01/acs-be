@@ -9,9 +9,9 @@ export class NewsEntity implements News {
   categoryId: number;
   startDate: Date;
   dueDate: Date | null;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt: Date | null;
+  createdDate: Date;
+  updatedDate: Date;
+  deletedDate: Date | null;
   createdBy: number;
   updatedBy: number;
   id: number;

@@ -25,9 +25,9 @@ export class UserFactory {
       nickName: data.nickName || null,
       imageUrl: data.imageUrl || null,
       password: data.password,
-      createdAt: data.createdAt,
-      updatedAt: data.updatedAt,
-      deletedAt: data.deletedAt || null,
+      createdAt: data.createdDate,
+      updatedAt: data.updatedDate,
+      deletedAt: data.deletedDate || null,
       createdBy: data.createdBy || null,
       updatedBy: data.updatedBy || null,
       userRole: this.roleFactory.mapUserRoleEntitiesToUserRoleModels(
