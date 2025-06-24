@@ -136,7 +136,7 @@ model Course {
   updatedDate  DateTime @updatedAt @map("updated_date")
   createdBy    Int      @map("created_by")
   updatedBy    Int      @map("updated_by")
-  User         User     @relation(fields: [updatedBy], references: [id])
+  user         User     @relation(fields: [updatedBy], references: [id])
 
   @@map("courses")
 }
