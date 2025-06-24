@@ -140,3 +140,20 @@ model Course {
 
   @@map("courses")
 }
+
+model Student {
+  id                   Int      @id @default(autoincrement())
+  userId               Int      @unique
+  studentId            String
+  linkedin             String?
+  facebook             String?
+  instagram            String?
+  github               String?
+  yearOfFirstAdmission Int
+  yearOfCompletion     Int?
+  classOf              String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@map("students")
+}
