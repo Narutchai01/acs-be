@@ -28,7 +28,7 @@ export class UserFactory {
       createdDate: data.createdDate,
       updatedDate: data.updatedDate,
       deletedDate: data.deletedDate || null,
-      createdBy: data.createdBy ?? null,
+      createdBy: data.createdBy ?? undefined,
       updatedBy: data.updatedBy ?? null,
       userRole: this.roleFactory.mapUserRoleEntitiesToUserRoleModels(
         data.UserRole || [],
