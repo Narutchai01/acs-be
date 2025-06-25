@@ -43,6 +43,8 @@ model UserRole {
   createdDate DateTime  @default(now()) @map("created_date")
   updatedDate DateTime  @updatedAt @map("updated_date")
   deletedDate DateTime? @map("deleted_date")
+  createdBy   Int       @map("created_by")
+  updatedBy   Int       @map("updated_by")
   role        Role      @relation(fields: [roleId], references: [id])
   user        User      @relation(fields: [userId], references: [id])
 
@@ -68,6 +70,7 @@ model User {
   Admin       Admin?
   News        News[]
   Course      Course[]
+  Student     Student?
 
   @@map("users") // Optional: maps the model to a table named "users" in the database
 }
@@ -158,6 +161,7 @@ model Student {
   deletedDate          DateTime? @map("deleted_date")
   createdBy            Int       @map("created_by")
   updatedBy            Int       @map("updated_by")
+  user                 User      @relation(fields: [userId], references: [id])
 
   @@map("students")
 }
