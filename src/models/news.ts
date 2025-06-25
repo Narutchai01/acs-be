@@ -22,19 +22,14 @@ export interface UpdateNewsModel extends BaseModel {
   dueDate: Date | null;
 }
 
-export interface NewsModel {
+export interface NewsModel extends BaseModel {
+  id: number;
   title: string;
   image: string;
   detail: string;
   categoryId: number;
   startDate: Date;
   dueDate: Date | null;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt: Date | null;
-  createdBy: number;
-  updatedBy: number;
-  id: number;
   category: ListTypeModel;
   user: UserModel;
 }

@@ -15,6 +15,8 @@ export class AdminRepository implements IAdminRepository {
     const newAdmin = await this.prisma.admin.create({
       data: {
         userId: admin,
+        createdBy: admin,
+        updatedBy: admin,
       },
       include: {
         user: true,

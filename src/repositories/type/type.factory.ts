@@ -14,8 +14,8 @@ export class TypeFactory {
     return {
       id: data.id,
       name: data.name,
-      createdDate: data.createdAt,
-      updatedDate: data.updatedAt,
+      createdDate: data.createdDate,
+      updatedDate: data.updatedDate,
     };
   }
 
@@ -27,8 +27,8 @@ export class TypeFactory {
     return {
       id: data.id,
       name: data.name,
-      createdDate: data.createdAt,
-      updatedDate: data.updatedAt,
+      createdDate: data.createdDate,
+      updatedDate: data.updatedDate,
     };
   }
 }
