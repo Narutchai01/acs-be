@@ -23,6 +23,7 @@ export interface UpdateNewsModel extends BaseModel {
 }
 
 export interface NewsModel extends BaseModel {
+  id: number;
   title: string;
   image: string;
   detail: string;

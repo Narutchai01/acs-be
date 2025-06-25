@@ -15,9 +15,9 @@ export class ExampleFactory {
       id: data.id,
       name: data.name,
       description: data.description,
-      createdAt: data.createdAt,
-      updatedAt: data.updatedAt,
-      createdBy: data.createdBy,
+      createdDate: data.createdDate,
+      updatedDate: data.updatedDate,
+      createdBy: data.createdBy === null ? undefined : data.createdBy,
       updatedBy: data.updatedBy,
     };
   }

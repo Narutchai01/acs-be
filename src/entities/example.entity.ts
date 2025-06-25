@@ -4,9 +4,9 @@ export class ExampleEntity implements Example {
   id: number;
   name: string;
   description: string;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt: Date | null;
+  createdDate: Date;
+  updatedDate: Date;
+  deletedDate: Date | null;
   createdBy: number | null;
   updatedBy: number | null;
 }
