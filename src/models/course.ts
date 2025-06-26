@@ -1,6 +1,7 @@
 import { UserModel } from "./user";
 
 export interface CraeteCourseModel {
+    courseId: string
     courseName: string
     courseDetail: string
     createdBy: number;
@@ -8,6 +9,7 @@ export interface CraeteCourseModel {
 }
 
 export interface UpdateCourseModel {
+    courseId: string
     courseName: string
     courseDetail: string
 }
