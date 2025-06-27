@@ -10,6 +10,7 @@ export interface CreateCourseModel {
 }
 
 export interface UpdateCourseModel {
+  courseId: string;
   courseName: string;
   courseDetail: string;
 }

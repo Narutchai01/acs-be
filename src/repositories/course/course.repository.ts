@@ -26,7 +26,7 @@ export class CourseRepository implements ICourseRepository {
         throw new Error(`Unable to create course: ${error.message}`);
       } else {
         console.error('Unknown error:', error);
-        throw new Error('Unable to create news: Unknown error occurred');
+        throw new Error('Unable to create course: Unknown error occurred');
       }
     }
   }
