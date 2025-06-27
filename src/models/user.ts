@@ -1,10 +1,11 @@
+import { BaseModel } from '.';
 import { UserRoleModel } from './role';
 
 export interface UserRefModel {
   id: number;
 }
 
-export interface UserModel {
+export interface UserModel extends BaseModel {
   id: number;
   firstNameTh: string;
   lastNameTh: string;
@@ -14,10 +15,5 @@ export interface UserModel {
   nickName: string | null;
   imageUrl?: string | null;
   password: string;
-  createdAt: Date;
-  updatedAt?: Date | null;
-  deletedAt?: Date | null;
-  createdBy?: number | null;
-  updatedBy?: number | null;
   userRole: UserRoleModel[];
 }
