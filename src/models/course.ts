@@ -2,6 +2,7 @@ import { UserModel } from './user';
 import { BaseModel } from '.';
 
 export interface CreateCourseModel {
+  courseId: string;
   courseName: string;
   courseDetail: string;
   createdBy: number;
