@@ -1,4 +1,6 @@
-export interface Student {
+import { BaseModel } from '.';
+
+export interface Student extends BaseModel {
   id: number;
   userId: number;
   studentId: string;
@@ -8,8 +10,4 @@ export interface Student {
   github?: string | null;
   yearOfFirstAdmission: number;
   yearOfCompletion?: number | null;
-  createDate: Date;
-  updatedAt: Date;
-  createdBy?: number | null;
-  updatedBy?: number | null;
 }

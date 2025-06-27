@@ -1,18 +1,19 @@
 import { Student } from '@prisma/client';
 
 export class StudentEntity implements Student {
-  id: number;
+  id!: number;
   userId!: number;
   studentId!: string;
-  linkedin!: string | null;
-  facebook!: string | null;
-  instagram!: string | null;
-  github!: string | null;
+  linkedin: string | null;
+  facebook: string | null;
+  instagram: string | null;
+  github: string | null;
   yearOfFirstAdmission!: number;
-  yearOfCompletion!: number | null;
+  yearOfCompletion: number | null;
   classOf!: string;
-  createdAt!: Date;
-  updatedAt!: Date;
-  createdBy!: number | null;
-  updatedBy!: number | null;
+  createdDate: Date;
+  updatedDate: Date;
+  deletedDate: Date | null;
+  createdBy: number;
+  updatedBy: number;
 }

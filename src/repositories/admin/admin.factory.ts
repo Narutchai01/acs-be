@@ -18,9 +18,9 @@ export class AdminFactory {
     return {
       id: data.id,
       userId: data.userId,
-      createdAt: data.createdAt,
-      updatedAt: data.updatedAt,
-      deletedAt: data.deletedAt,
+      createdDate: data.createdDate,
+      updatedDate: data.updatedDate,
+      deletedDate: data.deletedDate,
       createdBy: data.createdBy,
       updatedBy: data.updatedBy,
       user: this.userFactory.mapUserEntityToUserModel(data.user),

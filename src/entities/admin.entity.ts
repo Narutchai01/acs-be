@@ -4,10 +4,10 @@ import { UserEntity } from './user.entity';
 export class AdminEntity implements Admin {
   id: number;
   userId: number;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt: Date | null;
-  createdBy: number | null;
-  updatedBy: number | null;
+  createdDate: Date;
+  updatedDate: Date;
+  deletedDate: Date | null;
+  createdBy: number;
+  updatedBy: number;
   user: UserEntity;
 }

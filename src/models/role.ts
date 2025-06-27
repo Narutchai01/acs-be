@@ -1,3 +1,4 @@
+import { BaseModel } from '.';
 import { UserModel } from './user';
 
 export interface RoleModel {
@@ -5,12 +6,10 @@ export interface RoleModel {
   name: string;
 }
 
-export interface UserRoleModel {
+export interface UserRoleModel extends BaseModel {
   id: number;
   userId: number;
   roleId: number;
   role: RoleModel;
   user: UserModel;
-  createdAt: Date;
-  updatedAt: Date;
 }

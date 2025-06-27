@@ -42,6 +42,8 @@ export class RoleRepository implements IRoleRepository {
       data: {
         user: { connect: { id: data.userId } },
         role: { connect: { id: data.roleId } },
+        createdBy: data.userId, // or set to the appropriate user id
+        updatedBy: data.userId, // or set to the appropriate user id
       },
       include: {
         user: true,
