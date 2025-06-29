@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { ICourseRepository } from 'src/repositories/course/course.abstract';
 import { CourseModel } from 'src/models/course';
-import { CreateCourseDTO } from './dto/create-course.dto';
+import { CreateCourseDto } from './dto/create-course.dto';
 
 @Injectable()
-export class NewsService {
+export class CourseService {
   constructor(private courseRespository: ICourseRepository) {}
 
   async createCourse(
-    createCourse: CreateCourseDTO,
+    createCourse: CreateCourseDto,
     userId: number,
   ): Promise<CourseModel> {
     const data = {
