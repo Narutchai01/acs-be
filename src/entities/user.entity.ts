@@ -10,9 +10,9 @@ export class UserEntity implements User {
   nickName!: string | null;
   imageUrl!: string | null;
   password!: string;
-  createdAt!: Date;
-  updatedAt!: Date;
-  deletedAt!: Date | null;
+  createdDate!: Date;
+  updatedDate!: Date;
+  deletedDate!: Date | null;
   createdBy!: number | null;
   updatedBy!: number | null;
   UserRole?: UserRoleEntity[];

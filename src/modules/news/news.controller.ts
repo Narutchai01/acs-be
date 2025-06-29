@@ -9,6 +9,9 @@ import {
   UseGuards,
   UseInterceptors,
   Query,
+  Param,
+  Patch,
+  Delete,
 } from '@nestjs/common';
 import { NewsService } from './news.service';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -59,5 +62,48 @@ export class NewsController {
       data: dtos,
       error: null,
     });
+  }
+
+  @Get(':id')
+  async getNewsById(@Res() res: Response, @Param('id') id: string) {
+    const IdNumber = Number(id);
+    const news = await this.newsService.getNewsById(IdNumber);
+    const dto = this.newsFactory.mapNewsModelToNewsDto(news);
+    return res.json({
+      status: true,
+      data: dto,
+      error: null,
+    });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id')
+  @UseInterceptors(FileInterceptor('image'))
+  async updateNews(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+    @Body() body: CreateNewsDto,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    const IdNumber = Number(id);
+    const result = await this.newsService.updateNews(
+      IdNumber,
+      body,
+      file,
+      req.user.userId,
+    );
+
+    return result;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  async deleteNews(
+    @Param('id') id: string,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    const IdNumber = Number(id);
+    const result = await this.newsService.deleteNews(IdNumber, req.user.userId);
+    return result;
   }
 }

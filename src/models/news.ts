@@ -1,3 +1,4 @@
+import { BaseModel } from '.';
 import { ListTypeModel } from './type';
 import { UserModel } from './user';
 
@@ -12,19 +13,23 @@ export interface CreateNewsModel {
   updatedBy: number;
 }
 
-export interface NewsModel {
+export interface UpdateNewsModel extends BaseModel {
   title: string;
   image: string;
   detail: string;
   categoryId: number;
   startDate: Date;
   dueDate: Date | null;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt: Date | null;
-  createdBy: number;
-  updatedBy: number;
+}
+
+export interface NewsModel extends BaseModel {
   id: number;
+  title: string;
+  image: string;
+  detail: string;
+  categoryId: number;
+  startDate: Date;
+  dueDate: Date | null;
   category: ListTypeModel;
   user: UserModel;
 }

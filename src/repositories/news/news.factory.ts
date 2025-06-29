@@ -26,9 +26,9 @@ export class NewsFactory {
       categoryId: data.categoryId,
       startDate: data.startDate,
       dueDate: data.dueDate,
-      createdAt: data.createdAt,
-      updatedAt: data.updatedAt,
-      deletedAt: data.deletedAt,
+      createdAt: data.createdDate,
+      updatedAt: data.updatedDate,
+      deletedAt: data.deletedDate,
       createdBy: data.createdBy,
       updatedBy: data.updatedBy,
       category: this.typeFactory.mapListTypeEntityToListTypeModel(

@@ -12,7 +12,9 @@ export class UserRoleEntity implements UserRole {
   roleId: number;
   user: UserEntity;
   role: RoleEntity;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt: Date | null;
+  createdDate: Date;
+  updatedDate: Date;
+  deletedDate: Date | null;
+  createdBy: number;
+  updatedBy: number;
 }

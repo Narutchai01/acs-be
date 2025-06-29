@@ -10,6 +10,11 @@ services:
       - '5432:5432'
     volumes:
       - ./databasepg:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U admin -d acs-website']
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   servers:
     container_name: acs-website-server
@@ -27,4 +32,5 @@ services:
       DATABASE_URL: postgres://admin:admin@acs-website-database:5432/acs-website
       NODE_ENV: development
     depends_on:
-      - database
+      database:
+        condition: service_healthy

@@ -3,4 +3,5 @@ export interface BaseModel {
   createdBy?: number;
   updatedDate?: Date;
   updatedBy?: number | null;
+  deletedDate?: Date | null;
 }

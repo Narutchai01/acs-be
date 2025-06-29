@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { INewsRepository } from './news.abstract';
-import { CreateNewsModel, NewsModel } from 'src/models/news';
+import { CreateNewsModel, NewsModel, UpdateNewsModel } from 'src/models/news';
 import { PrismaService } from 'src/provider/database/prisma/prisma.service';
 import { NewsFactory } from './news.factory';
 import { QueryNewsDto } from 'src/modules/news/dto/get-news.dto';
@@ -42,7 +42,7 @@ export class NewsRepository implements INewsRepository {
 
       // condition query
       const whereClause = {
-        deletedAt: null,
+        deletedDate: null,
         ...(safeCategory !== '' && {
           category: {
             name: { in: categories },
@@ -67,6 +67,85 @@ export class NewsRepository implements INewsRepository {
       } else {
         console.error('Unknown error:', error);
         throw new Error('Unable to get news: Unknown error occurred');
+      }
+    }
+  }
+
+  async getNewsById(id: number): Promise<NewsModel> {
+    try {
+      const newsEntity = await this.prisma.news.findUnique({
+        where: {
+          id: id,
+          deletedDate: null, // Ensure we only fetch non-deleted news
+        },
+        include: {
+          category: true,
+          user: true,
+        },
+      });
+      if (!newsEntity) {
+        throw new Error(`News not found for ID ${id}`);
+      }
+      return this.newsFactory.mapNewsEntityToNewsModel(newsEntity);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Get news by ID failed:', error.message);
+        throw new Error(`Unable to get news by ID: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to get news by ID: Unknown error occurred');
+      }
+    }
+  }
+
+  async updateNews(id: number, data: UpdateNewsModel): Promise<NewsModel> {
+    try {
+      // Ensure updatedBy is undefined instead of null for Prisma compatibility
+      const updateData = {
+        ...data,
+        updatedBy: data.updatedBy === null ? undefined : data.updatedBy,
+      };
+      const newsEntity = await this.prisma.news.update({
+        where: { id: id },
+        data: updateData,
+        include: {
+          category: true,
+          user: true,
+        },
+      });
+      return this.newsFactory.mapNewsEntityToNewsModel(newsEntity);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Update news failed:', error.message);
+        throw new Error(`Unable to update news: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to update news: Unknown error occurred');
+      }
+    }
+  }
+
+  async deleteNews(id: number, userId: number): Promise<NewsModel> {
+    try {
+      const newsEntity = await this.prisma.news.update({
+        where: { id: id },
+        data: {
+          deletedDate: new Date(),
+          updatedBy: userId,
+        },
+        include: {
+          category: true,
+          user: true,
+        },
+      });
+      return this.newsFactory.mapNewsEntityToNewsModel(newsEntity);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Delete news failed:', error.message);
+        throw new Error(`Unable to delete news: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to delete news: Unknown error occurred');
       }
     }
   }
