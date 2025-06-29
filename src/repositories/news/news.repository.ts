@@ -42,7 +42,7 @@ export class NewsRepository implements INewsRepository {
 
       // condition query
       const whereClause = {
-        deletedAt: null,
+        deletedDate: null,
         ...(safeCategory !== '' && {
           category: {
             name: { in: categories },
