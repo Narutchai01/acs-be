@@ -18,6 +18,9 @@ import { ExampleRepository } from './example/example.repository';
 import { NewsFactory } from './news/news.factory';
 import { NewsRepository } from './news/news.repository';
 import { INewsRepository } from './news/news.abstract';
+import { CourseFactory } from './course/course.factory';
+import { CourseRepository } from './course/course.repository';
+import { ICourseRepository } from './course/course.abstract';
 
 @Module({
   imports: [PrismaModule],
@@ -46,12 +49,17 @@ import { INewsRepository } from './news/news.abstract';
       provide: INewsRepository,
       useClass: NewsRepository,
     },
+    {
+      provide: ICourseRepository,
+      useClass: CourseRepository,
+    },
     NewsFactory,
     RoleFactory,
     TypeFactory,
     UserFactory,
     AdminFactory,
     ExampleFactory,
+    CourseFactory,
   ],
   exports: [
     ITypeRepositoty,
@@ -60,6 +68,7 @@ import { INewsRepository } from './news/news.abstract';
     IAdminRepository,
     IExampleRepository,
     INewsRepository,
+    ICourseRepository,
   ],
 })
 export class RepositoriesModule {}
