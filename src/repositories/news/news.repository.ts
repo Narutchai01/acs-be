@@ -42,7 +42,7 @@ export class NewsRepository implements INewsRepository {
 
       // condition query
       const whereClause = {
-        deletedAt: null,
+        deletedDate: null,
         ...(safeCategory !== '' && {
           category: {
             name: { in: categories },
@@ -74,7 +74,10 @@ export class NewsRepository implements INewsRepository {
   async getNewsById(id: number): Promise<NewsModel> {
     try {
       const newsEntity = await this.prisma.news.findUnique({
-        where: { id: id },
+        where: {
+          id: id,
+          deletedDate: null, // Ensure we only fetch non-deleted news
+        },
         include: {
           category: true,
           user: true,
