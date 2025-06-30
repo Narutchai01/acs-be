@@ -21,9 +21,11 @@ COPY . ./
 RUN npm run prebuild && npm run build
 
 # Make scripts executable
-RUN chmod +x scripts/start.sh
+# RUN chmod +x scripts/start.sh
 
-CMD ["./scripts/start.sh"]
+# CMD ["./scripts/start.sh"]
+
+CMD ["sh", "-c", "npx prisma db push && npm run db:seed && npm run start"]
 
 # Production image
 FROM base AS production
