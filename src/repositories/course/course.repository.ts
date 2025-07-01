@@ -30,4 +30,27 @@ export class CourseRepository implements ICourseRepository {
       }
     }
   }
+
+  async getCourseById(id: number): Promise<CourseModel> {
+    try {
+      const course = await this.prisma.course.findUnique({
+        where: { id },
+        include: {
+          user: true,
+        },
+      });
+      if (!course) {
+        throw new Error(`Course with ID ${id} not found`);
+      }
+      return this.CourseFactory.mapCourseEntityToCourseModel(course);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.log('get course by id failed:', error.message);
+        throw new Error(`Unable to get course by ID: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to get course by ID: Unknown error occurred');
+      }
+    }
+  }
 }
