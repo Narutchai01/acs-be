@@ -36,7 +36,6 @@ export class CourseController {
     return result;
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   async getCourse(): Promise<CourseModel[]> {
     return await this.courseService.getCourse();

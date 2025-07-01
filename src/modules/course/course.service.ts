@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { ICourseRepository } from 'src/repositories/course/course.abstract';
 import { CourseModel } from 'src/models/course';
