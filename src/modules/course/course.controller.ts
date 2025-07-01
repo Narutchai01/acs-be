@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Request, UseGuards, Patch, Param } from '@nestjs/common';
 
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
@@ -14,7 +14,7 @@ interface AuthenticatedRequest extends ExpressRequest {
 
 @Controller('course')
 export class CourseController {
-  constructor(private readonly courseService: CourseService) {}
+  constructor(private readonly courseService: CourseService) { }
 
   @UseGuards(JwtAuthGuard)
   @Post()
@@ -23,6 +23,23 @@ export class CourseController {
     @Request() req: AuthenticatedRequest,
   ) {
     const result = await this.courseService.createCourse(body, req.user.userId);
+
+    return result;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id')
+  async updateCourse(
+    @Param('id') id: string,
+    @Body() body: CreateCourseDto,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    const IdNumber = Number(id);
+    const result = await this.courseService.updateCourse(
+      IdNumber,
+      body,
+      req.user.userId,
+    );
 
     return result;
   }
