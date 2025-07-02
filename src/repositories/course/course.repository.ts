@@ -41,14 +41,14 @@ export class CourseRepository implements ICourseRepository {
         ...data,
         updatedBy: data.updatedBy === null ? undefined : data.updatedBy,
       };
-      const newsEntity = await this.prisma.course.update({
+      const courseEntity = await this.prisma.course.update({
         where: { id: id },
         data: updateData,
         include: {
           user: true,
         },
       });
-      return this.CourseFactory.mapCourseEntityToCourseModel(newsEntity);
+      return this.CourseFactory.mapCourseEntityToCourseModel(courseEntity);
     } catch (error) {
       if (error instanceof Error) {
         console.error('Update course failed:', error.message);
@@ -56,7 +56,28 @@ export class CourseRepository implements ICourseRepository {
       } else {
         console.error('Unknown error:', error);
         throw new Error('Unable to update course: Unknown error occurred');
-      }
+      };
     }
   }
-}
+        
+    async getCourse(): Promise < CourseModel[] > {
+          try {
+            const course = await this.prisma.course.findMany({
+              include: {
+                user: true,
+              },
+            });
+
+            return course.map((course) =>
+              this.CourseFactory.mapCourseEntityToCourseModel(course),);
+    } catch(error: unknown) {
+            if (error instanceof Error) {
+              console.log('get course failed:', error.message);
+              throw new Error(`Unable to get course: ${error.message}`);
+            } else {
+              console.error('Unknown error:', error);
+              throw new Error('Unable to get course: Unknown error occurred');
+            }
+          }
+        }
+      }
