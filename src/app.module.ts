@@ -9,6 +9,7 @@ import { TypeModule } from './modules/type/type.module';
 import { RoleModule } from './modules/role/role.module';
 import { UsersModule } from './modules/users/users.module';
 import { ExampleModule } from './modules/example/example.module';
+import { CourseModule } from './modules/course/course.module';
 
 import { SupabaseModule } from './provider/store/supabase/supabase.module';
 import { AdminModule } from './modules/admin/admin.module';
@@ -27,8 +28,9 @@ import { NewsModule } from './modules/news/news.module';
     AdminModule,
     AuthModule,
     NewsModule,
+    CourseModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
