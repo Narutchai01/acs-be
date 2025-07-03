@@ -1,5 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CourseModel, CreateCourseModel } from 'src/models/course';
+import {
+  CourseModel,
+  CreateCourseModel,
+  UpdateCourseModel,
+} from 'src/models/course';
 
 @Injectable()
 export abstract class ICourseRepository {
@@ -7,6 +11,6 @@ export abstract class ICourseRepository {
   abstract getCourse(): Promise<CourseModel[]>;
   // abstract getCourseById(): Promise<CourseModel>;
   abstract createCourse(data: CreateCourseModel): Promise<CourseModel>;
-  // abstract updateCourse(id: number, data: UpdateCourseModel): Promise<CourseModel>;
+  abstract updateCourse(id: number, data: UpdateCourseModel): Promise<CourseModel>;
   // abstract deleteCourse(id: number, userId: number): Promise<CourseModel>;
 }
