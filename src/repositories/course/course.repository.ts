@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/provider/database/prisma/prisma.service';
 import { ICourseRepository } from './course.abstract';
@@ -34,9 +35,9 @@ export class CourseRepository implements ICourseRepository {
       }
     }
   }
-
+  
   async updateCourse(id: number, data: UpdateCourseModel): Promise<CourseModel> {
-    try {
+     try {
       const updateData = {
         ...data,
         updatedBy: data.updatedBy === null ? undefined : data.updatedBy,
@@ -56,7 +57,7 @@ export class CourseRepository implements ICourseRepository {
       } else {
         console.error('Unknown error:', error);
         throw new Error('Unable to update course: Unknown error occurred');
-      };
+      }
     }
   }
         

@@ -3,7 +3,6 @@ import { ICourseRepository } from 'src/repositories/course/course.abstract';
 import { CourseModel } from 'src/models/course';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
-
 @Injectable()
 export class CourseService {
   constructor(private courseRepository: ICourseRepository) {}
@@ -43,9 +42,12 @@ export class CourseService {
     }
   }
 
+  async getCourseById(id: number): Promise<CourseModel> {
+    return await this.courseRespository.getCourseById(id);
+
   async updateCourse(
     id: number,
-    updateCourse: UpdateCourseDto,
+    updateCourse: UpdateCourseDTO,
     userId: number,
   ): Promise<CourseModel> {
     const existingCourse = await this.courseRespository.getCourseById(id);
