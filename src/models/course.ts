@@ -9,7 +9,7 @@ export interface CreateCourseModel {
   updatedBy: number;
 }
 
-export interface UpdateCourseModel {
+export interface UpdateCourseModel extends BaseModel {
   courseId: string;
   courseName: string;
   courseDetail: string;
