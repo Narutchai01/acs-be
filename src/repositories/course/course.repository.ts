@@ -34,7 +34,7 @@ export class CourseRepository implements ICourseRepository {
       }
     }
   }
-
+  
   async updateCourse(id: number, data: UpdateCourseModel): Promise<CourseModel> {
     try {
       const updateData = {
@@ -56,6 +56,27 @@ export class CourseRepository implements ICourseRepository {
       } else {
         console.error('Unknown error:', error);
         throw new Error('Unable to update course: Unknown error occurred');
+      }
+    }
+  }
+        
+    async getCourse(): Promise<CourseModel[]> {
+    try {
+      const course = await this.prisma.course.findMany({
+        include: {
+          user: true,
+        },
+      });
+      
+      return course.map((course) =>
+        this.CourseFactory.mapCourseEntityToCourseModel(course),);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.log('get course failed:', error.message);
+        throw new Error(`Unable to get course: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to get course: Unknown error occurred');
       }
     }
   }
