@@ -5,7 +5,7 @@ import { CreateCourseDto } from './dto/create-course.dto';
 
 @Injectable()
 export class CourseService {
-  constructor(private courseRespository: ICourseRepository) {}
+  constructor(private courseRepository: ICourseRepository) {}
 
   async createCourse(
     createCourse: CreateCourseDto,
@@ -19,6 +19,26 @@ export class CourseService {
       updatedBy: userId,
     };
 
-    return this.courseRespository.createCourse(data);
+    return this.courseRepository.createCourse(data);
+  }
+
+  async getCourse(): Promise<CourseModel[]> {
+    try {
+      const course = await this.courseRepository.getCourse();
+
+      if (!course || course.length === 0) {
+        console.warn('No course found in the system');
+      }
+
+      return course;
+    } catch (error: unknown) {
+      console.error(
+        'Course service: Failed to retrieve course catalog:',
+        error,
+      );
+      throw new Error(
+        'Course catalog is temporarily unavailable. Please try again later.',
+      );
+    }
   }
 }

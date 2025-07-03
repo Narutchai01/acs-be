@@ -7,8 +7,8 @@ import {
 
 @Injectable()
 export abstract class ICourseRepository {
-  constructor() { }
-  // abstract getCourse(): Promise<CourseModel[]>;
+  constructor() {}
+  abstract getCourse(): Promise<CourseModel[]>;
   // abstract getCourseById(): Promise<CourseModel>;
   abstract createCourse(data: CreateCourseModel): Promise<CourseModel>;
   abstract updateCourse(id: number, data: UpdateCourseModel): Promise<CourseModel>;
