@@ -43,6 +43,9 @@ export class CourseService {
     }
   }
 
+  async getCourseById(id: number): Promise<CourseModel> {
+    return await this.courseRespository.getCourseById(id);
+
   async updateCourse(
     id: number,
     updateCourse: UpdateCourseDTO,
