@@ -1,9 +1,19 @@
-import { Body, Controller, Post, Request, UseGuards, Patch, Param } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Get,
+  Request,
+  UseGuards,
+  Patch, 
+  Param,
+} from '@nestjs/common';
 
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { Request as ExpressRequest } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CourseModel } from 'src/models/course';
 
 interface AuthenticatedRequest extends ExpressRequest {
   user: {
@@ -42,5 +52,10 @@ export class CourseController {
     );
 
     return result;
+    }
+    
+  @Get()
+  async getCourse(): Promise<CourseModel[]> {
+    return await this.courseService.getCourse();
   }
 }
