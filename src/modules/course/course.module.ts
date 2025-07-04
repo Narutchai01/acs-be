@@ -8,4 +8,4 @@ import { CourseFactory } from './course.factory';
   controllers: [CourseController],
   providers: [CourseService, CourseFactory],
 })
-export class NewsModule {}
+export class CourseModule { }

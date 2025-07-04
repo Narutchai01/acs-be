@@ -2,8 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ICourseRepository } from 'src/repositories/course/course.abstract';
 import { CourseModel } from 'src/models/course';
 import { CreateCourseDto } from './dto/create-course.dto';
-import { UpdateCourseDTO } from './dto/update-course';
-
+import { UpdateCourseDto } from './dto/update-course.dto';
 @Injectable()
 export class CourseService {
   constructor(private courseRepository: ICourseRepository) {}
@@ -57,7 +56,7 @@ export class CourseService {
       courseId: updateCourse.courseId || existingCourse.courseId,
       courseName: updateCourse.courseName || existingCourse.courseName,
       courseDetail: updateCourse.courseDetail || existingCourse.courseDetail,
-      updateBy: userId,
+      updatedBy: userId,
     };
 
     return this.courseRespository.updateCourse(id, updateData);

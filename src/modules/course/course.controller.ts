@@ -57,7 +57,6 @@ export class CourseController {
       body,
       req.user.userId,
     );
-
     return result;
     }
     

@@ -34,21 +34,21 @@ export class CourseRepository implements ICourseRepository {
       }
     }
   }
-  
+
   async updateCourse(id: number, data: UpdateCourseModel): Promise<CourseModel> {
     try {
       const updateData = {
         ...data,
         updatedBy: data.updatedBy === null ? undefined : data.updatedBy,
       };
-      const newsEntity = await this.prisma.course.update({
+      const courseEntity = await this.prisma.course.update({
         where: { id: id },
         data: updateData,
         include: {
           user: true,
         },
       });
-      return this.CourseFactory.mapCourseEntityToCourseModel(newsEntity);
+      return this.CourseFactory.mapCourseEntityToCourseModel(courseEntity);
     } catch (error) {
       if (error instanceof Error) {
         console.error('Update course failed:', error.message);
@@ -59,15 +59,15 @@ export class CourseRepository implements ICourseRepository {
       }
     }
   }
-        
-    async getCourse(): Promise<CourseModel[]> {
+
+  async getCourse(): Promise<CourseModel[]> {
     try {
       const course = await this.prisma.course.findMany({
         include: {
           user: true,
         },
       });
-      
+
       return course.map((course) =>
         this.CourseFactory.mapCourseEntityToCourseModel(course),);
     } catch (error: unknown) {
