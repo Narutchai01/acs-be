@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from 'src/provider/database/prisma/prisma.service';
 import { ICourseRepository } from './course.abstract';
 import {
@@ -10,6 +10,8 @@ import { CourseFactory } from './course.factory';
 
 @Injectable()
 export class CourseRepository implements ICourseRepository {
+  private readonly logger = new Logger(CourseRepository.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly CourseFactory: CourseFactory,
@@ -57,7 +59,7 @@ export class CourseRepository implements ICourseRepository {
         console.error('Update course failed:', error.message);
         throw new Error(`Unable to update course: ${error.message}`);
       } else {
-        console.error('Unknown error:', error);
+        this.logger.error('Unknown error:', error as Error);
         throw new Error('Unable to update course: Unknown error occurred');
       }
     }
@@ -79,7 +81,10 @@ export class CourseRepository implements ICourseRepository {
         console.log('get course failed:', error.message);
         throw new Error(`Unable to get course: ${error.message}`);
       } else {
-        console.error('Unknown error:', error);
+        this.logger.error(
+          'Unknown error:',
+          error instanceof Error ? error : 'Unknown error',
+        );
         throw new Error('Unable to get course: Unknown error occurred');
       }
     }
@@ -102,7 +107,10 @@ export class CourseRepository implements ICourseRepository {
         console.error('Get course by ID failed:', error.message);
         throw new Error(`Unable to get course by ID: ${error.message}`);
       } else {
-        console.error('Unknown error:', error);
+        this.logger.error(
+          'Unknown error:',
+          error instanceof Error ? error : 'Unknown error',
+        );
         throw new Error('Unable to get course by ID: Unknown error occurred');
       }
     }
