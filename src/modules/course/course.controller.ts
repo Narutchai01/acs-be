@@ -9,6 +9,7 @@ import {
   Patch,
   Param,
 } from '@nestjs/common';
+import { ParseIntPipe } from '@nestjs/common';
 import { Response } from 'express';
 
 import { CourseService } from './course.service';
@@ -46,7 +47,7 @@ export class CourseController {
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async updateCourse(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() body: UpdateCourseDto,
     @Request() req: AuthenticatedRequest,
     @Res() res: Response,
