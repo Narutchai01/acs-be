@@ -78,7 +78,7 @@ export class CourseRepository implements ICourseRepository {
       );
     } catch (error: unknown) {
       if (error instanceof Error) {
-        console.log('get course failed:', error.message);
+        this.logger.error('get course failed:', error.message);
         throw new Error(`Unable to get course: ${error.message}`);
       } else {
         this.logger.error(
