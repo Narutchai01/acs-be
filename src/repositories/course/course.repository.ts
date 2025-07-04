@@ -13,7 +13,7 @@ export class CourseRepository implements ICourseRepository {
   constructor(
     private readonly prisma: PrismaService,
     private readonly CourseFactory: CourseFactory,
-  ) { }
+  ) {}
 
   async createCourse(data: CreateCourseModel): Promise<CourseModel> {
     try {
@@ -35,7 +35,10 @@ export class CourseRepository implements ICourseRepository {
     }
   }
 
-  async updateCourse(id: number, data: UpdateCourseModel): Promise<CourseModel> {
+  async updateCourse(
+    id: number,
+    data: UpdateCourseModel,
+  ): Promise<CourseModel> {
     try {
       const updateData = {
         ...data,
@@ -69,7 +72,8 @@ export class CourseRepository implements ICourseRepository {
       });
 
       return course.map((course) =>
-        this.CourseFactory.mapCourseEntityToCourseModel(course),);
+        this.CourseFactory.mapCourseEntityToCourseModel(course),
+      );
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.log('get course failed:', error.message);
@@ -77,6 +81,29 @@ export class CourseRepository implements ICourseRepository {
       } else {
         console.error('Unknown error:', error);
         throw new Error('Unable to get course: Unknown error occurred');
+      }
+    }
+  }
+
+  async getCourseById(id: number): Promise<CourseModel> {
+    try {
+      const course = await this.prisma.course.findUnique({
+        where: { id: id },
+        include: {
+          user: true,
+        },
+      });
+      if (!course) {
+        throw new Error('Course not found');
+      }
+      return this.CourseFactory.mapCourseEntityToCourseModel(course);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Get course by ID failed:', error.message);
+        throw new Error(`Unable to get course by ID: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to get course by ID: Unknown error occurred');
       }
     }
   }

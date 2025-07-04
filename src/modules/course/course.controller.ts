@@ -6,50 +6,50 @@ import {
   Request,
   UseGuards,
   Res,
-  Patch, 
+  Patch,
   Param,
 } from '@nestjs/common';
+import { Response } from 'express';
 
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
-import { Request as ExpressRequest, Response } from 'express';
+import { UpdateCourseDto } from './dto/update-course.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { CourseModel } from 'src/models/course';
-
-interface AuthenticatedRequest extends ExpressRequest {
-  user: {
-    userId: number;
-    roleId: number;
-  };
-}
+import { AuthenticatedRequest } from '../../models/auth';
+import { CourseFactory } from './course.factory';
 
 @Controller('course')
 export class CourseController {
-  constructor(private readonly courseService: CourseService) { }
+  constructor(
+    private readonly courseService: CourseService,
+    private courseFactory: CourseFactory,
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()
   async createCourse(
     @Body() body: CreateCourseDto,
     @Request() req: AuthenticatedRequest,
+    @Res() res: Response,
   ) {
     const result = await this.courseService.createCourse(body, req.user.userId);
-
-    return result;
+    const dto = this.courseFactory.mapCourseModelToCourseDto(result);
+    return res.status(201).json(dto);
   }
-
   @Get(':id')
   async getCourseById(@Res() res: Response, @Param('id') id: number) {
     const course = await this.courseService.getCourseById(id);
-    res.json(course);
+    const dto = this.courseFactory.mapCourseModelToCourseDto(course);
+    return res.status(200).json(dto);
   }
-  
+
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async updateCourse(
     @Param('id') id: string,
-    @Body() body: CreateCourseDto,
+    @Body() body: UpdateCourseDto,
     @Request() req: AuthenticatedRequest,
+    @Res() res: Response,
   ) {
     const IdNumber = Number(id);
     const result = await this.courseService.updateCourse(
@@ -57,11 +57,13 @@ export class CourseController {
       body,
       req.user.userId,
     );
-    return result;
-    }
-    
+    return res.status(200).json(result);
+  }
+
   @Get()
-  async getCourse(): Promise<CourseModel[]> {
-    return await this.courseService.getCourse();
+  async getCourse(@Res() res: Response) {
+    const courses = await this.courseService.getCourse();
+    const dtos = this.courseFactory.mapCourseModelsToCourseDtos(courses);
+    return res.status(200).json(dtos);
   }
 }
