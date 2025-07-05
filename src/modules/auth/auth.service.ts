@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { comparePassword } from 'src/core/utils/passwordManagement';
 import { IRoleRepository } from 'src/repositories/role/role.abtract';
 import { IUserRepository } from 'src/repositories/user/user.abstract';
 import { UserModel } from 'src/models/user';
