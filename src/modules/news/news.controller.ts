@@ -55,13 +55,8 @@ export class NewsController {
   }
 
   @Get()
-<<<<<<< HEAD
-  async getNews(@Res() res: Response, @Query() query: QueryNewsDto) {
-    const news = await this.newsService.getNews(query);
-=======
   async getNews(@Res() res: Response, @Query() quey: QueryNewsDto) {
     const news = await this.newsService.getNews(quey);
->>>>>>> a78f7fa (Improves news retrieval with pagination)
     const dto = news.rows.map((item) =>
       this.newsFactory.mapNewsModelToNewsDto(item),
     );
