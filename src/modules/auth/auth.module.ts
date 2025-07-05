@@ -7,12 +7,14 @@ import { PassportModule } from '@nestjs/passport';
 import { AdminLocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { ConfigModule } from '@nestjs/config';
+import { PasswordModule } from 'src/core/utils/password/password.module';
 
 @Module({
   imports: [
     RepositoriesModule,
     PassportModule,
     ConfigModule,
+    PasswordModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: process.env.JWT_EXPIRATION },
