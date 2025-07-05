@@ -4,6 +4,7 @@ import { IRoleRepository } from 'src/repositories/role/role.abtract';
 import { IUserRepository } from 'src/repositories/user/user.abstract';
 import { UserModel } from 'src/models/user';
 import { JwtService } from '@nestjs/jwt';
+import { PasswordService } from 'src/core/utils/password/password.service';
 
 @Injectable()
 export class AuthService {
@@ -11,6 +12,7 @@ export class AuthService {
     private userRepository: IUserRepository,
     private RoleRepository: IRoleRepository,
     private jwtService: JwtService,
+    private passwordService: PasswordService,
   ) {}
 
   async validateUser(
@@ -36,7 +38,10 @@ export class AuthService {
       return null;
     }
 
-    const isPasswordValid = await comparePassword(password, user.password);
+    const isPasswordValid = await this.passwordService.comparePassword(
+      password,
+      user.password,
+    );
     if (!isPasswordValid) {
       return null;
     }
