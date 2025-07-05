@@ -5,3 +5,10 @@ export interface BaseModel {
   updatedBy?: number | null;
   deletedDate?: Date | null;
 }
+
+export interface Pageable<T> {
+  rows: T[];
+  totalRecords: number;
+  page: number;
+  pageSize: number;
+}

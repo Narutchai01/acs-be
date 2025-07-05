@@ -21,6 +21,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Response } from 'express';
 import { NewsFactory } from './news.factory';
 import { QueryNewsDto } from './dto/get-news.dto';
+import { UpdateNewsDto } from './dto/update-news.dto';
 
 interface AuthenticatedRequest extends ExpressRequest {
   user: {
@@ -56,10 +57,20 @@ export class NewsController {
   @Get()
   async getNews(@Res() res: Response, @Query() quey: QueryNewsDto) {
     const news = await this.newsService.getNews(quey);
-    const dtos = this.newsFactory.mapNewsModelsToNewsDtos(news);
+    const dto = news.rows.map((item) =>
+      this.newsFactory.mapNewsModelToNewsDto(item),
+    );
+
+    const data = {
+      rows: dto,
+      totalRecords: news.totalRecords,
+      page: news.page,
+      pageSize: news.pageSize,
+    };
+
     return res.json({
       status: true,
-      data: dtos,
+      data: data,
       error: null,
     });
   }
@@ -82,7 +93,7 @@ export class NewsController {
   async updateNews(
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
-    @Body() body: CreateNewsDto,
+    @Body() body: UpdateNewsDto,
     @Request() req: AuthenticatedRequest,
   ) {
     const IdNumber = Number(id);
