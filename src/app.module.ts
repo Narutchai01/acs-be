@@ -15,6 +15,7 @@ import { SupabaseModule } from './provider/store/supabase/supabase.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { NewsModule } from './modules/news/news.module';
+import { PasswordmanagementModule } from './core/utils/passwordmanagement/passwordmanagement.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { NewsModule } from './modules/news/news.module';
     AuthModule,
     NewsModule,
     CourseModule,
+    PasswordmanagementModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],
