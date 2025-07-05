@@ -5,6 +5,7 @@ import { INewsRepository } from 'src/repositories/news/news.abstract';
 import { SupabaseService } from 'src/provider/store/supabase/supabase.service';
 import { QueryNewsDto } from './dto/get-news.dto';
 import { UpdateNewsDto } from './dto/update-news.dto';
+import { Pageable } from 'src/models';
 
 @Injectable()
 export class NewsService {
@@ -34,8 +35,17 @@ export class NewsService {
     return this.newsRespository.createNews(data);
   }
 
-  async getNews(query: QueryNewsDto): Promise<NewsModel[]> {
-    return this.newsRespository.getNews(query);
+  async getNews(query: QueryNewsDto): Promise<Pageable<NewsModel>> {
+    const [news, count] = await Promise.all([
+      this.newsRespository.getNews(query),
+      this.newsRespository.count(query),
+    ]);
+    return {
+      rows: news,
+      totalRecords: count,
+      page: query.page || 1,
+      pageSize: query.pageSize || 10,
+    };
   }
 
   async getNewsById(id: number): Promise<NewsModel> {
