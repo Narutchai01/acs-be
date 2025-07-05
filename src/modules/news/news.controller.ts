@@ -57,10 +57,20 @@ export class NewsController {
   @Get()
   async getNews(@Res() res: Response, @Query() quey: QueryNewsDto) {
     const news = await this.newsService.getNews(quey);
-    const dtos = this.newsFactory.mapNewsModelsToNewsDtos(news);
+    const dto = news.rows.map((item) =>
+      this.newsFactory.mapNewsModelToNewsDto(item),
+    );
+
+    const data = {
+      rows: dto,
+      totalRecords: news.totalRecords,
+      page: news.page,
+      pageSize: news.pageSize,
+    };
+
     return res.json({
       status: true,
-      data: dtos,
+      data: data,
       error: null,
     });
   }
