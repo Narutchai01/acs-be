@@ -21,6 +21,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Response } from 'express';
 import { NewsFactory } from './news.factory';
 import { QueryNewsDto } from './dto/get-news.dto';
+import { UpdateNewsDto } from './dto/update-news.dto';
 
 interface AuthenticatedRequest extends ExpressRequest {
   user: {
@@ -82,7 +83,7 @@ export class NewsController {
   async updateNews(
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
-    @Body() body: CreateNewsDto,
+    @Body() body: UpdateNewsDto,
     @Request() req: AuthenticatedRequest,
   ) {
     const IdNumber = Number(id);
