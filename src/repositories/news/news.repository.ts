@@ -149,4 +149,31 @@ export class NewsRepository implements INewsRepository {
       }
     }
   }
+
+  async count(query: QueryNewsDto): Promise<number> {
+    try {
+      const { category } = query;
+      const safeCategory = category ?? '';
+      const categories = safeCategory.split(',').map((cat) => cat.trim());
+      const whereClause = {
+        deletedDate: null,
+        ...(safeCategory !== '' && {
+          category: {
+            name: { in: categories },
+          },
+        }),
+      };
+      return this.prisma.news.count({
+        where: whereClause,
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Count news failed:', error.message);
+        throw new Error(`Unable to count news: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to count news: Unknown error occurred');
+      }
+    }
+  }
 }
