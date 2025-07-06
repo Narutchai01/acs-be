@@ -7,6 +7,8 @@ import {
   UpdateCourseModel,
 } from 'src/models/course';
 import { CourseFactory } from './course.factory';
+import { QueryCourseDto } from 'src/modules/course/dto/get-course.dto';
+import calculatePagination from 'src/core/utils/calculatePagination';
 
 @Injectable()
 export class CourseRepository implements ICourseRepository {
@@ -65,9 +67,15 @@ export class CourseRepository implements ICourseRepository {
     }
   }
 
-  async getCourse(): Promise<CourseModel[]> {
+  async getCourse(query: QueryCourseDto): Promise<CourseModel[]> {
     try {
+      const { page, pageSize } = query;
       const course = await this.prisma.course.findMany({
+        where: {
+          deletedDate: null,
+        },
+        take: pageSize,
+        skip: calculatePagination(page, pageSize),
         include: {
           user: true,
         },
@@ -95,7 +103,7 @@ export class CourseRepository implements ICourseRepository {
       const course = await this.prisma.course.findUnique({
         where: {
           id: id,
-          deletedDate: null, // Ensure we only fetch non-deleted courses
+          deletedDate: null,
         },
         include: {
           user: true,
@@ -144,5 +152,13 @@ export class CourseRepository implements ICourseRepository {
         throw new Error('Unable to delete course: Unknown error occurred');
       }
     }
+  }
+
+  count(): Promise<number> {
+    return this.prisma.course.count({
+      where: {
+        deletedDate: null,
+      },
+    });
   }
 }
