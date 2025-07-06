@@ -145,7 +145,7 @@ model Course {
   id           Int         @id @default(autoincrement()) @map("id")
   courseId     String      @map("course_id")
   credits      String      @map("credits")
-  typeCourseId Int?        @map("type_course_id")
+  typeCourseId Int         @map("type_course_id")
   courseNameTh String      @map("course_name_th")
   courseNameEn String      @map("course_name_en")
   courseDetail String      @map("course_detail")
