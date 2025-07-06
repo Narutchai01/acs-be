@@ -17,6 +17,7 @@ export class CourseService {
     const data = {
       courseId: createCourse.courseId,
       courseNameTh: createCourse.courseNameTh,
+      typeCourseId: createCourse.typeCourseId,
       courseNameEn: createCourse.courseNameEn,
       credits: createCourse.credits,
       courseDetail: createCourse.courseDetail,
@@ -64,6 +65,7 @@ export class CourseService {
 
     const updateData = {
       courseId: updateCourse.courseId || existingCourse.courseId,
+      typeCourseId: updateCourse.typeCourseId || existingCourse.typeCourseId,
       courseNameTh: updateCourse.courseNameTh || existingCourse.courseNameTh,
       courseNameEn: updateCourse.courseNameEn || existingCourse.courseNameEn,
       credits: updateCourse.credits || existingCourse.credits,

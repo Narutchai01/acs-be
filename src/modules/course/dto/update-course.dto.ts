@@ -5,6 +5,8 @@ export class UpdateCourseDto extends BaseDto {
   @ApiProperty({ required: false })
   courseId?: string;
   @ApiProperty({ required: false })
+  typeCourseId?: number;
+  @ApiProperty({ required: false })
   courseNameTh?: string;
   @ApiProperty({ required: false })
   courseNameEn?: string;
