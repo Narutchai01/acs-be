@@ -4,7 +4,7 @@ import { UserEntity } from './user.entity';
 export class CourseEntity implements Course {
   id: number;
   courseId: string;
-  typeCourseId: number | null;
+  typeCourseId: number;
   courseNameTh: string;
   courseNameEn: string;
   credits: string;

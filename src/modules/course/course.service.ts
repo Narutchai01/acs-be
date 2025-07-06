@@ -16,6 +16,7 @@ export class CourseService {
   ): Promise<CourseModel> {
     const data = {
       courseId: createCourse.courseId,
+      typeCourseId: createCourse.typeCourseId,
       courseNameTh: createCourse.courseNameTh,
       typeCourseId: createCourse.typeCourseId,
       courseNameEn: createCourse.courseNameEn,
@@ -29,27 +30,17 @@ export class CourseService {
   }
 
   async getCourse(query: QueryCourseDto): Promise<Pageable<CourseModel>> {
-    try {
-      const { page, pageSize } = query;
-      const [rows, count] = await Promise.all([
-        this.courseRepository.getCourse(query),
-        this.courseRepository.count(),
-      ]);
-      return {
-        totalRecords: count,
-        rows: rows,
-        page: page,
-        pageSize: pageSize,
-      };
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error('Get course failed:', error.message);
-        throw new Error(`Unable to get courses: ${error.message}`);
-      } else {
-        console.error('Unknown error:', error);
-        throw new Error('Unable to get courses: Unknown error occurred');
-      }
-    }
+    const { page, pageSize } = query;
+    const [rows, count] = await Promise.all([
+      this.courseRepository.getCourse(query),
+      this.courseRepository.count(),
+    ]);
+    return {
+      totalRecords: count,
+      rows: rows,
+      page: page,
+      pageSize: pageSize,
+    };
   }
 
   async getCourseById(id: number): Promise<CourseModel> {

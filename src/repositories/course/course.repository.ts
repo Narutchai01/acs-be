@@ -87,14 +87,14 @@ export class CourseRepository implements ICourseRepository {
       );
     } catch (error: unknown) {
       if (error instanceof Error) {
-        this.logger.error('get course failed:', error.message);
-        throw new Error(`Unable to get course: ${error.message}`);
+        console.error('Get course failed Repository:', error.message);
+        throw new Error(`Unable to get courses: ${error.message}`);
       } else {
         this.logger.error(
           'Unknown error:',
           error instanceof Error ? error : 'Unknown error',
         );
-        throw new Error('Unable to get course: Unknown error occurred');
+        throw new Error('Unable to get courses: Unknown error occurred');
       }
     }
   }
