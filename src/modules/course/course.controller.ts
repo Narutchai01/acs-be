@@ -38,13 +38,42 @@ export class CourseController {
   ) {
     const result = await this.courseService.createCourse(body, req.user.userId);
     const dto = this.courseFactory.mapCourseModelToCourseDto(result);
-    return res.status(201).json(dto);
+    return res.status(201).json({
+      status: true,
+      data: dto,
+      error: null,
+    });
   }
+
   @Get(':id')
-  async getCourseById(@Res() res: Response, @Param('id') id: number) {
-    const course = await this.courseService.getCourseById(id);
-    const dto = this.courseFactory.mapCourseModelToCourseDto(course);
-    return res.status(200).json(dto);
+  async getCourseById(
+    @Res() res: Response,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    try {
+      const course = await this.courseService.getCourseById(id);
+
+      const dto = this.courseFactory.mapCourseModelToCourseDto(course);
+      return res.status(200).json({
+        status: true,
+        data: dto,
+        error: null,
+      });
+    } catch (error) {
+      console.error('Error fetching course by ID:', error);
+      if (error instanceof Error && error.message.includes('not found')) {
+        return res.status(404).json({
+          status: false,
+          data: null,
+          error: error.message,
+        });
+      }
+      return res.status(500).json({
+        status: false,
+        data: null,
+        error: error instanceof Error ? error.message : 'Server internal error',
+      });
+    }
   }
 
   @UseGuards(JwtAuthGuard)
@@ -66,17 +95,26 @@ export class CourseController {
 
   @Get()
   async getCourse(@Res() res: Response, @Query() query: QueryCourseDto) {
-    const { rows, ...data } = await this.courseService.getCourse(query);
-    const dtos = this.courseFactory.mapCourseModelsToCourseDtos(rows);
-    const dataPagination = {
-      ...data,
-      rows: dtos,
-    };
-    return res.status(200).json({
-      status: true,
-      data: dataPagination,
-      error: null,
-    });
+    try {
+      const { rows, ...data } = await this.courseService.getCourse(query);
+      const dtos = this.courseFactory.mapCourseModelsToCourseDtos(rows);
+      const dataPagination = {
+        ...data,
+        rows: dtos,
+      };
+      return res.status(200).json({
+        status: true,
+        data: dataPagination,
+        error: null,
+      });
+    } catch (error) {
+      console.error('Error fetching courses:', error);
+      return res.status(500).json({
+        status: false,
+        data: null,
+        error: error instanceof Error ? error.message : 'Server internal error',
+      });
+    }
   }
 
   @UseGuards(JwtAuthGuard)

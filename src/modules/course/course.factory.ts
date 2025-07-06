@@ -14,7 +14,9 @@ export class CourseFactory {
     const dto = {
       id: data.id,
       courseId: data.courseId,
-      courseName: data.courseName,
+      courseNameTh: data.courseNameTh,
+      courseNameEn: data.courseNameEn,
+      credits: data.credits,
       courseDetail: data.courseDetail,
       createdDate: data.createdDate,
       updatedDate: data.updatedDate,

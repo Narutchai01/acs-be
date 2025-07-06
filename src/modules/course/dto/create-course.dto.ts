@@ -1,5 +1,7 @@
 export interface CreateCourseDto {
   courseId: string;
-  courseName: string;
+  courseNameTh: string;
+  courseNameEn: string;
+  credits: string;
   courseDetail: string;
 }
