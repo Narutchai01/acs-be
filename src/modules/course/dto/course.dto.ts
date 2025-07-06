@@ -6,7 +6,13 @@ export class CourseDto extends BaseDto {
   courseId: string;
 
   @ApiProperty()
-  courseName: string;
+  courseNameTh: string;
+
+  @ApiProperty()
+  courseNameEn: string;
+
+  @ApiProperty()
+  credits: string;
 
   @ApiProperty()
   courseDetail: string;

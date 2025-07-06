@@ -3,7 +3,9 @@ import { BaseModel } from '.';
 
 export interface CreateCourseModel {
   courseId: string;
-  courseName: string;
+  courseNameTh: string;
+  courseNameEn: string;
+  credits: string;
   courseDetail: string;
   createdBy: number;
   updatedBy: number;
@@ -11,14 +13,18 @@ export interface CreateCourseModel {
 
 export interface UpdateCourseModel extends BaseModel {
   courseId: string;
-  courseName: string;
+  courseNameTh: string;
+  courseNameEn: string;
+  credits: string;
   courseDetail: string;
 }
 
 export interface CourseModel extends BaseModel {
   id: number;
   courseId: string;
-  courseName: string;
+  courseNameTh: string;
+  courseNameEn: string;
+  credits: string;
   courseDetail: string;
   user: UserModel;
 }

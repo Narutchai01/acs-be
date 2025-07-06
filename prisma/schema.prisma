@@ -133,7 +133,9 @@ model News {
 model Course {
   id           Int       @id @default(autoincrement()) @map("id")
   courseId     String    @map("course_id")
-  courseName   String    @map("course_name")
+  credits      String    @map("credits")
+  courseNameTh String    @map("course_name_th")
+  courseNameEn String    @map("course_name_en")
   courseDetail String    @map("course_detail")
   createdDate  DateTime  @default(now()) @map("created_date")
   updatedDate  DateTime  @updatedAt @map("updated_date")

@@ -16,7 +16,9 @@ export class CourseService {
   ): Promise<CourseModel> {
     const data = {
       courseId: createCourse.courseId,
-      courseName: createCourse.courseName,
+      courseNameTh: createCourse.courseNameTh,
+      courseNameEn: createCourse.courseNameEn,
+      credits: createCourse.credits,
       courseDetail: createCourse.courseDetail,
       createdBy: userId,
       updatedBy: userId,
@@ -62,7 +64,9 @@ export class CourseService {
 
     const updateData = {
       courseId: updateCourse.courseId || existingCourse.courseId,
-      courseName: updateCourse.courseName || existingCourse.courseName,
+      courseNameTh: updateCourse.courseNameTh || existingCourse.courseNameTh,
+      courseNameEn: updateCourse.courseNameEn || existingCourse.courseNameEn,
+      credits: updateCourse.credits || existingCourse.credits,
       courseDetail: updateCourse.courseDetail || existingCourse.courseDetail,
       updatedBy: userId,
     };
