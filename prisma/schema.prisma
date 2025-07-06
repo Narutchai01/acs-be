@@ -130,19 +130,32 @@ model News {
   @@map("news")
 }
 
+model TypeCourse {
+  id          Int      @id @default(autoincrement()) @map("id")
+  name        String   @unique @map("name")
+  description String   @map("description")
+  createdDate DateTime @default(now()) @map("created_date")
+  updatedDate DateTime @updatedAt @map("updated_date")
+  Course      Course[]
+
+  @@map("type_courses")
+}
+
 model Course {
-  id           Int       @id @default(autoincrement()) @map("id")
-  courseId     String    @map("course_id")
-  credits      String    @map("credits")
-  courseNameTh String    @map("course_name_th")
-  courseNameEn String    @map("course_name_en")
-  courseDetail String    @map("course_detail")
-  createdDate  DateTime  @default(now()) @map("created_date")
-  updatedDate  DateTime  @updatedAt @map("updated_date")
-  deletedDate  DateTime? @map("deleted_date")
-  createdBy    Int       @map("created_by")
-  updatedBy    Int       @map("updated_by")
-  user         User      @relation(fields: [updatedBy], references: [id])
+  id           Int         @id @default(autoincrement()) @map("id")
+  courseId     String      @map("course_id")
+  credits      String      @map("credits")
+  typeCourseId Int?        @map("type_course_id")
+  courseNameTh String      @map("course_name_th")
+  courseNameEn String      @map("course_name_en")
+  courseDetail String      @map("course_detail")
+  createdDate  DateTime    @default(now()) @map("created_date")
+  updatedDate  DateTime    @updatedAt @map("updated_date")
+  deletedDate  DateTime?   @map("deleted_date")
+  createdBy    Int         @map("created_by")
+  updatedBy    Int         @map("updated_by")
+  user         User        @relation(fields: [updatedBy], references: [id])
+  TypeCourse   TypeCourse? @relation(fields: [typeCourseId], references: [id])
 
   @@map("courses")
 }
