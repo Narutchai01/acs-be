@@ -62,4 +62,12 @@ export class CourseService {
 
     return this.courseRepository.updateCourse(id, updateData);
   }
+
+  async deleteCourse(id: number, userId: number): Promise<CourseModel> {
+    const existingCourse = await this.courseRepository.getCourseById(id);
+    if (!existingCourse) {
+      throw new Error(`Course with ID ${id} not found`);
+    }
+    return await this.courseRepository.deleteCourse(id, userId);
+  }
 }
