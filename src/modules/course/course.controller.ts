@@ -8,6 +8,7 @@ import {
   Res,
   Patch,
   Param,
+  Delete,
 } from '@nestjs/common';
 import { ParseIntPipe } from '@nestjs/common';
 import { Response } from 'express';
@@ -66,5 +67,16 @@ export class CourseController {
     const courses = await this.courseService.getCourse();
     const dtos = this.courseFactory.mapCourseModelsToCourseDtos(courses);
     return res.status(200).json(dtos);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  async deleteCourse(
+    @Param('id', ParseIntPipe) id: number,
+    @Request() req: AuthenticatedRequest,
+    @Res() res: Response,
+  ) {
+    const result = await this.courseService.deleteCourse(id, req.user.userId);
+    return res.status(200).json(result);
   }
 }
