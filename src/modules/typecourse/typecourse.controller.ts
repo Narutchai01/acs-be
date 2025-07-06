@@ -1,4 +1,4 @@
-import { Controller, Get, Res } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { TypecourseService } from './typecourse.service';
 import { TypeCourseFactory } from './typecourse.factory';
 import { Response } from 'express';
@@ -11,15 +11,14 @@ export class TypecourseController {
   ) {}
 
   @Get()
-  async getTypeCourse(@Res() res: Response) {
+  async getTypeCourse() {
     const data = await this.typecourseService.getTypeCourse();
     const dto =
       this.typecourseFactory.mapTypeCourseModelsToTypeCourseDtos(data);
 
-    return res.status(200).json({
-      status: true,
+    return {
+      statusCode: 200,
       data: dto,
-      error: null,
-    });
+    };
   }
 }
