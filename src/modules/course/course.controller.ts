@@ -9,6 +9,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { ParseIntPipe } from '@nestjs/common';
 import { Response } from 'express';
@@ -19,6 +20,7 @@ import { UpdateCourseDto } from './dto/update-course.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AuthenticatedRequest } from '../../models/auth';
 import { CourseFactory } from './course.factory';
+import { QueryCourseDto } from './dto/get-course.dto';
 
 @Controller('course')
 export class CourseController {
@@ -63,10 +65,18 @@ export class CourseController {
   }
 
   @Get()
-  async getCourse(@Res() res: Response) {
-    const courses = await this.courseService.getCourse();
-    const dtos = this.courseFactory.mapCourseModelsToCourseDtos(courses);
-    return res.status(200).json(dtos);
+  async getCourse(@Res() res: Response, @Query() query: QueryCourseDto) {
+    const { rows, ...data } = await this.courseService.getCourse(query);
+    const dtos = this.courseFactory.mapCourseModelsToCourseDtos(rows);
+    const dataPagination = {
+      ...data,
+      rows: dtos,
+    };
+    return res.status(200).json({
+      status: true,
+      data: dataPagination,
+      error: null,
+    });
   }
 
   @UseGuards(JwtAuthGuard)

@@ -3,6 +3,9 @@ import { ICourseRepository } from 'src/repositories/course/course.abstract';
 import { CourseModel } from 'src/models/course';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
+import { QueryCourseDto } from './dto/get-course.dto';
+import { Pageable } from 'src/models';
+
 @Injectable()
 export class CourseService {
   constructor(private courseRepository: ICourseRepository) {}
@@ -22,23 +25,27 @@ export class CourseService {
     return this.courseRepository.createCourse(data);
   }
 
-  async getCourse(): Promise<CourseModel[]> {
+  async getCourse(query: QueryCourseDto): Promise<Pageable<CourseModel>> {
     try {
-      const course = await this.courseRepository.getCourse();
-
-      if (!course || course.length === 0) {
-        console.warn('No course found in the system');
-      }
-
-      return course;
+      const { page, pageSize } = query;
+      const [rows, count] = await Promise.all([
+        this.courseRepository.getCourse(query),
+        this.courseRepository.count(),
+      ]);
+      return {
+        totalRecords: count,
+        rows: rows,
+        page: page,
+        pageSize: pageSize,
+      };
     } catch (error: unknown) {
-      console.error(
-        'Course service: Failed to retrieve course catalog:',
-        error,
-      );
-      throw new Error(
-        'Course catalog is temporarily unavailable. Please try again later.',
-      );
+      if (error instanceof Error) {
+        console.error('Get course failed:', error.message);
+        throw new Error(`Unable to get courses: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to get courses: Unknown error occurred');
+      }
     }
   }
 
