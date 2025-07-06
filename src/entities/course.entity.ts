@@ -23,5 +23,4 @@ export class TypeCourseEntity implements TypeCourse {
   description: string;
   createdDate: Date;
   updatedDate: Date;
-  courses: CourseEntity[];
 }

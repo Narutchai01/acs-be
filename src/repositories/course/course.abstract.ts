@@ -3,6 +3,7 @@ import {
   CourseModel,
   CreateCourseModel,
   UpdateCourseModel,
+  TypeCourseModel,
 } from 'src/models/course';
 import { QueryCourseDto } from 'src/modules/course/dto/get-course.dto';
 
@@ -18,4 +19,5 @@ export abstract class ICourseRepository {
   ): Promise<CourseModel>;
   abstract deleteCourse(id: number, userId: number): Promise<CourseModel>;
   abstract count(): Promise<number>;
+  abstract getTypeCourse(): Promise<TypeCourseModel[]>;
 }

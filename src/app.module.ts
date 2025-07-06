@@ -15,6 +15,7 @@ import { AdminModule } from './modules/admin/admin.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { NewsModule } from './modules/news/news.module';
 import { PasswordModule } from './core/utils/password/password.module';
+import { TypecourseModule } from './modules/typecourse/typecourse.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { PasswordModule } from './core/utils/password/password.module';
     AuthModule,
     NewsModule,
     CourseModule,
+    TypecourseModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],
