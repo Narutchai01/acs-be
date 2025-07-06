@@ -15,5 +15,5 @@ export abstract class ICourseRepository {
     id: number,
     data: UpdateCourseModel,
   ): Promise<CourseModel>;
-  // abstract deleteCourse(id: number, userId: number): Promise<CourseModel>;
+  abstract deleteCourse(id: number, userId: number): Promise<CourseModel>;
 }

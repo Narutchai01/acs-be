@@ -93,7 +93,10 @@ export class CourseRepository implements ICourseRepository {
   async getCourseById(id: number): Promise<CourseModel> {
     try {
       const course = await this.prisma.course.findUnique({
-        where: { id: id },
+        where: {
+          id: id,
+          deletedDate: null, // Ensure we only fetch non-deleted courses
+        },
         include: {
           user: true,
         },
@@ -112,6 +115,33 @@ export class CourseRepository implements ICourseRepository {
           error instanceof Error ? error : 'Unknown error',
         );
         throw new Error('Unable to get course by ID: Unknown error occurred');
+      }
+    }
+  }
+
+  async deleteCourse(id: number, userId: number): Promise<CourseModel> {
+    try {
+      const courseEntity = await this.prisma.course.update({
+        where: { id: id },
+        data: {
+          deletedDate: new Date(),
+          updatedBy: userId,
+        },
+        include: {
+          user: true,
+        },
+      });
+      return this.CourseFactory.mapCourseEntityToCourseModel(courseEntity);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Delete course failed:', error.message);
+        throw new Error(`Unable to delete course: ${error.message}`);
+      } else {
+        this.logger.error(
+          'Unknown error:',
+          error instanceof Error ? error : 'Unknown error',
+        );
+        throw new Error('Unable to delete course: Unknown error occurred');
       }
     }
   }
