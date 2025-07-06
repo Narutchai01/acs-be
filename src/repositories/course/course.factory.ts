@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UserFactory } from '../user/user.factory';
-import { CourseEntity } from 'src/entities/course.entity';
-import { CourseModel } from 'src/models/course';
+import { CourseEntity, TypeCourseEntity } from 'src/entities/course.entity';
+import { CourseModel, TypeCourseModel } from 'src/models/course';
 
 @Injectable()
 export class CourseFactory {
@@ -15,6 +15,7 @@ export class CourseFactory {
     const courseModel = {
       id: data.id,
       courseId: data.courseId,
+      typeCourseId: data.typeCourseId,
       courseNameTh: data.courseNameTh,
       courseNameEn: data.courseNameEn,
       credits: data.credits,
@@ -27,5 +28,27 @@ export class CourseFactory {
     };
 
     return courseModel;
+  }
+
+  mapTypeCourseEntitiesToTypeCourseModels(
+    entities: TypeCourseEntity[],
+  ): TypeCourseModel[] {
+    return entities.map((entity) =>
+      this.mapTypeCourseEntityToTypeCourseModel(entity),
+    );
+  }
+
+  mapTypeCourseEntityToTypeCourseModel(
+    data: TypeCourseEntity,
+  ): TypeCourseModel {
+    const typeCourseModel = {
+      id: data.id,
+      name: data.name,
+      description: data.description,
+      createdDate: data.createdDate,
+      updatedDate: data.updatedDate,
+    };
+
+    return typeCourseModel;
   }
 }

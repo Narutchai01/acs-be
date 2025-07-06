@@ -4,6 +4,7 @@ import { ICourseRepository } from './course.abstract';
 import {
   CourseModel,
   CreateCourseModel,
+  TypeCourseModel,
   UpdateCourseModel,
 } from 'src/models/course';
 import { CourseFactory } from './course.factory';
@@ -160,5 +161,16 @@ export class CourseRepository implements ICourseRepository {
         deletedDate: null,
       },
     });
+  }
+
+  async getTypeCourse(): Promise<TypeCourseModel[]> {
+    const typecourse = await this.prisma.typeCourse.findMany({
+      include: {
+        Course: false,
+      },
+    });
+    return this.CourseFactory.mapTypeCourseEntitiesToTypeCourseModels(
+      typecourse,
+    );
   }
 }
