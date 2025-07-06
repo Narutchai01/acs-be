@@ -29,3 +29,10 @@ export interface CourseModel extends BaseModel {
   courseDetail: string;
   user: UserModel;
 }
+
+export interface TypeCourseModel extends BaseModel {
+  id: number;
+  name: string;
+  description: string;
+  courses: CourseModel[];
+}
