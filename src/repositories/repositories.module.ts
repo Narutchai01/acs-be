@@ -24,6 +24,9 @@ import { ICourseRepository } from './course/course.abstract';
 import { ICurriculumRepository } from './curriculum/curriculum.abstract';
 import { CurriculumRepository } from './curriculum/curriculum.repository';
 import { CurriculumFactory } from './curriculum/curriculum.factory';
+import { IPrevCourseRepository } from './prevcourse/prevcourse.abstract';
+import { PrevCourseFactory } from './prevcourse/prevcourse.factory';
+import { PrevCourseRepository } from './prevcourse/prevcourse.repository';
 
 @Module({
   imports: [PrismaModule],
@@ -60,6 +63,10 @@ import { CurriculumFactory } from './curriculum/curriculum.factory';
       provide: ICurriculumRepository,
       useClass: CurriculumRepository,
     },
+    {
+      provide: IPrevCourseRepository,
+      useClass: PrevCourseRepository,
+    },
     NewsFactory,
     RoleFactory,
     TypeFactory,
@@ -68,6 +75,7 @@ import { CurriculumFactory } from './curriculum/curriculum.factory';
     ExampleFactory,
     CourseFactory,
     CurriculumFactory,
+    PrevCourseFactory,
   ],
   exports: [
     ITypeRepositoty,
@@ -78,6 +86,7 @@ import { CurriculumFactory } from './curriculum/curriculum.factory';
     INewsRepository,
     ICourseRepository,
     ICurriculumRepository,
+    IPrevCourseRepository,
   ],
 })
 export class RepositoriesModule {}

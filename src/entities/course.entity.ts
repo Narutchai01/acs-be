@@ -1,6 +1,7 @@
 import { Course, TypeCourse } from '@prisma/client';
 import { UserEntity } from './user.entity';
 import { CurriculumEntity } from './curriculum.entity';
+import { PrevCourseEntity } from './prevcours.entity';
 
 export class CourseEntity implements Course {
   id: number;
@@ -18,6 +19,8 @@ export class CourseEntity implements Course {
   updatedBy: number;
   user: UserEntity;
   curriculum?: CurriculumEntity | null;
+  PrevCourse: PrevCourseEntity[];
+  PrerequisiteFor: PrevCourseEntity[];
 }
 
 export class TypeCourseEntity implements TypeCourse {
