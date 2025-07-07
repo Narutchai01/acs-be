@@ -1,14 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ICourseRepository } from 'src/repositories/course/course.abstract';
 import { CourseModel } from 'src/models/course';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { QueryCourseDto } from './dto/get-course.dto';
 import { Pageable } from 'src/models';
+import { IPrevCourseRepository } from 'src/repositories/prevcourse/prevcourse.abstract';
 
 @Injectable()
 export class CourseService {
-  constructor(private courseRepository: ICourseRepository) {}
+  constructor(
+    private courseRepository: ICourseRepository,
+    private prevCourseRepository: IPrevCourseRepository,
+  ) {}
 
   async createCourse(
     createCourse: CreateCourseDto,
@@ -26,7 +30,37 @@ export class CourseService {
       updatedBy: userId,
     };
 
-    return this.courseRepository.createCourse(data);
+    const { prerequisites } = createCourse;
+
+    const course = await this.courseRepository.createCourse(data);
+
+    if (!course) {
+      throw new HttpException(
+        'Failed to create course',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    if (prerequisites && prerequisites.length > 0) {
+      const prevCourses = prerequisites.map((prevCourse) => ({
+        courseId: course.id,
+        prevCourseId: prevCourse,
+        createDate: new Date(),
+        updateDate: new Date(),
+        createBy: userId,
+        updateBy: userId,
+        createdBy: userId,
+        updatedBy: userId,
+      }));
+
+      await Promise.all(
+        prevCourses.map((prevCourse) =>
+          this.prevCourseRepository.create(prevCourse),
+        ),
+      );
+    }
+
+    return course;
   }
 
   async getCourse(query: QueryCourseDto): Promise<Pageable<CourseModel>> {

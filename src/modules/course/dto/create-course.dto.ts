@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsArray } from 'class-validator';
 
 export class CreateCourseDto {
   @ApiProperty({
@@ -56,4 +56,7 @@ export class CreateCourseDto {
   @IsNumber()
   @IsNotEmpty()
   readonly curriculumId: number;
+
+  @IsArray()
+  readonly prerequisites?: number[];
 }

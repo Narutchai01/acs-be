@@ -1,7 +1,7 @@
 import { PrevCourse } from '@prisma/client';
 import { CourseEntity } from './course.entity';
 
-export class PrevCourseModel implements PrevCourse {
+export class PrevCourseEntity implements PrevCourse {
   id: number;
   courseId: number;
   prevCourseId: number;
