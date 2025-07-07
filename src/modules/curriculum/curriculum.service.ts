@@ -2,6 +2,7 @@ import { Injectable, Post } from '@nestjs/common';
 import { ICurriculumRepository } from 'src/repositories/curriculum/curriculum.abstract';
 import { CreateCurriculumDto } from './dto/create-curriculum.dto';
 import { CurriculumModel } from 'src/models/curriculum';
+import { Pageable } from 'src/models';
 
 @Injectable()
 export class CurriculumService {
@@ -19,5 +20,18 @@ export class CurriculumService {
       updatedBy: createdBy,
     };
     return this.curriculumRepository.create(newsData);
+  }
+
+  async getCurriculums(): Promise<Pageable<CurriculumModel>> {
+    const [rows, count] = await Promise.all([
+      this.curriculumRepository.getList(),
+      this.curriculumRepository.count(),
+    ]);
+    return {
+      page: 1,
+      pageSize: 10,
+      totalRecords: count,
+      rows: rows,
+    };
   }
 }
