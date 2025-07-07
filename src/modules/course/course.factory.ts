@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { CourseModel } from 'src/models/course';
 import { CourseDto } from 'src/modules/course/dto/course.dto';
+import { CurriculumFactory } from '../curriculum/curriculum.factory';
 
 @Injectable()
 export class CourseFactory {
-  constructor() {}
+  constructor(private curriculumFactory: CurriculumFactory) {}
 
   mapCourseModelsToCourseDtos(data: CourseModel[]): CourseDto[] {
     return data.map((data) => this.mapCourseModelToCourseDto(data));
@@ -22,6 +23,11 @@ export class CourseFactory {
       updatedDate: data.updatedDate,
       createdBy: data.createdBy,
       updatedBy: data.updatedBy,
+      curriculum: data.curriculum
+        ? this.curriculumFactory.mapCurriculumModelToCurriculumDto(
+            data.curriculum,
+          )
+        : null,
     };
 
     return dto;

@@ -21,6 +21,7 @@ export class CourseService {
       courseNameEn: createCourse.courseNameEn,
       credits: createCourse.credits,
       courseDetail: createCourse.courseDetail,
+      curriculumId: createCourse.curriculumId,
       createdBy: userId,
       updatedBy: userId,
     };
