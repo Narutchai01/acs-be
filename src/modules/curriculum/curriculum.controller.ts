@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
@@ -73,6 +74,25 @@ export class CurriculumController {
     return this.curriculumService.updateCurriculum(
       curriculumId,
       updateCurriculumDto,
+      req.user.userId,
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  async deleteCurriculum(
+    @Param('id') id: string,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    const curriculumId = parseInt(id, 10);
+    if (isNaN(curriculumId)) {
+      throw new HttpException(
+        'Invalid curriculum ID format',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    return this.curriculumService.deleteCurriculum(
+      curriculumId,
       req.user.userId,
     );
   }
