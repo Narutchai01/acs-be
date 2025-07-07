@@ -145,7 +145,8 @@ model Course {
   id           Int         @id @default(autoincrement()) @map("id")
   courseId     String      @map("course_id")
   credits      String      @map("credits")
-  typeCourseId Int         @map("type_course_id")
+  curriculumId Int?        @map("curriculum_id")
+  typeCourseId Int?        @map("type_course_id")
   courseNameTh String      @map("course_name_th")
   courseNameEn String      @map("course_name_en")
   courseDetail String      @map("course_detail")
@@ -156,6 +157,7 @@ model Course {
   updatedBy    Int         @map("updated_by")
   user         User        @relation(fields: [updatedBy], references: [id])
   TypeCourse   TypeCourse? @relation(fields: [typeCourseId], references: [id])
+  curriculum   Curriculum? @relation(fields: [curriculumId], references: [id])
 
   @@map("courses")
 }
@@ -179,4 +181,19 @@ model Student {
   user                 User      @relation(fields: [userId], references: [id])
 
   @@map("students")
+}
+
+model Curriculum {
+  id          Int       @id @default(autoincrement()) @map("id")
+  year        String    @map("year")
+  fileUrl     String    @map("file_url")
+  description String    @map("description")
+  createdDate DateTime  @default(now()) @map("created_date")
+  updatedDate DateTime  @updatedAt @map("updated_date")
+  deletedDate DateTime? @map("deleted_date")
+  createdBy   Int       @map("created_by")
+  updatedBy   Int       @map("updated_by")
+  courses     Course[]
+
+  @@map("curriculums")
 }
