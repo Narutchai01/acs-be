@@ -15,4 +15,5 @@ export abstract class ICurriculumRepository {
     curriculumId: number,
     data: UpdateCurriculumModel,
   ): Promise<CurriculumModel>;
+  abstract delete(id: number, updatedBy: number): Promise<CurriculumModel>;
 }

@@ -54,4 +54,11 @@ export class CurriculumService {
 
     return this.curriculumRepository.update(curriculumId, updateData);
   }
+
+  async deleteCurriculum(
+    id: number,
+    updatedBy: number,
+  ): Promise<CurriculumModel> {
+    return this.curriculumRepository.delete(id, updatedBy);
+  }
 }

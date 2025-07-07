@@ -30,6 +30,7 @@ export class CurriculumRepository implements ICurriculumRepository {
 
   async getList(): Promise<CurriculumModel[]> {
     const curriculums = await this.prisma.curriculum.findMany({
+      where: { deletedDate: null },
       include: {
         courses: false,
       },
@@ -40,12 +41,14 @@ export class CurriculumRepository implements ICurriculumRepository {
     );
   }
   async count(): Promise<number> {
-    return this.prisma.curriculum.count();
+    return this.prisma.curriculum.count({
+      where: { deletedDate: null },
+    });
   }
 
   async getById(id: number): Promise<CurriculumModel> {
     const curriculum = await this.prisma.curriculum.findUnique({
-      where: { id },
+      where: { id, deletedDate: null },
       include: {
         courses: false,
       },
@@ -68,12 +71,33 @@ export class CurriculumRepository implements ICurriculumRepository {
     data: UpdateCurriculumModel,
   ): Promise<CurriculumModel> {
     const curriculum = await this.prisma.curriculum.update({
-      where: { id: curriculumId },
+      where: { id: curriculumId, deletedDate: null },
       data,
       include: {
         courses: false,
       },
     });
+
+    return this.curriculumFactory.mapCurriculumEntityToCurriculumModel(
+      curriculum,
+    );
+  }
+
+  async delete(id: number, updatedBy: number): Promise<CurriculumModel> {
+    const curriculum = await this.prisma.curriculum.update({
+      where: { id, deletedDate: null },
+      data: { deletedDate: new Date(), updatedBy },
+      include: {
+        courses: false,
+      },
+    });
+
+    if (!curriculum) {
+      throw new HttpException(
+        `Curriculum with id ${id} not found`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
 
     return this.curriculumFactory.mapCurriculumEntityToCurriculumModel(
       curriculum,
