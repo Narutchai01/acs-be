@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CurriculumModel, CreateCurriculumModel } from 'src/models/curriculum';
 import { CurriculumFactory } from './curriculum.factory';
 import { ICurriculumRepository } from './curriculum.abstract';
@@ -37,5 +37,25 @@ export class CurriculumRepository implements ICurriculumRepository {
   }
   async count(): Promise<number> {
     return this.prisma.curriculum.count();
+  }
+
+  async getById(id: number): Promise<CurriculumModel> {
+    const curriculum = await this.prisma.curriculum.findUnique({
+      where: { id },
+      include: {
+        courses: false,
+      },
+    });
+
+    if (!curriculum) {
+      throw new HttpException(
+        `Curriculum with id ${id} not found`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    return this.curriculumFactory.mapCurriculumEntityToCurriculumModel(
+      curriculum,
+    );
   }
 }

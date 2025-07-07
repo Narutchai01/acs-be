@@ -34,4 +34,8 @@ export class CurriculumService {
       rows: rows,
     };
   }
+
+  async getCurriculumById(id: number): Promise<CurriculumModel> {
+    return this.curriculumRepository.getById(id);
+  }
 }

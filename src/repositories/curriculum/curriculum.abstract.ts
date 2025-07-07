@@ -6,4 +6,5 @@ export abstract class ICurriculumRepository {
   abstract create(data: CreateCurriculumModel): Promise<CurriculumModel>;
   abstract getList(): Promise<CurriculumModel[]>;
   abstract count(): Promise<number>;
+  abstract getById(id: number): Promise<CurriculumModel>;
 }

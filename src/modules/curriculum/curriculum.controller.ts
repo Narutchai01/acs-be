@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { CurriculumService } from './curriculum.service';
 import { CreateCurriculumDto } from './dto/create-curriculum.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -30,5 +40,17 @@ export class CurriculumController {
   @Get()
   async getCurriculums() {
     return this.curriculumService.getCurriculums();
+  }
+
+  @Get(':id')
+  async getCurriculumById(@Param('id') id: string) {
+    const curriculumId = parseInt(id, 10);
+    if (isNaN(curriculumId)) {
+      throw new HttpException(
+        'Invalid curriculum ID format',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    return this.curriculumService.getCurriculumById(curriculumId);
   }
 }
