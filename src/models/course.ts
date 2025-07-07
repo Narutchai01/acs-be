@@ -1,9 +1,10 @@
 import { UserModel } from './user';
 import { BaseModel } from '.';
+import { CurriculumModel } from './curriculum';
 
 export interface CreateCourseModel {
   courseId: string;
-  curriculumId?: number | null;
+  curriculumId: number;
   courseNameTh: string;
   courseNameEn: string;
   typeCourseId: number | null;
@@ -32,6 +33,7 @@ export interface CourseModel extends BaseModel {
   courseNameEn: string;
   credits: string;
   courseDetail: string;
+  curriculum?: CurriculumModel | null;
   user: UserModel;
 }
 

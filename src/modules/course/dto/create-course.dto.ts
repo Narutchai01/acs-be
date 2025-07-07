@@ -52,4 +52,8 @@ export class CreateCourseDto {
   @IsString()
   @IsNotEmpty()
   readonly courseDetail: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  readonly curriculumId: number;
 }
