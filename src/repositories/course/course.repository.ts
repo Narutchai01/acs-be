@@ -26,6 +26,7 @@ export class CourseRepository implements ICourseRepository {
         data,
         include: {
           user: true,
+          curriculum: true,
         },
       });
       return this.CourseFactory.mapCourseEntityToCourseModel(course);

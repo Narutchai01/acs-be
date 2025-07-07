@@ -1,11 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { UserFactory } from '../user/user.factory';
 import { CourseEntity, TypeCourseEntity } from 'src/entities/course.entity';
 import { CourseModel, TypeCourseModel } from 'src/models/course';
+import { CurriculumFactory } from '../curriculum/curriculum.factory';
 
 @Injectable()
 export class CourseFactory {
-  constructor(private userFactory: UserFactory) {}
+  constructor(
+    private userFactory: UserFactory,
+    @Inject(forwardRef(() => CurriculumFactory))
+    private curriculumFactory: CurriculumFactory,
+  ) {}
 
   mapCourseEntitiesToCourseModels(entities: CourseEntity[]): CourseModel[] {
     return entities.map((entity) => this.mapCourseEntityToCourseModel(entity));
@@ -25,6 +30,11 @@ export class CourseFactory {
       createdBy: data.createdBy,
       updatedBy: data.updatedBy,
       user: this.userFactory.mapUserEntityToUserModel(data.user),
+      curriculum: data.curriculum
+        ? this.curriculumFactory.mapCurriculumEntityToCurriculumModel(
+            data.curriculum,
+          )
+        : null,
     };
 
     return courseModel;
