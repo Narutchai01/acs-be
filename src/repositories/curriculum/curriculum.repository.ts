@@ -23,4 +23,19 @@ export class CurriculumRepository implements ICurriculumRepository {
       curriculum,
     );
   }
+
+  async getList(): Promise<CurriculumModel[]> {
+    const curriculums = await this.prisma.curriculum.findMany({
+      include: {
+        courses: false,
+      },
+    });
+
+    return this.curriculumFactory.mapCurriculumEntitiesToCurriculumModels(
+      curriculums,
+    );
+  }
+  async count(): Promise<number> {
+    return this.prisma.curriculum.count();
+  }
 }
