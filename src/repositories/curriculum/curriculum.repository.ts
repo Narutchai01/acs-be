@@ -1,5 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CurriculumModel, CreateCurriculumModel } from 'src/models/curriculum';
+import {
+  CurriculumModel,
+  CreateCurriculumModel,
+  UpdateCurriculumModel,
+} from 'src/models/curriculum';
 import { CurriculumFactory } from './curriculum.factory';
 import { ICurriculumRepository } from './curriculum.abstract';
 import { PrismaService } from 'src/provider/database/prisma/prisma.service';
@@ -53,6 +57,23 @@ export class CurriculumRepository implements ICurriculumRepository {
         HttpStatus.NOT_FOUND,
       );
     }
+
+    return this.curriculumFactory.mapCurriculumEntityToCurriculumModel(
+      curriculum,
+    );
+  }
+
+  async update(
+    curriculumId: number,
+    data: UpdateCurriculumModel,
+  ): Promise<CurriculumModel> {
+    const curriculum = await this.prisma.curriculum.update({
+      where: { id: curriculumId },
+      data,
+      include: {
+        courses: false,
+      },
+    });
 
     return this.curriculumFactory.mapCurriculumEntityToCurriculumModel(
       curriculum,

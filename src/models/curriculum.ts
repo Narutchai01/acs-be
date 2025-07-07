@@ -20,3 +20,10 @@ export interface CurriculumModel {
   updatedBy: number;
   courses: CourseModel[];
 }
+
+export interface UpdateCurriculumModel {
+  year: string;
+  fileUrl: string;
+  description: string;
+  updatedBy: number;
+}
