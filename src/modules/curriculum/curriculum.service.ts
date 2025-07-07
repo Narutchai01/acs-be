@@ -3,6 +3,7 @@ import { ICurriculumRepository } from 'src/repositories/curriculum/curriculum.ab
 import { CreateCurriculumDto } from './dto/create-curriculum.dto';
 import { CurriculumModel } from 'src/models/curriculum';
 import { Pageable } from 'src/models';
+import { UpdateCurriculumDto } from './dto/update-curriculum.dto';
 
 @Injectable()
 export class CurriculumService {
@@ -37,5 +38,20 @@ export class CurriculumService {
 
   async getCurriculumById(id: number): Promise<CurriculumModel> {
     return this.curriculumRepository.getById(id);
+  }
+
+  async updateCurriculum(
+    curriculumId: number,
+    data: UpdateCurriculumDto,
+    updatedBy: number,
+  ): Promise<CurriculumModel> {
+    const updateData = {
+      year: data.year,
+      fileUrl: data.fileUrl,
+      description: data.description,
+      updatedBy,
+    };
+
+    return this.curriculumRepository.update(curriculumId, updateData);
   }
 }
