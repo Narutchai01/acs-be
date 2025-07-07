@@ -105,7 +105,6 @@ model ListType {
   type        Type     @relation(fields: [typeId], references: [id])
   createdDate DateTime @default(now()) @map("created_at")
   updatedDate DateTime @updatedAt @map("updated_at")
-  // News      News[]
   News        News[]
 
   @@map("list_types")
@@ -142,24 +141,41 @@ model TypeCourse {
 }
 
 model Course {
-  id           Int         @id @default(autoincrement()) @map("id")
-  courseId     String      @map("course_id")
-  credits      String      @map("credits")
-  curriculumId Int?        @map("curriculum_id")
-  typeCourseId Int?        @map("type_course_id")
-  courseNameTh String      @map("course_name_th")
-  courseNameEn String      @map("course_name_en")
-  courseDetail String      @map("course_detail")
-  createdDate  DateTime    @default(now()) @map("created_date")
-  updatedDate  DateTime    @updatedAt @map("updated_date")
-  deletedDate  DateTime?   @map("deleted_date")
-  createdBy    Int         @map("created_by")
-  updatedBy    Int         @map("updated_by")
-  user         User        @relation(fields: [updatedBy], references: [id])
-  TypeCourse   TypeCourse? @relation(fields: [typeCourseId], references: [id])
-  curriculum   Curriculum? @relation(fields: [curriculumId], references: [id])
+  id              Int          @id @default(autoincrement()) @map("id")
+  courseId        String       @map("course_id")
+  credits         String       @map("credits")
+  curriculumId    Int?         @map("curriculum_id")
+  typeCourseId    Int?         @map("type_course_id")
+  courseNameTh    String       @map("course_name_th")
+  courseNameEn    String       @map("course_name_en")
+  courseDetail    String       @map("course_detail")
+  createdDate     DateTime     @default(now()) @map("created_date")
+  updatedDate     DateTime     @updatedAt @map("updated_date")
+  deletedDate     DateTime?    @map("deleted_date")
+  createdBy       Int          @map("created_by")
+  updatedBy       Int          @map("updated_by")
+  user            User         @relation(fields: [updatedBy], references: [id])
+  TypeCourse      TypeCourse?  @relation(fields: [typeCourseId], references: [id])
+  curriculum      Curriculum?  @relation(fields: [curriculumId], references: [id])
+  PrevCourse      PrevCourse[]
+  PrerequisiteFor PrevCourse[] @relation("PrevCourseRelation")
 
   @@map("courses")
+}
+
+model PrevCourse {
+  id           Int       @id @default(autoincrement()) @map("id")
+  courseId     Int       @map("course_id")
+  prevCourseId Int       @map("prev_course_id")
+  createdDate  DateTime  @default(now()) @map("created_date")
+  updatedDate  DateTime  @updatedAt @map("updated_date")
+  deletedDate  DateTime? @map("deleted_date")
+  createdBy    Int       @map("created_by")
+  updatedBy    Int       @map("updated_by")
+  PrevCourse   Course    @relation("PrevCourseRelation", fields: [prevCourseId], references: [id])
+  Course       Course    @relation(fields: [courseId], references: [id])
+
+  @@map("prev_courses")
 }
 
 model Student {
