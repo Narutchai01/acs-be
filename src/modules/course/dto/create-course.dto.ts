@@ -1,12 +1,3 @@
-<<<<<<< Updated upstream
-export interface CreateCourseDto {
-  courseId: string;
-  typeCourseId: number;
-  courseNameTh: string;
-  courseNameEn: string;
-  credits: string;
-  courseDetail: string;
-=======
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
 
@@ -61,5 +52,4 @@ export class CreateCourseDto {
   @IsString()
   @IsNotEmpty()
   readonly courseDetail: string;
->>>>>>> Stashed changes
 }

@@ -14,7 +14,7 @@ export interface CreateCourseModel {
 
 export interface UpdateCourseModel extends BaseModel {
   courseId: string;
-  typeCourseId: number | null;
+  typeCourseId: number;
   courseNameTh: string;
   courseNameEn: string;
   credits: string;
