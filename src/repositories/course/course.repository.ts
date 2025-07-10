@@ -27,6 +27,38 @@ export class CourseRepository implements ICourseRepository {
         include: {
           user: true,
           curriculum: true,
+          PrerequisiteFor: {
+            include: {
+              PrevCourse: {
+                include: {
+                  user: true,
+                  curriculum: true,
+                },
+              },
+              Course: {
+                include: {
+                  user: true,
+                  curriculum: true,
+                },
+              },
+            },
+          },
+          PrevCourse: {
+            include: {
+              PrevCourse: {
+                include: {
+                  user: true,
+                  curriculum: true,
+                },
+              },
+              Course: {
+                include: {
+                  user: true,
+                  curriculum: true,
+                },
+              },
+            },
+          },
         },
       });
       return this.CourseFactory.mapCourseEntityToCourseModel(
@@ -113,6 +145,39 @@ export class CourseRepository implements ICourseRepository {
         },
         include: {
           user: true,
+          curriculum: true,
+          PrerequisiteFor: {
+            include: {
+              PrevCourse: {
+                include: {
+                  user: true,
+                  curriculum: true,
+                },
+              },
+              Course: {
+                include: {
+                  user: true,
+                  curriculum: true,
+                },
+              },
+            },
+          },
+          PrevCourse: {
+            include: {
+              PrevCourse: {
+                include: {
+                  user: true,
+                  curriculum: true,
+                },
+              },
+              Course: {
+                include: {
+                  user: true,
+                  curriculum: true,
+                },
+              },
+            },
+          },
         },
       });
       if (!course) {

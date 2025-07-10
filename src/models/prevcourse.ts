@@ -1,13 +1,11 @@
 import { CourseModel } from './course';
 import { BaseModel } from '.';
 
-export interface CreatePrevCourseModel extends BaseModel {
+export interface CreatePrevCourseModel {
   courseId: number;
   prevCourseId: number;
-  createDate: Date;
-  updateDate: Date;
-  createBy: number;
-  updateBy: number;
+  createdBy: number;
+  updatedBy: number;
 }
 
 export interface PrevCourseModel extends BaseModel {

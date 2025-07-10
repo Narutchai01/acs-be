@@ -3,6 +3,7 @@ import { IPrevCourseRepository } from './prevcourse.abstract';
 import { PrevCourseFactory } from './prevcourse.factory';
 import { PrismaService } from 'src/provider/database/prisma/prisma.service';
 import { CreatePrevCourseModel, PrevCourseModel } from 'src/models/prevcourse';
+import { PrevCourseEntity } from 'src/entities/prevcours.entity';
 
 @Injectable()
 export class PrevCourseRepository implements IPrevCourseRepository {
@@ -11,44 +12,33 @@ export class PrevCourseRepository implements IPrevCourseRepository {
     private prisma: PrismaService,
   ) {}
 
-  async create(data: CreatePrevCourseModel): Promise<PrevCourseModel> {
-    const prevCourse = await this.prisma.prevCourse.create({
-      data: {
-        ...data,
-        createdBy: data.createdBy ?? 0,
-        updatedBy: data.updatedBy ?? 0,
-      },
-      include: {
-        PrevCourse: {
-          include: {
-            user: true,
+  async create(data: CreatePrevCourseModel[]): Promise<PrevCourseModel[]> {
+    // Create records one by one with proper relations
+    const createdRecords: PrevCourseEntity[] = [];
+
+    for (const item of data) {
+      const createdRecord = await this.prisma.prevCourse.create({
+        data: item,
+        include: {
+          Course: {
+            include: {
+              user: true,
+              curriculum: true,
+            },
+          },
+          PrevCourse: {
+            include: {
+              user: true,
+              curriculum: true,
+            },
           },
         },
-        Course: {
-          include: {
-            user: true,
-          },
-        },
-      },
-    });
+      });
+      createdRecords.push(createdRecord as PrevCourseEntity);
+    }
 
-    // Transform the Prisma result to match PrevCourseEntity structure
-    const prevCourseEntity = {
-      ...prevCourse,
-      PrevCourse: {
-        ...prevCourse.PrevCourse,
-        PrevCourse: [],
-        PrerequisiteFor: [],
-      },
-      Course: {
-        ...prevCourse.Course,
-        PrevCourse: [],
-        PrerequisiteFor: [],
-      },
-    };
-
-    return this.prevCourseFactory.mapPrevCourseEntityToPrevCourseModel(
-      prevCourseEntity,
+    return this.prevCourseFactory.mapPrevCourseEntitiseToPrevCourseModels(
+      createdRecords,
     );
   }
 }
