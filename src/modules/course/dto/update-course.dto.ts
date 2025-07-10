@@ -14,4 +14,6 @@ export class UpdateCourseDto extends BaseDto {
   credits?: string;
   @ApiProperty({ required: false })
   courseDetail?: string;
+  @ApiProperty({ required: false })
+  curriculumId?: number;
 }

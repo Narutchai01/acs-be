@@ -7,6 +7,8 @@ import {
   Query,
   UseGuards,
   Param,
+  Patch,
+  HttpStatus,
 } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
@@ -14,6 +16,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AuthenticatedRequest } from '../../models/auth';
 import { QueryCourseDto } from './dto/get-course.dto';
 import { CourseFactory } from './course.factory';
+import { UpdateCourseDto } from './dto/update-course.dto';
 
 @Controller('course')
 export class CourseController {
@@ -38,10 +41,14 @@ export class CourseController {
 
   @Get()
   async getCourseList(@Query() query: QueryCourseDto) {
-    const courses = await this.courseService.getList(query);
+    const { page, pageSize } = query;
+    const { rows, totalRecords } = await this.courseService.getList(query);
+    const dto = this.courseFactory.mapCourseModelsToCourseDtos(rows);
+
+    const data = { page, totalRecords, pageSize, dto };
     return {
       statusCode: 200,
-      data: courses,
+      data: data,
     };
   }
 
@@ -52,6 +59,25 @@ export class CourseController {
     return {
       statusCode: 200,
       data: dto,
+    };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id')
+  async updateCourse(
+    @Param('id') id: number,
+    @Body() body: UpdateCourseDto,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    const IdNumber = Number(id);
+    const result = await this.courseService.updateCourse(
+      body,
+      IdNumber,
+      req.user.userId,
+    );
+    return {
+      statusCode: HttpStatus.OK,
+      data: result,
     };
   }
 }
