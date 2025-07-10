@@ -25,6 +25,7 @@ export class CurriculumFactory {
       id: data.id,
       year: data.year,
       fileUrl: data.fileUrl,
+      imageUrl: data.imageUrl,
       description: data.description,
       createdDate: data.createdDate,
       updatedDate: data.updatedDate,
