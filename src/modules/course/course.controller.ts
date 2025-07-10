@@ -9,6 +9,7 @@ import {
   Param,
   Patch,
   HttpStatus,
+  Delete,
 } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
@@ -75,6 +76,19 @@ export class CourseController {
       IdNumber,
       req.user.userId,
     );
+    return {
+      statusCode: HttpStatus.OK,
+      data: result,
+    };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  async deleteCourse(
+    @Param('id') id: number,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    const result = await this.courseService.deleteCoruse(id, req.user.userId);
     return {
       statusCode: HttpStatus.OK,
       data: result,
