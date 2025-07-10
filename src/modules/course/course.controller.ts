@@ -33,10 +33,10 @@ export class CourseController {
     @Request() req: AuthenticatedRequest,
   ) {
     const result = await this.courseService.createCourse(body, req.user.userId);
-    // const dto = this.courseFactory.mapCourseModelToCourseDto(result);
+    const dto = this.courseFactory.mapCourseModelToCourseDto(result);
     return {
-      statusCode: 201,
-      data: result,
+      statusCode: HttpStatus.CREATED,
+      data: dto,
     };
   }
 
@@ -48,7 +48,7 @@ export class CourseController {
 
     const data = { page, totalRecords, pageSize, dto };
     return {
-      statusCode: 200,
+      statusCode: HttpStatus.OK,
       data: data,
     };
   }
@@ -58,7 +58,7 @@ export class CourseController {
     const course = await this.courseService.getById(id);
     const dto = this.courseFactory.mapCourseModelToCourseDto(course);
     return {
-      statusCode: 200,
+      statusCode: HttpStatus.OK,
       data: dto,
     };
   }
