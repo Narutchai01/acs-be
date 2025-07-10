@@ -20,10 +20,6 @@ export class CourseFactory {
   }
 
   mapCourseEntityToCourseModel(data: CourseEntity): CourseModel {
-    if (!data.user) {
-      throw new Error('Course entity must include user data for mapping');
-    }
-
     const courseModel: CourseModel = {
       id: data.id,
       courseId: data.courseId,
@@ -36,7 +32,9 @@ export class CourseFactory {
       updatedDate: data.updatedDate,
       createdBy: data.createdBy,
       updatedBy: data.updatedBy,
-      user: this.userFactory.mapUserEntityToUserModel(data.user),
+      user: data.user
+        ? this.userFactory.mapUserEntityToUserModel(data.user)
+        : null,
       curriculum: data.curriculum
         ? this.curriculumFactory.mapCurriculumEntityToCurriculumModel(
             data.curriculum,

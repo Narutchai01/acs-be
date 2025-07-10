@@ -23,4 +23,7 @@ export class CourseDto extends BaseDto {
 
   @ApiProperty()
   curriculum: CurriculumDto | null;
+
+  @ApiProperty()
+  preCourses: CourseDto[] | [];
 }

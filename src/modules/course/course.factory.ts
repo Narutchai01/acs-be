@@ -12,7 +12,7 @@ export class CourseFactory {
   }
 
   mapCourseModelToCourseDto(data: CourseModel): CourseDto {
-    const dto = {
+    const dto: CourseDto = {
       id: data.id,
       courseId: data.courseId,
       courseNameTh: data.courseNameTh,
@@ -28,6 +28,14 @@ export class CourseFactory {
             data.curriculum,
           )
         : null,
+      preCourses:
+        data.PrevCourse && data.PrevCourse.length > 0
+          ? data.PrevCourse.map((prevcourse) =>
+              prevcourse.PrevCourse
+                ? this.mapCourseModelToCourseDto(prevcourse.PrevCourse)
+                : null,
+            ).filter((course): course is CourseDto => course !== null)
+          : [],
     };
 
     return dto;
