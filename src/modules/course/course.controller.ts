@@ -76,9 +76,10 @@ export class CourseController {
       IdNumber,
       req.user.userId,
     );
+    const dto = this.courseFactory.mapCourseModelToCourseDto(result);
     return {
       statusCode: HttpStatus.OK,
-      data: result,
+      data: dto,
     };
   }
 
@@ -89,9 +90,10 @@ export class CourseController {
     @Request() req: AuthenticatedRequest,
   ) {
     const result = await this.courseService.deleteCoruse(id, req.user.userId);
+    const dto = this.courseFactory.mapCourseModelToCourseDto(result);
     return {
       statusCode: HttpStatus.OK,
-      data: result,
+      data: dto,
     };
   }
 }
