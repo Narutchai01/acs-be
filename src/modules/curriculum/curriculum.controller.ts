@@ -39,6 +39,9 @@ export class CurriculumController {
     @Req() req: AuthenticatedRequest,
     @UploadedFile() file: Express.Multer.File,
   ) {
+    if (!file) {
+      throw new HttpException('Image file is required', HttpStatus.BAD_REQUEST);
+    }
     return this.curriculumService.createCurriculum(
       createCurriculumDto,
       req.user.userId,
