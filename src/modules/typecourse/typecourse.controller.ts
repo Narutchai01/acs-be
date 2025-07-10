@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, HttpStatus } from '@nestjs/common';
 import { TypecourseService } from './typecourse.service';
 import { TypeCourseFactory } from './typecourse.factory';
 import { Response } from 'express';
@@ -17,7 +17,7 @@ export class TypecourseController {
       this.typecourseFactory.mapTypeCourseModelsToTypeCourseDtos(data);
 
     return {
-      statusCode: 200,
+      statusCode: HttpStatus.OK,
       data: dto,
     };
   }

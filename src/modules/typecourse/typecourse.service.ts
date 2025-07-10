@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { ICourseRepository } from 'src/repositories/course/course.abstract';
+import { ITypeCourseRepository } from 'src/repositories/typecourse/typecourse.abstract';
 
 @Injectable()
 export class TypecourseService {
-  constructor(private courseRepository: ICourseRepository) {}
+  constructor(private typeCourseRepository: ITypeCourseRepository) {}
 
   async getTypeCourse() {
-    return this.courseRepository.getTypeCourse();
+    return this.typeCourseRepository.getTypeCourse();
   }
 }

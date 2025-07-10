@@ -4,12 +4,12 @@ import { ICourseRepository } from './course.abstract';
 import {
   CourseModel,
   CreateCourseModel,
-  TypeCourseModel,
   UpdateCourseModel,
 } from 'src/models/course';
 import { CourseFactory } from './course.factory';
 import { QueryCourseDto } from 'src/modules/course/dto/get-course.dto';
 import calculatePagination from 'src/core/utils/calculatePagination';
+import { CourseEntity } from 'src/entities/course.entity';
 
 @Injectable()
 export class CourseRepository implements ICourseRepository {
@@ -29,7 +29,9 @@ export class CourseRepository implements ICourseRepository {
           curriculum: true,
         },
       });
-      return this.CourseFactory.mapCourseEntityToCourseModel(course);
+      return this.CourseFactory.mapCourseEntityToCourseModel(
+        course as CourseEntity,
+      );
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.log('create course failed:', error.message);
@@ -57,7 +59,9 @@ export class CourseRepository implements ICourseRepository {
           user: true,
         },
       });
-      return this.CourseFactory.mapCourseEntityToCourseModel(courseEntity);
+      return this.CourseFactory.mapCourseEntityToCourseModel(
+        courseEntity as CourseEntity,
+      );
     } catch (error) {
       if (error instanceof Error) {
         console.error('Update course failed:', error.message);
@@ -84,7 +88,7 @@ export class CourseRepository implements ICourseRepository {
       });
 
       return course.map((course) =>
-        this.CourseFactory.mapCourseEntityToCourseModel(course),
+        this.CourseFactory.mapCourseEntityToCourseModel(course as CourseEntity),
       );
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -114,7 +118,9 @@ export class CourseRepository implements ICourseRepository {
       if (!course) {
         throw new Error('Course not found');
       }
-      return this.CourseFactory.mapCourseEntityToCourseModel(course);
+      return this.CourseFactory.mapCourseEntityToCourseModel(
+        course as CourseEntity,
+      );
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error('Get course by ID failed:', error.message);
@@ -141,7 +147,9 @@ export class CourseRepository implements ICourseRepository {
           user: true,
         },
       });
-      return this.CourseFactory.mapCourseEntityToCourseModel(courseEntity);
+      return this.CourseFactory.mapCourseEntityToCourseModel(
+        courseEntity as CourseEntity,
+      );
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error('Delete course failed:', error.message);
@@ -162,16 +170,5 @@ export class CourseRepository implements ICourseRepository {
         deletedDate: null,
       },
     });
-  }
-
-  async getTypeCourse(): Promise<TypeCourseModel[]> {
-    const typecourse = await this.prisma.typeCourse.findMany({
-      include: {
-        Course: false,
-      },
-    });
-    return this.CourseFactory.mapTypeCourseEntitiesToTypeCourseModels(
-      typecourse,
-    );
   }
 }
