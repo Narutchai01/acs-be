@@ -5,6 +5,7 @@ export class CurriculumEntity implements Curriculum {
   id: number;
   year: string;
   fileUrl: string;
+  imageUrl: string;
   description: string;
   createdDate: Date;
   updatedDate: Date;
