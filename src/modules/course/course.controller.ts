@@ -46,7 +46,7 @@ export class CourseController {
     const { rows, totalRecords } = await this.courseService.getList(query);
     const dto = this.courseFactory.mapCourseModelsToCourseDtos(rows);
 
-    const data = { page, totalRecords, pageSize, dto };
+    const data = { page, totalRecords, pageSize, rows: dto };
     return {
       statusCode: HttpStatus.OK,
       data: data,
