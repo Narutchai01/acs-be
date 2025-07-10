@@ -12,6 +12,6 @@ export interface PrevCourseModel extends BaseModel {
   id: number;
   courseId: number;
   prevCourseId: number;
-  PrevCourse: CourseModel;
-  Course: CourseModel;
+  PrevCourse?: CourseModel | null;
+  Course?: CourseModel | null;
 }

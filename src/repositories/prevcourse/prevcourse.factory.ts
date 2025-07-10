@@ -30,10 +30,12 @@ export class PrevCourseFactory {
       deletedDate: data.deletedDate,
       createdBy: data.createdBy,
       updatedBy: data.updatedBy,
-      PrevCourse: this.courseFactory.mapCourseEntityToCourseModel(
-        data.PrevCourse,
-      ),
-      Course: this.courseFactory.mapCourseEntityToCourseModel(data.Course),
+      PrevCourse: data.PrevCourse
+        ? this.courseFactory.mapCourseEntityToCourseModel(data.PrevCourse)
+        : null,
+      Course: data.Course
+        ? this.courseFactory.mapCourseEntityToCourseModel(data.Course)
+        : null,
     };
   }
 }

@@ -3,6 +3,7 @@ import { ICourseRepository } from 'src/repositories/course/course.abstract';
 import { CourseModel } from 'src/models/course';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { IPrevCourseRepository } from 'src/repositories/prevcourse/prevcourse.abstract';
+import { QueryCourseDto } from './dto/get-course.dto';
 
 @Injectable()
 export class CourseService {
@@ -81,6 +82,19 @@ export class CourseService {
       console.error('Get course by ID failed:', error);
       throw new HttpException(
         'Failed to get course by ID',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async getList(query: QueryCourseDto): Promise<CourseModel[]> {
+    try {
+      const courses = await this.courseRepository.getCourse(query);
+      return courses;
+    } catch (error) {
+      console.error('Get course list failed:', error);
+      throw new HttpException(
+        'Failed to get course list',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

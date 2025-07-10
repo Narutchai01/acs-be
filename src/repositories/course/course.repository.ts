@@ -25,38 +25,10 @@ export class CourseRepository implements ICourseRepository {
       const course = await this.prisma.course.create({
         data,
         include: {
-          user: true,
           curriculum: true,
-          PrerequisiteFor: {
-            include: {
-              PrevCourse: {
-                include: {
-                  user: true,
-                  curriculum: true,
-                },
-              },
-              Course: {
-                include: {
-                  user: true,
-                  curriculum: true,
-                },
-              },
-            },
-          },
           PrevCourse: {
             include: {
-              PrevCourse: {
-                include: {
-                  user: true,
-                  curriculum: true,
-                },
-              },
-              Course: {
-                include: {
-                  user: true,
-                  curriculum: true,
-                },
-              },
+              PrevCourse: true,
             },
           },
         },
@@ -88,7 +60,12 @@ export class CourseRepository implements ICourseRepository {
         where: { id: id },
         data: updateData,
         include: {
-          user: true,
+          curriculum: true,
+          PrevCourse: {
+            include: {
+              PrevCourse: true,
+            },
+          },
         },
       });
       return this.CourseFactory.mapCourseEntityToCourseModel(
@@ -115,7 +92,12 @@ export class CourseRepository implements ICourseRepository {
         take: pageSize,
         skip: calculatePagination(page, pageSize),
         include: {
-          user: true,
+          curriculum: true,
+          PrevCourse: {
+            include: {
+              PrevCourse: true,
+            },
+          },
         },
       });
 
@@ -144,38 +126,10 @@ export class CourseRepository implements ICourseRepository {
           deletedDate: null,
         },
         include: {
-          user: true,
           curriculum: true,
-          PrerequisiteFor: {
-            include: {
-              PrevCourse: {
-                include: {
-                  user: true,
-                  curriculum: true,
-                },
-              },
-              Course: {
-                include: {
-                  user: true,
-                  curriculum: true,
-                },
-              },
-            },
-          },
           PrevCourse: {
             include: {
-              PrevCourse: {
-                include: {
-                  user: true,
-                  curriculum: true,
-                },
-              },
-              Course: {
-                include: {
-                  user: true,
-                  curriculum: true,
-                },
-              },
+              PrevCourse: true,
             },
           },
         },
