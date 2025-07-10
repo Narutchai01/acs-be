@@ -3,5 +3,5 @@ import { CreatePrevCourseModel, PrevCourseModel } from 'src/models/prevcourse';
 
 @Injectable()
 export abstract class IPrevCourseRepository {
-  abstract create(data: CreatePrevCourseModel): Promise<PrevCourseModel>;
+  abstract create(data: CreatePrevCourseModel[]): Promise<PrevCourseModel[]>;
 }

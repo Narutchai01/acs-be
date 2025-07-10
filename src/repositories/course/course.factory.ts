@@ -3,6 +3,7 @@ import { UserFactory } from '../user/user.factory';
 import { CourseEntity, TypeCourseEntity } from 'src/entities/course.entity';
 import { CourseModel, TypeCourseModel } from 'src/models/course';
 import { CurriculumFactory } from '../curriculum/curriculum.factory';
+import { PrevCourseFactory } from '../prevcourse/prevcourse.factory';
 
 @Injectable()
 export class CourseFactory {
@@ -10,6 +11,8 @@ export class CourseFactory {
     private userFactory: UserFactory,
     @Inject(forwardRef(() => CurriculumFactory))
     private curriculumFactory: CurriculumFactory,
+    @Inject(forwardRef(() => PrevCourseFactory))
+    private prevCourseFactory: PrevCourseFactory,
   ) {}
 
   mapCourseEntitiesToCourseModels(entities: CourseEntity[]): CourseModel[] {
@@ -17,7 +20,11 @@ export class CourseFactory {
   }
 
   mapCourseEntityToCourseModel(data: CourseEntity): CourseModel {
-    const courseModel = {
+    if (!data.user) {
+      throw new Error('Course entity must include user data for mapping');
+    }
+
+    const courseModel: CourseModel = {
       id: data.id,
       courseId: data.courseId,
       typeCourseId: data.typeCourseId,
@@ -35,6 +42,16 @@ export class CourseFactory {
             data.curriculum,
           )
         : null,
+      PrevCourse: data.PrevCourse
+        ? this.prevCourseFactory.mapPrevCourseEntitiseToPrevCourseModels(
+            data.PrevCourse,
+          )
+        : [],
+      PrereqisiteFor: data.PrerequisiteFor
+        ? this.prevCourseFactory.mapPrevCourseEntitiseToPrevCourseModels(
+            data.PrerequisiteFor,
+          )
+        : [],
     };
 
     return courseModel;

@@ -1,6 +1,7 @@
 import { UserModel } from './user';
 import { BaseModel } from '.';
 import { CurriculumModel } from './curriculum';
+import { PrevCourseModel } from './prevcourse';
 
 export interface CreateCourseModel {
   courseId: string;
@@ -34,7 +35,9 @@ export interface CourseModel extends BaseModel {
   credits: string;
   courseDetail: string;
   curriculum?: CurriculumModel | null;
-  user: UserModel;
+  user?: UserModel | null;
+  PrevCourse: PrevCourseModel[];
+  PrereqisiteFor: PrevCourseModel[];
 }
 
 export interface TypeCourseModel extends BaseModel {

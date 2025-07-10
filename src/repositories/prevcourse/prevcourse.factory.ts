@@ -1,11 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { PrevCourseEntity } from 'src/entities/prevcours.entity';
 import { PrevCourseModel } from 'src/models/prevcourse';
 import { CourseFactory } from '../course/course.factory';
 
 @Injectable()
 export class PrevCourseFactory {
-  constructor(private courseFactory: CourseFactory) {}
+  constructor(
+    @Inject(forwardRef(() => CourseFactory))
+    private courseFactory: CourseFactory,
+  ) {}
 
   mapPrevCourseEntitiseToPrevCourseModels(
     data: PrevCourseEntity[],
