@@ -9,8 +9,11 @@ import {
   Patch,
   Post,
   Req,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { CurriculumService } from './curriculum.service';
 import { CreateCurriculumDto } from './dto/create-curriculum.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -30,13 +33,16 @@ export class CurriculumController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
+  @UseInterceptors(FileInterceptor('image'))
   async createCurriculum(
     @Body() createCurriculumDto: CreateCurriculumDto,
     @Req() req: AuthenticatedRequest,
+    @UploadedFile() file: Express.Multer.File,
   ) {
     return this.curriculumService.createCurriculum(
       createCurriculumDto,
       req.user.userId,
+      file,
     );
   }
 
@@ -59,9 +65,11 @@ export class CurriculumController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
+  @UseInterceptors(FileInterceptor('image'))
   async updateCurriculum(
     @Param('id') id: string,
     @Body() updateCurriculumDto: UpdateCurriculumDto,
+    @UploadedFile() file: Express.Multer.File,
     @Req() req: AuthenticatedRequest,
   ) {
     const curriculumId = parseInt(id, 10);
@@ -75,6 +83,7 @@ export class CurriculumController {
       curriculumId,
       updateCurriculumDto,
       req.user.userId,
+      file,
     );
   }
 
