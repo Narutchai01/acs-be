@@ -17,5 +17,5 @@ export abstract class ICourseRepository {
     data: UpdateCourseModel,
   ): Promise<CourseModel>;
   abstract deleteCourse(id: number, userId: number): Promise<CourseModel>;
-  abstract count(): Promise<number>;
+  abstract count(query: QueryCourseDto): Promise<number>;
 }

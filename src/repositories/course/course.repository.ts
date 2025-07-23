@@ -84,10 +84,15 @@ export class CourseRepository implements ICourseRepository {
 
   async getCourse(query: QueryCourseDto): Promise<CourseModel[]> {
     try {
-      const { page, pageSize } = query;
+      const { page, pageSize, searchByTypeCourse } = query;
       const course = await this.prisma.course.findMany({
         where: {
           deletedDate: null,
+          TypeCourse: {
+            name: {
+              contains: searchByTypeCourse,
+            },
+          },
         },
         take: pageSize,
         skip: calculatePagination(page, pageSize),
@@ -183,10 +188,15 @@ export class CourseRepository implements ICourseRepository {
     }
   }
 
-  count(): Promise<number> {
+  count(query: QueryCourseDto): Promise<number> {
     return this.prisma.course.count({
       where: {
         deletedDate: null,
+        TypeCourse: {
+          name: {
+            contains: query.searchByTypeCourse,
+          },
+        },
       },
     });
   }
