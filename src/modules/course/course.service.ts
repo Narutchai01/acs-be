@@ -94,7 +94,7 @@ export class CourseService {
       const { page, pageSize } = query;
       const [rows, count] = await Promise.all([
         this.courseRepository.getCourse(query),
-        this.courseRepository.count(),
+        this.courseRepository.count(query),
       ]);
       return {
         rows: rows,
