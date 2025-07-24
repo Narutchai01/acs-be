@@ -4,7 +4,7 @@ import { IUserRepository } from 'src/repositories/user/user.abstract';
 import { CreateUserDto } from './dto/create-user';
 import { IRoleRepository } from 'src/repositories/role/role.abtract';
 import { IAdminRepository } from 'src/repositories/admin/admin.abstract';
-import { hashPassword } from 'src/core/utils/passwordManagement';
+import { PasswordService } from 'src/core/utils/password/password.service';
 
 @Injectable()
 export class UsersService {
@@ -12,6 +12,7 @@ export class UsersService {
     private userRepository: IUserRepository,
     private roleRepository: IRoleRepository,
     private adminRepository: IAdminRepository,
+    private passwordService: PasswordService,
   ) {}
   async createUser(
     data: CreateUserDto,
@@ -27,7 +28,7 @@ export class UsersService {
     }
     const newData = {
       ...data,
-      password: await hashPassword(data.password),
+      password: await this.passwordService.hashPassword(data.password),
     };
     const user = await this.userRepository.createUser(newData);
 

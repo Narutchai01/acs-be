@@ -1,28 +1,30 @@
 import {
   Body,
   Controller,
-  Post,
   Get,
+  Post,
   Request,
+  Query,
   UseGuards,
-  Res,
   Param,
+  Patch,
+  HttpStatus,
+  Delete,
 } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
-import { Request as ExpressRequest, Response } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-
-interface AuthenticatedRequest extends ExpressRequest {
-  user: {
-    userId: number;
-    roleId: number;
-  };
-}
+import { AuthenticatedRequest } from '../../models/auth';
+import { QueryCourseDto } from './dto/get-course.dto';
+import { CourseFactory } from './course.factory';
+import { UpdateCourseDto } from './dto/update-course.dto';
 
 @Controller('course')
 export class CourseController {
-  constructor(private readonly courseService: CourseService) {}
+  constructor(
+    private readonly courseService: CourseService,
+    private courseFactory: CourseFactory,
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()
@@ -31,13 +33,67 @@ export class CourseController {
     @Request() req: AuthenticatedRequest,
   ) {
     const result = await this.courseService.createCourse(body, req.user.userId);
+    const dto = this.courseFactory.mapCourseModelToCourseDto(result);
+    return {
+      statusCode: HttpStatus.CREATED,
+      data: dto,
+    };
+  }
 
-    return result;
+  @Get()
+  async getCourseList(@Query() query: QueryCourseDto) {
+    const { page, pageSize } = query;
+    const { rows, totalRecords } = await this.courseService.getList(query);
+    const dto = this.courseFactory.mapCourseModelsToCourseDtos(rows);
+
+    const data = { page, totalRecords, pageSize, rows: dto };
+    return {
+      statusCode: HttpStatus.OK,
+      data: data,
+    };
   }
 
   @Get(':id')
-  async getCourseById(@Res() res: Response, @Param('id') id: number) {
-    const course = await this.courseService.getCourseById(id);
-    res.json(course);
+  async getCourseById(@Param('id') id: number) {
+    const course = await this.courseService.getById(id);
+    const dto = this.courseFactory.mapCourseModelToCourseDto(course);
+    return {
+      statusCode: HttpStatus.OK,
+      data: dto,
+    };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id')
+  async updateCourse(
+    @Param('id') id: number,
+    @Body() body: UpdateCourseDto,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    const IdNumber = Number(id);
+    const result = await this.courseService.updateCourse(
+      body,
+      IdNumber,
+      req.user.userId,
+    );
+    const dto = this.courseFactory.mapCourseModelToCourseDto(result);
+    return {
+      statusCode: HttpStatus.OK,
+      data: dto,
+    };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  async deleteCourse(
+    @Param('id') id: number,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    const result = await this.courseService.deleteCoruse(id, req.user.userId);
+    const dto = this.courseFactory.mapCourseModelToCourseDto(result);
+    return {
+      statusCode: HttpStatus.OK,
+      data: dto,
+    };
   }
 }

@@ -3,9 +3,10 @@ import { CourseService } from './course.service';
 import { CourseController } from './course.controller';
 import { RepositoriesModule } from 'src/repositories/repositories.module';
 import { CourseFactory } from './course.factory';
+import { CurriculumFactory } from '../curriculum/curriculum.factory';
 @Module({
   imports: [RepositoriesModule],
   controllers: [CourseController],
-  providers: [CourseService, CourseFactory],
+  providers: [CourseService, CourseFactory, CurriculumFactory],
 })
-export class NewsModule {}
+export class CourseModule {}

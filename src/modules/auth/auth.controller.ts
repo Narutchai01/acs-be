@@ -1,15 +1,7 @@
 import { Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
-import { Request as ExpressRequest } from 'express';
-
-interface AuthenticatedRequest extends ExpressRequest {
-  user: {
-    userId: number;
-    roleId: number;
-  };
-}
-
+import { AuthenticatedRequest } from 'src/models/auth'; // Adjust the import path as necessary
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

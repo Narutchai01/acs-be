@@ -9,16 +9,20 @@ import { TypeModule } from './modules/type/type.module';
 import { RoleModule } from './modules/role/role.module';
 import { UsersModule } from './modules/users/users.module';
 import { ExampleModule } from './modules/example/example.module';
-
+import { CourseModule } from './modules/course/course.module';
 import { SupabaseModule } from './provider/store/supabase/supabase.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { NewsModule } from './modules/news/news.module';
+import { PasswordModule } from './core/utils/password/password.module';
+import { TypecourseModule } from './modules/typecourse/typecourse.module';
+import { CurriculumModule } from './modules/curriculum/curriculum.module';
 
 @Module({
   imports: [
     PrismaModule,
     RepositoriesModule,
+    PasswordModule,
     TypeModule,
     RoleModule,
     UsersModule,
@@ -27,6 +31,9 @@ import { NewsModule } from './modules/news/news.module';
     AdminModule,
     AuthModule,
     NewsModule,
+    CourseModule,
+    TypecourseModule,
+    CurriculumModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],
