@@ -20,7 +20,7 @@ COPY . ./
 
 RUN npm run prebuild && npm run build
 
-# Make scripts executable
+# Make scripts executable (if you have the script)
 # RUN chmod +x scripts/start.sh
 
 # CMD ["./scripts/start.sh"]
@@ -46,4 +46,4 @@ COPY --from=development /usr/src/app/scripts ./scripts
 # Make scripts executable
 RUN chmod +x scripts/start-prod.sh
 
-CMD ["./scripts/start-prod.sh"]
+CMD ["sh", "./scripts/start-prod.sh"]
