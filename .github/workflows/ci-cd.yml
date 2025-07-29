@@ -73,6 +73,24 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+        with:
+          driver-opts: |
+            network=host
+
+      - name: Debug build context
+        run: |
+          echo "Current directory:"
+          pwd
+          echo "Directory contents:"
+          ls -la
+          echo "Package.json exists:"
+          test -f package.json && echo "YES" || echo "NO"
+          echo "Dockerfile exists:"
+          test -f dockerfile && echo "YES" || echo "NO"
+          echo "Node version:"
+          node --version
+          echo "NPM version:"
+          npm --version
 
       - name: Log in to Docker Hub
         if: github.event_name != 'pull_request'
@@ -101,7 +119,7 @@ jobs:
         with:
           context: .
           file: ./dockerfile
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -110,6 +128,9 @@ jobs:
           cache-to: type=gha,mode=max
           build-args: |
             BUILDKIT_INLINE_CACHE=1
+            DOCKER_BUILDKIT=1
+        env:
+          DOCKER_BUILDKIT: 1
 
       - name: Image digest
         run: echo ${{ steps.build-push.outputs.digest }}
