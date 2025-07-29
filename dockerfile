@@ -12,17 +12,12 @@ RUN apk add --no-cache \
 
 # Create app directory and user
 RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
+RUN adduser -S nodejs -u 1001 -G nodejs
 
 # Install dependencies
 FROM base AS dependencies
 
 WORKDIR /usr/src/app
-
-# Set npm configuration for better compatibility and platform builds
-RUN npm config set fetch-retry-mintimeout 20000 && \
-    npm config set fetch-retry-maxtimeout 120000 && \
-    npm config set unsafe-perm true
 
 # Copy package files first for better caching
 COPY package*.json ./
@@ -63,31 +58,23 @@ FROM base AS production
 
 WORKDIR /usr/src/app
 
-# Copy package files
-COPY package*.json ./
-COPY prisma ./prisma/
+# Copy package files and install production dependencies
+COPY --from=development /usr/src/app/package*.json ./
+COPY --from=development /usr/src/app/prisma ./prisma/
 
-# Install only production dependencies
-RUN npm cache clean --force
-
-# Install production dependencies with fallback for native modules and skip postinstall
-RUN npm ci --production --no-audit --no-fund --verbose --omit=dev --ignore-scripts || \
-    (npm config set python python3 && npm ci --production --no-audit --no-fund --verbose --omit=dev --ignore-scripts --build-from-source)
+# Install production dependencies
+RUN npm ci --production --no-audit --no-fund
 
 # Generate Prisma Client for production
 RUN npx prisma generate
 
-# Copy built application from development stage
-COPY --from=development /usr/src/app/dist ./dist
-COPY --from=development /usr/src/app/scripts ./scripts
+# Copy built application
+COPY --from=development /usr/src/app/dist ./dist/
+COPY --from=development /usr/src/app/node_modules/.prisma ./node_modules/.prisma/
 
 # Change ownership to nodejs user
-RUN chown -R nextjs:nodejs /usr/src/app
-USER nextjs
+RUN chown -R nodejs:nodejs /usr/src/app
+USER nodejs
 
-# Make scripts executable
-RUN chmod +x scripts/start-prod.sh
+CMD ["sh", "-c", "npx prisma db push && npm run db:seed && npm run start:prod"]
 
-# Use dumb-init to handle signals properly
-ENTRYPOINT ["dumb-init", "--"]
-CMD ["sh", "./scripts/start-prod.sh"]
