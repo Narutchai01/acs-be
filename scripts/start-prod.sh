@@ -8,4 +8,4 @@ until npx prisma db push --accept-data-loss 2>/dev/null; do
 done
 
 echo "Database is ready - starting application in production mode"
-npm run start:prod
+node dist/src/main.js
