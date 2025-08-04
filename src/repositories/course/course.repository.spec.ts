@@ -31,36 +31,210 @@ describe('CreateCourse', () => {
     });
 
     it('Get Course success', async () => {
-        const courseId = 1;
-        const courseData = {
-            id: courseId,
-            courseId: 'test courseId',
-            credits: 3,
-            curriculumId: 1,
-            typeCourseId: 1,
-            courseNameTh: 'test courseNameTh',
-            courseNameEn: 'test courseNameTh',
-            courseDetail: 'test courseDetail',
-            createdDate: new Date(),
-            updatedDate: new Date(),
-            deletedDate: null,
-            createdBy: 1,
-            updatedBy: 1,
-            PrevCourse: [1, 2, 3],
-        };
+        const courseData = [
+            {
+                id: 4,
+                courseId: 'deserunt minim consectetur cillum commodo',
+                courseNameTh: 'Alicia Howe',
+                courseNameEn: 'Wayne Vandervort',
+                credits: 'nisi dolor',
+                courseDetail: 'ut officia',
+                createdDate: new Date(),
+                updatedDate: new Date(),
+                deletedDate: null,
+                createdBy: 1,
+                updatedBy: 1,
+                curriculum: {
+                    id: 1,
+                    year: '2025',
+                    fileUrl: 'dasd',
+                    createdBy: 1,
+                    updatedBy: 1,
+                    createdDat: new Date(),
+                    updatedDate: new Date(),
+                },
+                typeCourse: {
+                    id: 1,
+                    name: 'กลุ่มวิชาเฉพาะประเภทวิชาแกน',
+                    description: 'Learn the fundamentals of computer science.'
+                },
+                preCourses: []
+            },
+            {
+                id: 5,
+                courseId: 'deserunt minim consectetur cillum commodo',
+                courseNameTh: 'Alicia Howe',
+                courseNameEn: 'Wayne Vandervort',
+                credits: 'nisi dolor',
+                courseDetail: 'ut officia',
+                createdDate: new Date(),
+                updatedDate: new Date(),
+                deletedDate: null,
+                createdBy: 1,
+                updatedBy: 1,
+                curriculum: {
+                    id: 1,
+                    year: '2025',
+                    fileUrl: 'dasd',
+                    createdBy: 1,
+                    updatedBy: 1,
+                    createdDate: new Date(),
+                    updatedDate: new Date(),
+                },
+                typeCourse: {
+                    id: 1,
+                    name: 'กลุ่มวิชาเฉพาะประเภทวิชาแกน',
+                    description: 'Learn the fundamentals of computer science.'
+                },
+                preCourses: []
+            },
+            {
+                id: 6,
+                courseId: 'deserunt minim consectetur cillum commodo',
+                courseNameTh: 'Alicia Howe',
+                courseNameEn: 'Wayne Vandervort',
+                credits: 'nisi dolor',
+                courseDetail: 'ut officia',
+                createdDate: new Date(),
+                updatedDate: new Date(),
+                deletedDate: null,
+                createdBy: 1,
+                updatedBy: 1,
+                curriculum: {
+                    id: 1,
+                    year: '2025',
+                    fileUrl: 'dasd',
+                    createdBy: 1,
+                    updatedBy: 1,
+                    createdDate: new Date(),
+                    updatedDate: new Date(),
+                },
+                typeCourse: {
+                    id: 1,
+                    name: 'กลุ่มวิชาเฉพาะประเภทวิชาแกน',
+                    description: 'Learn the fundamentals of computer science.'
+                },
+                preCourses: []
+            },
+            {
+                id: 7,
+                courseId: 'deserunt minim consectetur cillum commodo',
+                courseNameTh: 'Alicia Howe',
+                courseNameEn: 'Wayne Vandervort',
+                credits: 'nisi dolor',
+                courseDetail: 'ut officia',
+                createdDate: new Date(),
+                updatedDate: new Date(),
+                deletedDate: null,
+                createdBy: 1,
+                updatedBy: 1,
+                curriculum: {
+                    id: 1,
+                    year: '2025',
+                    fileUrl: 'dasd',
+                    createdBy: 1,
+                    updatedBy: 1,
+                    createdDate: new Date(),
+                    updatedDate: new Date(),
+                },
+                typeCourse: {
+                    id: 1,
+                    name: 'กลุ่มวิชาเฉพาะประเภทวิชาแกน',
+                    description: 'Learn the fundamentals of computer science.'
+                },
+                preCourses: []
+            },
+            {
+                id: 8,
+                courseId: 'deserunt minim consectetur cillum commodo',
+                courseNameTh: 'Alicia Howe',
+                courseNameEn: 'Wayne Vandervort',
+                credits: 'nisi dolor',
+                courseDetail: 'ut officia',
+                createdDate: new Date(),
+                updatedDate: new Date(),
+                deletedDate: null,
+                createdBy: 1,
+                updatedBy: 1,
+                curriculum: {
+                    id: 1,
+                    year: '2025',
+                    fileUrl: 'dasd',
+                    createdBy: 1,
+                    updatedBy: 1,
+                    createdDate: new Date(),
+                    updatedDate: new Date(),
+                },
+                typeCourse: {
+                    id: 2,
+                    name: 'กลุ่มวิชาเฉพาะประเภทวิชาเฉพาะด้าน',
+                    description: 'Explore advanced mathematical concepts.'
+                },
+                preCourses: [
+                    {
+                        id: 4,
+                        courseId: 'deserunt minim consectetur cillum commodo',
+                        courseNameTh: 'Alicia Howe',
+                        courseNameEn: 'Wayne Vandervort',
+                        credits: 'nisi dolor',
+                        courseDetail: 'ut officia',
+                        createdDate: new Date(),
+                        updatedDate: new Date(),
+                        deletedDate: null,
+                        createdBy: 1,
+                        updatedBy: 1,
+                        curriculum: null,
+                        typeCourses: null,
+                        preCourses: []
+                    },
+                    {
+                        id: 5,
+                        courseId: 'deserunt minim consectetur cillum commodo',
+                        courseNameTh: 'Alicia Howe',
+                        courseNameEn: 'Wayne Vandervort',
+                        credits: 'nisi dolor',
+                        courseDetail: 'ut officia',
+                        createdDate: new Date(),
+                        updatedDate: new Date(),
+                        deletedDate: null,
+                        createdBy: 1,
+                        updatedBy: 1,
+                        curriculum: null,
+                        typeCourses: null,
+                        preCourses: []
+                    },
+                    {
+                        id: 6,
+                        courseId: 'deserunt minim consectetur cillum commodo',
+                        courseNameTh: 'Alicia Howe',
+                        courseNameEn: 'Wayne Vandervort',
+                        credits: 'nisi dolor',
+                        courseDetail: 'ut officia',
+                        createdDate: new Date(),
+                        updatedDate: new Date(),
+                        deletedDate: null,
+                        createdBy: 1,
+                        updatedBy: 1,
+                        curriculum: null,
+                        typeCourses: null,
+                        preCourses: []
+                    }
+                ]
+            }
+        ]
 
         MockRepo.getCourse.mockResolvedValue(courseData);
 
         const result = await repo.getCourse({
             page: 1,
             pageSize: 10,
-            searchByTypeCourse: 'all',
+            searchByTypeCourse: 'กลุ่มวิชาเฉพาะประเภทวิชาแกน',
         });
         expect(result).toEqual(courseData);
         expect(MockRepo.getCourse).toHaveBeenCalledWith({
             page: 1,
             pageSize: 10,
-            searchByTypeCourse: 'all',
+            searchByTypeCourse: 'กลุ่มวิชาเฉพาะประเภทวิชาแกน',
         });
     });
 
@@ -68,28 +242,89 @@ describe('CreateCourse', () => {
         MockRepo.getCourse.mockRejectedValue(new Error('Database error'));
 
         await expect(
-            repo.getCourse({ page: 1, pageSize: 10, searchByTypeCourse: 'all', }),
+            repo.getCourse({ page: 1, pageSize: 10, searchByTypeCourse: 'กลุ่มวิชาเฉพาะประเภทวิชาแกน', }),
         ).rejects.toThrow('Database error');
     });
 
     it('Get Course by ID success', async () => {
-        const courseId = 1;
+        const courseId = 8;
         const courseData = {
             id: courseId,
-            courseId: 'test courseId',
-            credits: 3,
-            curriculumId: 1,
-            typeCourseId: 1,
-            courseNameTh: 'test courseNameTh',
-            courseNameEn: 'test courseNameTh',
-            courseDetail: 'test courseDetail',
+            courseId: 'deserunt minim consectetur cillum commodo',
+            courseNameTh: 'Alicia Howe',
+            courseNameEn: 'Wayne Vandervort',
+            credits: 'nisi dolor',
+            courseDetail: 'ut officia',
             createdDate: new Date(),
             updatedDate: new Date(),
             deletedDate: null,
             createdBy: 1,
             updatedBy: 1,
-            PrevCourse: [1, 2, 3],
-        };
+            curriculum: {
+                id: 1,
+                year: '2025',
+                fileUrl: 'dasd',
+                createdBy: 1,
+                updatedBy: 1,
+                createdDate: new Date(),
+                updatedDate: new Date(),
+            },
+            typeCourse: {
+                id: 2,
+                name: 'กลุ่มวิชาเฉพาะประเภทวิชาเฉพาะด้าน',
+                description: 'Explore advanced mathematical concepts.'
+            },
+            preCourses: [
+                {
+                    id: 4,
+                    courseId: 'deserunt minim consectetur cillum commodo',
+                    courseNameTh: 'Alicia Howe',
+                    courseNameEn: 'Wayne Vandervort',
+                    credits: 'nisi dolor',
+                    courseDetail: 'ut officia',
+                    createdDate: new Date(),
+                    updatedDate: new Date(),
+                    deletedDate: null,
+                    createdBy: 1,
+                    updatedBy: 1,
+                    curriculum: null,
+                    typeCourses: null,
+                    preCourses: []
+                },
+                {
+                    id: 5,
+                    courseId: 'deserunt minim consectetur cillum commodo',
+                    courseNameTh: 'Alicia Howe',
+                    courseNameEn: 'Wayne Vandervort',
+                    credits: 'nisi dolor',
+                    courseDetail: 'ut officia',
+                    createdDate: new Date(),
+                    updatedDate: new Date(),
+                    deletedDate: null,
+                    createdBy: 1,
+                    updatedBy: 1,
+                    curriculum: null,
+                    typeCourses: null,
+                    preCourses: []
+                },
+                {
+                    id: 6,
+                    courseId: 'deserunt minim consectetur cillum commodo',
+                    courseNameTh: 'Alicia Howe',
+                    courseNameEn: 'Wayne Vandervort',
+                    credits: 'nisi dolor',
+                    courseDetail: 'ut officia',
+                    createdDate: new Date(),
+                    updatedDate: new Date(),
+                    deletedDate: null,
+                    createdBy: 1,
+                    updatedBy: 1,
+                    curriculum: null,
+                    typeCourses: null,
+                    preCourses: []
+                }
+            ]
+        }
 
         MockRepo.getCourseById.mockResolvedValue(courseData);
 
@@ -125,7 +360,7 @@ describe('CreateCourse', () => {
             deletedDate: null,
             createdBy: 1,
             updatedBy: 1,
-            PrevCourse: [1, 2, 3],
+            PrevCourse: [4, 5],
         };
 
         await repo.createCourse(courseData);
@@ -166,7 +401,7 @@ describe('CreateCourse', () => {
             updatedDate: new Date(),
             deletedDate: null,
             updatedBy: 1,
-            PrevCourse: [1, 2, 3],
+            PrevCourse: [4, 5, 6],
         };
 
         MockRepo.updateCourse.mockResolvedValue({
@@ -257,7 +492,7 @@ describe('CreateCourse', () => {
         const query = {
             page: 1,
             pageSize: 10,
-            searchByTypeCourse: 'all',
+            searchByTypeCourse: 'กลุ่มวิชาเฉพาะประเภทวิชาแกน',
         }
 
         const courseData = [
@@ -465,7 +700,7 @@ describe('CreateCourse', () => {
         const query = {
             page: 1,
             pageSize: 10,
-            searchByTypeCourse: '',
+            searchByTypeCourse: 'กลุ่มวิชาเฉพาะประเภทวิชาแกน',
         }
         MockRepo.count.mockRejectedValue(new Error('Database error'));
 
