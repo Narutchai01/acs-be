@@ -69,6 +69,46 @@ describe('CreateUser', () => {
 
     await expect(repo.createUser(userData)).rejects.toThrow('Database error');
   });
+
+  it('Get User by Email success', async () => {
+    const email = 'somchai@example.com';
+    const userData = {
+      id: 1,
+      firstNameTh: 'สมชาย',
+      lastNameTh: 'ใจดี',
+      firstNameEn: 'Somchai',
+      lastNameEn: 'Jaidee',
+      email: email,
+      nickName: 'chai',
+      imageUrl: 'test-image.jpg',
+      password: 'TestPassword123',
+      createdDate: new Date(),
+      updatedDate: new Date(),
+      deletedDate: null,
+      createdBy: 1,
+      updatedBy: 1,
+    };
+
+    MockRepo.getUserEmail.mockResolvedValue(userData);
+
+    const result = await repo.getUserEmail(email);
+    expect(result).toEqual(userData);
+    expect(MockRepo.getUserEmail).toHaveBeenCalledWith(email);
+  });
+
+  it('should throw an error if getUserEmail fails', async () => {
+    const email = 'somchai@example.com';
+
+    MockRepo.getUserEmail.mockRejectedValue(new Error('Database error'));
+
+    await expect(repo.getUserEmail(email)).rejects.toThrow('Database error');
+  });
+
+  it('should throw an error if getUserEmail is called with invalid email', async () => {
+    const invalidEmail = '';
+    MockRepo.getUserEmail.mockRejectedValueOnce(new Error('Invalid email'));
+    await expect(repo.getUserEmail(invalidEmail)).rejects.toThrow('Invalid email');
+  });
   
   afterEach(() => {
     jest.clearAllMocks();
