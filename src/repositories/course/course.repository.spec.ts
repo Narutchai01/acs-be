@@ -110,4 +110,47 @@ describe('CreateCourse', () => {
         MockRepo.getCourseById.mockRejectedValueOnce(new Error('Invalid course ID'));
         await expect(repo.getCourseById(courseId)).rejects.toThrow('Invalid course ID');
     });
+
+    it('create Course success', async () => {
+        const courseData = {
+            courseId: 'CSS111',
+            credits: '3',
+            curriculumId: 1,
+            typeCourseId: 1,
+            courseNameTh: 'เอ็กพอริ่ง คอมพิวเตอร์ ไซน์',
+            courseNameEn: 'EXPLORING COMPUTER SCIENCE',
+            courseDetail: 'Introduction to computer systems and computer science.',
+            createdDate: new Date(),
+            updatedDate: new Date(),
+            deletedDate: null,
+            createdBy: 1,
+            updatedBy: 1,
+            PrevCourse: [1, 2, 3],
+        };
+
+        await repo.createCourse(courseData);
+        expect(MockRepo.createCourse).toHaveBeenCalledWith(courseData);
+    });
+
+    it('should throw an error if createCourse fails', async () => {
+        const courseData = {
+            courseId: 'CSS111',
+            credits: '3',
+            curriculumId: 1,
+            typeCourseId: 1,
+            courseNameTh: 'เอ็กพอริ่ง คอมพิวเตอร์ ไซน์',
+            courseNameEn: 'EXPLORING COMPUTER SCIENCE',
+            courseDetail: 'Introduction to computer systems and computer science.',
+            createdDate: new Date(),
+            updatedDate: new Date(),
+            deletedDate: null,
+            createdBy: 1,
+            updatedBy: 1,
+            PrevCourse: [1, 2, 3],
+        };
+
+        MockRepo.createCourse.mockRejectedValue(new Error('Database error'));
+        await expect(repo.createCourse(courseData)).rejects.toThrow('Database error');
+    });
+
 })
