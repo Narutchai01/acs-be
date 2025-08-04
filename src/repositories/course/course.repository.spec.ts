@@ -253,6 +253,225 @@ describe('CreateCourse', () => {
         );
     });
 
+    it('Count Course success', async () => {
+        const query = {
+            page: 1,
+            pageSize: 10,
+            searchByTypeCourse: 'all',
+        }
+
+        const courseData = [
+            {
+                id: 4,
+                courseId: 'deserunt minim consectetur cillum commodo',
+                courseNameTh: 'Alicia Howe',
+                courseNameEn: 'Wayne Vandervort',
+                credits: 'nisi dolor',
+                courseDetail: 'ut officia',
+                createdDate: new Date(),
+                updatedDate: new Date(),
+                deletedDate: null,
+                createdBy: 1,
+                updatedBy: 1,
+                curriculum: {
+                    id: 1,
+                    year: '2025',
+                    fileUrl: 'dasd',
+                    createdBy: 1,
+                    updatedBy: 1,
+                    createdDat: new Date(),
+                    updatedDate: new Date(),
+                },
+                typeCourse: {
+                    id: 1,
+                    name: 'กลุ่มวิชาเฉพาะประเภทวิชาแกน',
+                    description: 'Learn the fundamentals of computer science.'
+                },
+                preCourses: []
+            },
+            {
+                id: 5,
+                courseId: 'deserunt minim consectetur cillum commodo',
+                courseNameTh: 'Alicia Howe',
+                courseNameEn: 'Wayne Vandervort',
+                credits: 'nisi dolor',
+                courseDetail: 'ut officia',
+                createdDate: new Date(),
+                updatedDate: new Date(),
+                deletedDate: null,
+                createdBy: 1,
+                updatedBy: 1,
+                curriculum: {
+                    id: 1,
+                    year: '2025',
+                    fileUrl: 'dasd',
+                    createdBy: 1,
+                    updatedBy: 1,
+                    createdDate: new Date(),
+                    updatedDate: new Date(),
+                },
+                typeCourse: {
+                    id: 1,
+                    name: 'กลุ่มวิชาเฉพาะประเภทวิชาแกน',
+                    description: 'Learn the fundamentals of computer science.'
+                },
+                preCourses: []
+            },
+            {
+                id: 6,
+                courseId: 'deserunt minim consectetur cillum commodo',
+                courseNameTh: 'Alicia Howe',
+                courseNameEn: 'Wayne Vandervort',
+                credits: 'nisi dolor',
+                courseDetail: 'ut officia',
+                createdDate: new Date(),
+                updatedDate: new Date(),
+                deletedDate: null,
+                createdBy: 1,
+                updatedBy: 1,
+                curriculum: {
+                    id: 1,
+                    year: '2025',
+                    fileUrl: 'dasd',
+                    createdBy: 1,
+                    updatedBy: 1,
+                    createdDate: new Date(),
+                    updatedDate: new Date(),
+                },
+                typeCourse: {
+                    id: 1,
+                    name: 'กลุ่มวิชาเฉพาะประเภทวิชาแกน',
+                    description: 'Learn the fundamentals of computer science.'
+                },
+                preCourses: []
+            },
+            {
+                id: 7,
+                courseId: 'deserunt minim consectetur cillum commodo',
+                courseNameTh: 'Alicia Howe',
+                courseNameEn: 'Wayne Vandervort',
+                credits: 'nisi dolor',
+                courseDetail: 'ut officia',
+                createdDate: new Date(),
+                updatedDate: new Date(),
+                deletedDate: null,
+                createdBy: 1,
+                updatedBy: 1,
+                curriculum: {
+                    id: 1,
+                    year: '2025',
+                    fileUrl: 'dasd',
+                    createdBy: 1,
+                    updatedBy: 1,
+                    createdDate: new Date(),
+                    updatedDate: new Date(),
+                },
+                typeCourse: {
+                    id: 1,
+                    name: 'กลุ่มวิชาเฉพาะประเภทวิชาแกน',
+                    description: 'Learn the fundamentals of computer science.'
+                },
+                preCourses: []
+            },
+            {
+                id: 8,
+                courseId: 'deserunt minim consectetur cillum commodo',
+                courseNameTh: 'Alicia Howe',
+                courseNameEn: 'Wayne Vandervort',
+                credits: 'nisi dolor',
+                courseDetail: 'ut officia',
+                createdDate: new Date(),
+                updatedDate: new Date(),
+                deletedDate: null,
+                createdBy: 1,
+                updatedBy: 1,
+                curriculum: {
+                    id: 1,
+                    year: '2025',
+                    fileUrl: 'dasd',
+                    createdBy: 1,
+                    updatedBy: 1,
+                    createdDate: new Date(),
+                    updatedDate: new Date(),
+                },
+                typeCourse: {
+                    id: 2,
+                    name: 'กลุ่มวิชาเฉพาะประเภทวิชาเฉพาะด้าน',
+                    description: 'Explore advanced mathematical concepts.'
+                },
+                preCourses: [
+                    {
+                        id: 4,
+                        courseId: 'deserunt minim consectetur cillum commodo',
+                        courseNameTh: 'Alicia Howe',
+                        courseNameEn: 'Wayne Vandervort',
+                        credits: 'nisi dolor',
+                        courseDetail: 'ut officia',
+                        createdDate: new Date(),
+                        updatedDate: new Date(),
+                        deletedDate: null,
+                        createdBy: 1,
+                        updatedBy: 1,
+                        curriculum: null,
+                        typeCourses: null,
+                        preCourses: []
+                    },
+                    {
+                        id: 5,
+                        courseId: 'deserunt minim consectetur cillum commodo',
+                        courseNameTh: 'Alicia Howe',
+                        courseNameEn: 'Wayne Vandervort',
+                        credits: 'nisi dolor',
+                        courseDetail: 'ut officia',
+                        createdDate: new Date(),
+                        updatedDate: new Date(),
+                        deletedDate: null,
+                        createdBy: 1,
+                        updatedBy: 1,
+                        curriculum: null,
+                        typeCourses: null,
+                        preCourses: []
+                    },
+                    {
+                        id: 6,
+                        courseId: 'deserunt minim consectetur cillum commodo',
+                        courseNameTh: 'Alicia Howe',
+                        courseNameEn: 'Wayne Vandervort',
+                        credits: 'nisi dolor',
+                        courseDetail: 'ut officia',
+                        createdDate: new Date(),
+                        updatedDate: new Date(),
+                        deletedDate: null,
+                        createdBy: 1,
+                        updatedBy: 1,
+                        curriculum: null,
+                        typeCourses: null,
+                        preCourses: []
+                    }
+                ]
+            }
+        ]
+
+        const expectedCount = courseData.length;
+
+        MockRepo.count.mockResolvedValue(expectedCount);
+        const result = await repo.count(query);
+
+        expect(result).toEqual(expectedCount);
+        expect(MockRepo.count).toHaveBeenCalledWith(query);
+    });
+
+    it('should throw an error if count fails', async () => {
+        const query = {
+            page: 1,
+            pageSize: 10,
+            searchByTypeCourse: '',
+        }
+        MockRepo.count.mockRejectedValue(new Error('Database error'));
+
+        await expect(repo.count(query)).rejects.toThrow('Database error');
+    });
+
     afterEach(() => {
         jest.clearAllMocks();
     });
