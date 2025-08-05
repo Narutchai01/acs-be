@@ -153,4 +153,77 @@ describe('CreateCourse', () => {
         await expect(repo.createCourse(courseData)).rejects.toThrow('Database error');
     });
 
+    it('update Course success', async () => {
+        const courseId = 1;
+        const updateData = {
+            courseId: 'update courseId',
+            credits: '4',
+            curriculumId: 2,
+            typeCourseId: 2,
+            courseNameTh: 'update courseNameTh',
+            courseNameEn: 'update courseNameEn',
+            courseDetail: 'update courseDetail',
+            updatedDate: new Date(),
+            deletedDate: null,
+            updatedBy: 1,
+            PrevCourse: [1, 2, 3],
+        };
+
+        MockRepo.updateCourse.mockResolvedValue({
+            id: courseId,
+            ...updateData,
+        });
+
+        const result = await repo.updateCourse(courseId, updateData);
+        expect(result).toEqual({
+            id: courseId,
+            ...updateData,
+        });
+        expect(MockRepo.updateCourse).toHaveBeenCalledWith(courseId, updateData);
+    });
+
+    it('should throw an error if updateCourse fails', async () => {
+        const courseId = 1;
+        const updateData = {
+            courseId: 'update courseId',
+            credits: '4',
+            curriculumId: 2,
+            typeCourseId: 2,
+            courseNameTh: 'update courseNameTh',
+            courseNameEn: 'update courseNameEn',
+            courseDetail: 'update courseDetail',
+            updatedDate: new Date(),
+            deletedDate: null,
+            updatedBy: 1,
+            PrevCourse: [1, 2, 3],
+        };
+
+        MockRepo.updateCourse.mockRejectedValue(new Error('Database error'));
+
+        await expect(repo.updateCourse(courseId, updateData)).rejects.toThrow(
+            'Database error',
+        );
+    });
+
+    it('should throw an error if updateCourse is called with an invalid ID', async () => {
+        const courseId = -1;
+        const updateData = {
+            courseId: 'update courseId',
+            credits: '4',
+            curriculumId: 2,
+            typeCourseId: 2,
+            courseNameTh: 'update courseNameTh',
+            courseNameEn: 'update courseNameEn',
+            courseDetail: 'update courseDetail',
+            updatedDate: new Date(),
+            deletedDate: null,
+            updatedBy: 1,
+            PrevCourse: [1, 2, 3],
+        };
+
+        MockRepo.updateCourse.mockRejectedValueOnce(new Error('Invalid course ID'));
+        await expect(repo.updateCourse(courseId, updateData)).rejects.toThrow(
+            'Invalid course ID',
+        );
+    });
 })
