@@ -226,4 +226,34 @@ describe('CreateCourse', () => {
             'Invalid course ID',
         );
     });
+
+    it('Delete course success', async () => {
+        const courseId = 1;
+
+        MockRepo.deleteCourse.mockResolvedValue(true);
+
+        const result = await repo.deleteCourse(courseId, 1);
+        expect(result).toBe(true);
+        expect(MockRepo.deleteCourse).toHaveBeenCalledWith(courseId, 1);
+    });
+
+    it('should throw an error if deleteCourse fails', async () => {
+        const courseId = 1;
+        MockRepo.deleteCourse.mockRejectedValue(new Error('Database error'));
+
+        await expect(repo.deleteCourse(courseId, 1)).rejects.toThrow('Database error');
+    });
+
+    it('should throw an error if deleteCourse is called with an invalid ID', async () => {
+        const courseId = -1;
+
+        MockRepo.deleteCourse.mockRejectedValueOnce(new Error('Invalid course ID'));
+        await expect(repo.deleteCourse(courseId, 1)).rejects.toThrow(
+            'Invalid course ID',
+        );
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
 })
