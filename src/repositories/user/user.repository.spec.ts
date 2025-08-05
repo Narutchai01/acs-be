@@ -109,6 +109,44 @@ describe('CreateUser', () => {
     MockRepo.getUserEmail.mockRejectedValueOnce(new Error('Invalid email'));
     await expect(repo.getUserEmail(invalidEmail)).rejects.toThrow('Invalid email');
   });
+
+  it('Get User by ID success', async () => {
+    const userId = 1;
+    const userData = {
+      id: userId,
+      firstNameTh: 'สมชาย',
+      lastNameTh: 'ใจดี',
+      firstNameEn: 'Somchai',
+      lastNameEn: 'Jaidee',
+      email: 'somchai@example.com',
+      nickName: 'chai',
+      imageUrl: 'test-image.jpg',
+      password: 'TestPassword123',
+      createdDate: new Date(),
+      updatedDate: new Date(),
+      deletedDate: null,
+      createdBy: 1,
+      updatedBy: 1,
+    };
+
+    MockRepo.getUserById.mockResolvedValue(userData);
+
+    const result = await repo.getUserById(userId);
+    expect(result).toEqual(userData);
+    expect(MockRepo.getUserById).toHaveBeenCalledWith(userId);
+  });
+
+  it('should throw an error if getUserById fails', async () => {
+    const userId = 1;
+    MockRepo.getUserById.mockRejectedValue(new Error('Database error'));
+    await expect(repo.getUserById(userId)).rejects.toThrow('Database error');
+  });
+
+  it('should throw an error if getUserById is called with an invalid ID', async () => {
+    const userId = -1;
+    MockRepo.getUserById.mockRejectedValueOnce(new Error('Invalid user ID'));
+    await expect(repo.getUserById(userId)).rejects.toThrow('Invalid user ID');
+  });
   
   afterEach(() => {
     jest.clearAllMocks();
