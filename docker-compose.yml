@@ -16,32 +16,13 @@ services:
       timeout: 5s
       retries: 5
 
-  # servers:
-  #   container_name: acs-website-server
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #     target: development
-  #   image: acs-website-server:development
-  #   ports:
-  #     - '${PORT}:${PORT}'
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     PORT: ${PORT}
-  #     DATABASE_URL: postgres://admin:admin@acs-website-database:5432/acs-website
-  #     NODE_ENV: development
-  #   depends_on:
-  #     database:
-  #       condition: service_healthy
-
-  servers-prod:
-    container_name: acs-website-server-prod
+  servers:
+    container_name: acs-website-server
     build:
       context: .
       dockerfile: Dockerfile
-      target: production
-    image: acs-website-server:production
+      target: development
+    image: acs-website-server:development
     ports:
       - '${PORT}:${PORT}'
     env_file:
@@ -49,7 +30,26 @@ services:
     environment:
       PORT: ${PORT}
       DATABASE_URL: postgres://admin:admin@acs-website-database:5432/acs-website
-      NODE_ENV: production
+      NODE_ENV: development
     depends_on:
       database:
         condition: service_healthy
+
+  # servers-prod:
+  #   container_name: acs-website-server-prod
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #     target: production
+  #   image: acs-website-server:production
+  #   ports:
+  #     - '${PORT}:${PORT}'
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     PORT: ${PORT}
+  #     DATABASE_URL: postgres://admin:admin@acs-website-database:5432/acs-website
+  #     NODE_ENV: production
+  #   depends_on:
+  #     database:
+  #       condition: service_healthy
