@@ -239,4 +239,6 @@ model AcademicPosition {
   positionEn  String
   createDate  DateTime @default(now()) @map("created_date")
   updatedDate DateTime @updatedAt @map("updated_date")
+
+  @@map("academic_position")
 }
