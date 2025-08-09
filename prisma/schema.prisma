@@ -232,3 +232,14 @@ model Professer {
 
   @@map("professers")
 }
+
+model majorPosition
+  id          Int       @id @default(autoincrement()) @map("id")
+  positionTh  String
+  createdDate DateTime  @default(now()) @map("created_date")
+  updatedDate DateTime  @updatedAt @map("updated_date")
+  createdBy   Int       @map("created_by")
+  updatedBy   Int       @map("updated_by")
+
+  @@map("majorPosition")
+}
