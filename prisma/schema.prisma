@@ -233,7 +233,7 @@ model Professer {
   @@map("professers")
 }
 
-model majorPosition
+model majorPosition {
   id          Int       @id @default(autoincrement()) @map("id")
   positionTh  String
   createdDate DateTime  @default(now()) @map("created_date")
