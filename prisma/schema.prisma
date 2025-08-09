@@ -71,7 +71,7 @@ model User {
   News        News[]
   Course      Course[]
   Student     Student?
-  Professer   Professer?
+  Professor   Professor?
 
   @@map("users") // Optional: maps the model to a table named "users" in the database
 }
@@ -216,7 +216,7 @@ model Curriculum {
   @@map("curriculums")
 }
 
-model Professer {
+model Professor {
   id                Int       @id @default(autoincrement()) @map("id")
   userId            Int       @unique
   academicPosition  Int
@@ -230,14 +230,14 @@ model Professer {
   updatedBy         Int       @map("updated_by")
   user              User      @relation(fields: [userId], references: [id])
 
-  @@map("professers")
+  @@map("professors")
 }
 
 model AcademicPosition {
   id          Int      @id @default(autoincrement()) @map("id")
   positionTh  String
   positionEn  String
-  createDate  DateTime @default(now()) @map("created_date")
+  createdDate  DateTime @default(now()) @map("created_date")
   updatedDate DateTime @updatedAt @map("updated_date")
 
   @@map("academic_position")
