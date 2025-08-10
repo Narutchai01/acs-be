@@ -4,6 +4,7 @@ import { UserEntity } from './user.entity';
 export class MajorPositionEntity implements majorposition {
   id: number;
   positionTh: string;
+  positionEn: string;
   createdDate: Date;
   updatedDate: Date;
   createdBy: number;
