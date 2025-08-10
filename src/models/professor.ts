@@ -1,7 +1,7 @@
 import { BaseModel } from '.';
 import { UserModel } from './user';
 
-export interface ProfesorModel extends BaseModel {
+export interface ProfessorModel extends BaseModel {
   id: number;
   userId: number;
   academicPosition: number;
@@ -9,4 +9,12 @@ export interface ProfesorModel extends BaseModel {
   profRoom: string;
   fieldOffexpertise: string;
   user: UserModel;
+}
+
+export interface CreateProfessorModel {
+  userId: number;
+  academicPosition: number;
+  majorPosition: number;
+  profRoom: string;
+  fieldOffexpertise: string;
 }
