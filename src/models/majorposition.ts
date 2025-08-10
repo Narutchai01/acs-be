@@ -1,8 +1,9 @@
-import { BaseModel } from ".";
-import { UserModel } from "./user";
+import { BaseModel } from '.';
+import { UserModel } from './user';
 
 export interface MajorPositionModel extends BaseModel {
   id: number;
-  name: string;
+  positionTh: string;
+  positionEn: string;
   user: UserModel;
 }
