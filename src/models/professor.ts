@@ -10,3 +10,11 @@ export interface ProfessorModel extends BaseModel {
   fieldOffexpertise: string;
   user: UserModel;
 }
+
+export interface CreateProfessorModel {
+  userId: number;
+  academicPosition: number;
+  majorPosition: number;
+  profRoom: string;
+  fieldOffexpertise: string;
+}
