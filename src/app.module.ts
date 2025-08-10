@@ -17,6 +17,7 @@ import { NewsModule } from './modules/news/news.module';
 import { PasswordModule } from './core/utils/password/password.module';
 import { TypecourseModule } from './modules/typecourse/typecourse.module';
 import { CurriculumModule } from './modules/curriculum/curriculum.module';
+import { AcademicPositionModule } from './modules/academicposition/academicposition.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { CurriculumModule } from './modules/curriculum/curriculum.module';
     CourseModule,
     TypecourseModule,
     CurriculumModule,
+    AcademicPositionModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],
