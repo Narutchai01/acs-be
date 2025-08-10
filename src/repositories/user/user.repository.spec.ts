@@ -39,11 +39,11 @@ describe('CreateUser', () => {
       password: 'TestPassword123',
       createdDate: new Date(),
       updatedDate: new Date(),
-      deletedDate: null,   
+      deletedDate: null,
       createdBy: 1,
       updatedBy: 1,
     };
-    
+
     await repo.createUser(userData);
     expect(MockRepo.createUser).toHaveBeenCalledWith(userData);
   });
@@ -60,7 +60,7 @@ describe('CreateUser', () => {
       password: 'TestPassword123',
       createdDate: new Date(),
       updatedDate: new Date(),
-      deletedDate: null,   
+      deletedDate: null,
       createdBy: 1,
       updatedBy: 1,
     };
@@ -107,7 +107,9 @@ describe('CreateUser', () => {
   it('should throw an error if getUserEmail is called with invalid email', async () => {
     const invalidEmail = '';
     MockRepo.getUserEmail.mockRejectedValueOnce(new Error('Invalid email'));
-    await expect(repo.getUserEmail(invalidEmail)).rejects.toThrow('Invalid email');
+    await expect(repo.getUserEmail(invalidEmail)).rejects.toThrow(
+      'Invalid email',
+    );
   });
 
   it('Get User by ID success', async () => {
@@ -147,7 +149,7 @@ describe('CreateUser', () => {
     MockRepo.getUserById.mockRejectedValueOnce(new Error('Invalid user ID'));
     await expect(repo.getUserById(userId)).rejects.toThrow('Invalid user ID');
   });
-  
+
   afterEach(() => {
     jest.clearAllMocks();
   });
