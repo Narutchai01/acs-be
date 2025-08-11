@@ -30,4 +30,8 @@ export class ProfessorService {
 
     return this.professorRespository.updateProfessor(id, updateData);
   }
+
+  async deleteProfessor(id: number, userId: number): Promise<ProfessorModel> {
+    return this.professorRespository.deleteProfessor(id, userId);
+  }
 }
