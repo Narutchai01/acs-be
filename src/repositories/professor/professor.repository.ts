@@ -10,7 +10,35 @@ export class ProfessorRepository implements IProfessorRepository {
     private readonly prisma: PrismaService,
     private readonly ProfessorFactory: ProfessorFactory,
   ) {}
-
+  async getProfessorById(id: number): Promise<ProfessorModel> {
+    try {
+      const ProfessorEntity = await this.prisma.professor.findUnique({
+        where: {
+          id: id,
+          deletedDate: null,
+        },
+        include: {
+          user: true,
+        },
+      });
+      if (!ProfessorEntity) {
+        throw new Error(`Professor not found for ID ${id}`);
+      }
+      return this.ProfessorFactory.mapProfessorEntityToProfessorModel(
+        ProfessorEntity,
+      );
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Get Professor by ID failed:', error.message);
+        throw new Error(`Unable to get Professor by ID: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error(
+          'Unable to get Professor by ID: Unknown error occurred',
+        );
+      }
+    }
+  }
   async updateProfessor(
     id: number,
     data: UpdateProfessorModel,

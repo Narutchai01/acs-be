@@ -3,6 +3,7 @@ import { UpdateProfessorModel, ProfessorModel } from 'src/models/professor';
 
 @Injectable()
 export abstract class IProfessorRepository {
+  abstract getProfessorById(id: number): Promise<ProfessorModel>;
   abstract updateProfessor(
     id: number,
     data: UpdateProfessorModel,
