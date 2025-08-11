@@ -68,4 +68,30 @@ export class ProfessorRepository implements IProfessorRepository {
       }
     }
   }
+
+  async deleteProfessor(id: number, userId): Promise<ProfessorModel> {
+    try {
+      const professorEntity = await this.prisma.professor.update({
+        where: { id: id },
+        data: {
+          deletedDate: new Date(),
+          updatedBy: userId,
+        },
+        include: {
+          user: true,
+        },
+      });
+      return this.ProfessorFactory.mapProfessorEntityToProfessorModel(
+        professorEntity,
+      );
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Delete Professor failed:', error.message);
+        throw new Error(`Unable to delete Professor: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to delete Professor: Unknown error occurred');
+      }
+    }
+  }
 }

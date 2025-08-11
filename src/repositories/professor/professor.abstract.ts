@@ -8,4 +8,5 @@ export abstract class IProfessorRepository {
     id: number,
     data: UpdateProfessorModel,
   ): Promise<ProfessorModel>;
+  abstract deleteProfessor(id: number, userId: number): Promise<ProfessorModel>;
 }
