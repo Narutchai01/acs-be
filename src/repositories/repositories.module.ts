@@ -33,6 +33,9 @@ import { TypeCourseFactory } from './typecourse/typecourse.facoty';
 import { IAcademicPositionRepository } from './academicposition/academicposition.abstract';
 import { AcademicPositionRepository } from './academicposition/academicposition.repository';
 import { AcademicPositionFactory } from './academicposition/academicposition.factory';
+import { IProfessorRepository } from './professor/professor.abstract';
+import { ProfessorRepository } from './professor/professor.repository';
+import { ProfessorFactory } from './professor/professor.factory';
 
 @Module({
   imports: [PrismaModule],
@@ -81,6 +84,10 @@ import { AcademicPositionFactory } from './academicposition/academicposition.fac
       provide: IAcademicPositionRepository,
       useClass: AcademicPositionRepository,
     },
+    {
+      provide: IProfessorRepository,
+      useClass: ProfessorRepository,
+    },
     NewsFactory,
     RoleFactory,
     TypeFactory,
@@ -92,6 +99,7 @@ import { AcademicPositionFactory } from './academicposition/academicposition.fac
     PrevCourseFactory,
     TypeCourseFactory,
     AcademicPositionFactory,
+    ProfessorFactory,
   ],
   exports: [
     ITypeRepositoty,
@@ -105,6 +113,7 @@ import { AcademicPositionFactory } from './academicposition/academicposition.fac
     IPrevCourseRepository,
     ITypeCourseRepository,
     IAcademicPositionRepository,
+    IProfessorRepository,
   ],
 })
 export class RepositoriesModule { }
