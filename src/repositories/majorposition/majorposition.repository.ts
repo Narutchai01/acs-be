@@ -3,5 +3,5 @@ import { majorpositionModel } from 'src/models/majorposition';
 
 @Injectable()
 export abstract class IMajorpositionRepository {
-    abstract getMajorposition(): Promise<majorpositionModel[] | Error>;
+  abstract getMajorposition(): Promise<majorpositionModel[] | Error>;
 }
