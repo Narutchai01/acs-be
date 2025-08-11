@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { majorPositionModel } from 'src/models/majorposition';
+import { MajorPositionModel } from 'src/models/majorposition';
 import { MajorPositionDto } from './dto/majorposition.dto';
 
 @Injectable()
 export class MajorPositionFactory {
-  mapMajorPositionModelsToDtos(data: majorPositionModel[]): MajorPositionDto[] {
+  mapMajorPositionModelsToDtos(data: MajorPositionModel[]): MajorPositionDto[] {
     return data.map((item) => this.mapMajorPositionModelToDto(item));
   }
 
-  mapMajorPositionModelToDto(data: majorPositionModel): MajorPositionDto {
+  mapMajorPositionModelToDto(data: MajorPositionModel): MajorPositionDto {
     return {
       id: data.id,
       positionTh: data.positionTh,
