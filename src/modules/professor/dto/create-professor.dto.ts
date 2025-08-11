@@ -4,4 +4,6 @@ export interface CreateProfessorDto {
   majorPosition: number;
   profRoom: string;
   fieldOfExpertise: string;
+  createdBy: number;
+  updatedBy: number;
 }

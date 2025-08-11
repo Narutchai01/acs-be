@@ -16,6 +16,8 @@ export class ProfessorService {
       majorPosition: createProfessor.majorPosition,
       profRoom: createProfessor.profRoom,
       fieldOfExpertise: createProfessor.fieldOfExpertise,
+      createdBy: createProfessor.createdBy,
+      updatedBy: createProfessor.updatedBy,
     };
 
     return this.professorRepository.createProfessor(data);

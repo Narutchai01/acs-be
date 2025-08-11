@@ -7,7 +7,7 @@ export interface ProfessorModel extends BaseModel {
   academicPosition: number;
   majorPosition: number;
   profRoom: string;
-  fieldOffexpertise: string;
+  fieldOfExpertise: string;
   user: UserModel;
 }
 
@@ -16,5 +16,7 @@ export interface CreateProfessorModel {
   academicPosition: number;
   majorPosition: number;
   profRoom: string;
-  fieldOffexpertise: string;
+  fieldOfExpertise: string;
+  createdBy: number;
+  updatedBy: number;
 }
