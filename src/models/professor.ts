@@ -17,5 +17,4 @@ export interface UpdateProfessorModel extends BaseModel {
   majorPosition: number;
   profRoom: string;
   fieldOffexpertise: string;
-  user: UserModel;
 }
