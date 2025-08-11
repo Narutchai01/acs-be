@@ -5,6 +5,7 @@ import {
   UseGuards,
   Param,
   Patch,
+  Delete,
 } from '@nestjs/common';
 import { Request as ExpressRequest } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -40,6 +41,20 @@ export class ProfessorController {
       req.user.userId,
     );
 
+    return result;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  async deleteNews(
+    @Param('id') id: string,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    const IdNumber = Number(id);
+    const result = await this.ProfessorService.deleteProfessor(
+      IdNumber,
+      req.user.userId,
+    );
     return result;
   }
 }
