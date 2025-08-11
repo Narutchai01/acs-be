@@ -7,7 +7,7 @@ export class ProfesserEntity implements Professor {
   academicPosition: number;
   majorPosition: number;
   profRoom: string;
-  fieldOffexpertise: string;
+  fieldOfExpertise: string;
   createdDate: Date;
   updatedDate: Date;
   deletedDate: Date | null;
