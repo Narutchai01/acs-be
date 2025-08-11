@@ -17,4 +17,6 @@ export interface CreateProfessorModel {
   majorPosition: number;
   profRoom: string;
   fieldOffexpertise: string;
+  createdBy: number;
+  updatedBy: number;
 }
