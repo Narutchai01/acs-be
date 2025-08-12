@@ -6,17 +6,20 @@ import { AcademicPositionModel } from 'src/models/academicposition';
 
 @Injectable()
 export class AcademicPositionRepository implements IAcademicPositionRepository {
-    constructor(
-        private prisma: PrismaService,
-        private AcademicPositionFactory: AcademicPositionFactory,
-    ) { }
-    async getAcademicPosition(): Promise<AcademicPositionModel[]> {
-        const academicPosition = await this.prisma.academicPosition.findMany();
-        if (!academicPosition) {
-            throw new HttpException('Academic position not found', HttpStatus.NOT_FOUND);
-        }
-        return this.AcademicPositionFactory.mapAcademicPositionEntitiesToAcademicPositionModels(
-            academicPosition,
-        );
+  constructor(
+    private prisma: PrismaService,
+    private AcademicPositionFactory: AcademicPositionFactory,
+  ) {}
+  async getAcademicPosition(): Promise<AcademicPositionModel[]> {
+    const academicPosition = await this.prisma.academicPosition.findMany();
+    if (!academicPosition) {
+      throw new HttpException(
+        'Academic position not found',
+        HttpStatus.NOT_FOUND,
+      );
     }
+    return this.AcademicPositionFactory.mapAcademicPositionEntitiesToAcademicPositionModels(
+      academicPosition,
+    );
+  }
 }

@@ -19,3 +19,14 @@ export interface UpdateProfessorModel extends BaseModel {
   fieldOffexpertise: string;
   updatedBy: number;
 }
+
+export interface CreateProfessorModel extends BaseModel {
+  userId: number;
+  academicPosition: number;
+  majorPosition: number;
+  profRoom: string;
+  fieldOffexpertise: string;
+  createDate: Date;
+  createdBy: number;
+  updatedBy: number;
+}

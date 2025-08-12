@@ -4,19 +4,25 @@ import { AcademicPositionModel } from 'src/models/academicposition';
 
 @Injectable()
 export class AcademicPositionFactory {
-    constructor() { }
+  constructor() {}
 
-    mapAcademicPositionEntitiesToAcademicPositionModels(data: AcademicPositionEntity[]): AcademicPositionModel[] {
-        return data.map((academicposition) => this.mapAcademicPositionEntityToAcademicPositionModel(academicposition))
-    }
+  mapAcademicPositionEntitiesToAcademicPositionModels(
+    data: AcademicPositionEntity[],
+  ): AcademicPositionModel[] {
+    return data.map((academicposition) =>
+      this.mapAcademicPositionEntityToAcademicPositionModel(academicposition),
+    );
+  }
 
-    mapAcademicPositionEntityToAcademicPositionModel(data: AcademicPositionEntity): AcademicPositionModel {
-        return {
-            id: data.id,
-            positionTh: data.positionTh,
-            positionEn: data.positionEn,
-            createdDate: data.createdDate,
-            updatedDate: data.updatedDate,
-        }
-    }
+  mapAcademicPositionEntityToAcademicPositionModel(
+    data: AcademicPositionEntity,
+  ): AcademicPositionModel {
+    return {
+      id: data.id,
+      positionTh: data.positionTh,
+      positionEn: data.positionEn,
+      createdDate: data.createdDate,
+      updatedDate: data.updatedDate,
+    };
+  }
 }

@@ -116,4 +116,4 @@ import { ProfessorFactory } from './professor/professor.factory';
     IProfessorRepository,
   ],
 })
-export class RepositoriesModule { }
+export class RepositoriesModule {}
