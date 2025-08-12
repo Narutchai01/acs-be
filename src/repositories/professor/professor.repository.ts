@@ -3,6 +3,7 @@ import { IProfessorRepository } from './professor.abstract';
 import { CreateProfessorModel, ProfessorModel } from 'src/models/professor';
 import { PrismaService } from 'src/provider/database/prisma/prisma.service';
 import { ProfessorFactory } from './professor.factory';
+
 @Injectable()
 export class ProfessorRepository implements IProfessorRepository {
   constructor(
