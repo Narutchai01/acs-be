@@ -1,7 +1,20 @@
-import { Body, Controller, Post, Query, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Patch,
+  Post,
+  Query,
+  UseInterceptors,
+  Request,
+  Param,
+  UseGuards,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { CreateUserDto } from './dto/create-user';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { AuthenticatedRequest } from 'src/models/auth';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -20,5 +33,23 @@ export class UsersController {
         message: `Failed to create user: ${error instanceof Error ? error.message : error}`,
       };
     }
+  }
+
+  @Patch(':id')
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(AnyFilesInterceptor())
+  async updateUser(
+    @Param('id') id: string,
+    @Body() body: UpdateUserDto,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    const IdNumber = Number(id);
+    const result = await this.usersService.updateUser(
+      IdNumber,
+      body,
+      req.user.userId,
+    );
+
+    return result;
   }
 }
