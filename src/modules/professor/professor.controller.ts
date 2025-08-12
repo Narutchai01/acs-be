@@ -21,8 +21,8 @@ export class ProfessorController {
     private readonly ProfessorFactory: ProfessorFactory,
   ) {}
 
-  @UseGuards(JwtAuthGuard)
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
   async updateProfessor(
     @Param('id') id: string,
     @Body() body: UpdateProfessorDto,
@@ -32,7 +32,6 @@ export class ProfessorController {
     const UserIdNumber = Number(body.userId);
 
     const professorBody = {
-      userId: body.userId,
       academicPosition: body.academicPosition,
       majorPosition: body.majorPosition,
       profRoom: body.profRoom,
@@ -46,18 +45,21 @@ export class ProfessorController {
       lastNameEn: body.lastNameEn,
     };
 
-    const result = await this.ProfessorService.updateProfessor(
+    const professorResult = await this.ProfessorService.updateProfessor(
       ProfessorIdNumber,
       professorBody,
       req.user.userId,
     );
 
-    const result = await this.UserService.updateUser(
+    const userResult = await this.UserService.updateUser(
       UserIdNumber,
-      UserBody,
+      userBody,
       req.user.userId,
     );
 
-    return result;
+    return {
+      professor: professorResult,
+      user: userResult,
+    };
   }
 }

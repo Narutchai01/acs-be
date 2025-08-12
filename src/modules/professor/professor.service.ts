@@ -16,7 +16,6 @@ export class ProfessorService {
       await this.professorRespository.getProfessorById(id);
 
     const updateData = {
-      userId: Number(data.userId) || existingProfessor.userId,
       academicPosition:
         Number(data.academicPosition) || existingProfessor.academicPosition,
       majorPosition:

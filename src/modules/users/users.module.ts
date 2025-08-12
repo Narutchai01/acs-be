@@ -8,5 +8,6 @@ import { PasswordModule } from 'src/core/utils/password/password.module';
   imports: [RepositoriesModule, PasswordModule],
   controllers: [UsersController],
   providers: [UsersService],
+  exports: [UsersService],
 })
 export class UsersModule {}

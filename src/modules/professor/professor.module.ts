@@ -3,9 +3,10 @@ import { ProfessorService } from './professor.service';
 import { ProfessorController } from './professor.controller';
 import { RepositoriesModule } from 'src/repositories/repositories.module';
 import { ProfessorFactory } from './professor.factory';
+import { UsersModule } from '../users/users.module';
 
 @Module({
-  imports: [RepositoriesModule],
+  imports: [RepositoriesModule, UsersModule],
   controllers: [ProfessorController],
   providers: [ProfessorService, ProfessorFactory],
 })
