@@ -4,7 +4,7 @@ import { EducationLevelModel } from 'src/models/educationlavel';
 import { EducationLevelFactory } from './educationlvel.factory';
 
 @Injectable()
-export abstract class EducationLevelRepository {
+export class EducationLevelRepository {
   constructor(
     private prisma: PrismaService,
     private educationLevelFactory: EducationLevelFactory,
