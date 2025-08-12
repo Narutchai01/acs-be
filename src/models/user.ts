@@ -17,3 +17,14 @@ export interface UserModel extends BaseModel {
   password: string;
   userRole: UserRoleModel[];
 }
+
+export interface UpdateUserModel extends BaseModel {
+  firstNameTh: string;
+  lastNameTh: string;
+  firstNameEn: string | null;
+  lastNameEn: string | null;
+  email: string;
+  nickName: string | null;
+  imageUrl?: string | null;
+  password: string;
+}
