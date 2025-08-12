@@ -64,8 +64,9 @@ export class ProfessorController {
     };
   }
 
-  @UseGuards(JwtAuthGuard)
+  
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   async deleteNews(
     @Param('id') id: string,
     @Request() req: AuthenticatedRequest,
