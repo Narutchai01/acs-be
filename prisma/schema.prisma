@@ -245,8 +245,7 @@ model AcademicPosition {
 
 model EducationLevel {
   id          Int      @id @default(autoincrement()) @map("id")
-  levelTh     String   @map("level_th")
-  levelEn     String   @map("level_en")
+  level       String   @map("level_en")
   createdDate DateTime @default(now()) @map("created_date")
   updatedDate DateTime @updatedAt @map("updated_date")
 

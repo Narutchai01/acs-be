@@ -1,7 +1,6 @@
 export class EducationLevelDto {
   id: number;
-  levelTh: string;
-  levelEn: string;
+  level: string;
   createdDate: Date;
   updatedDate: Date;
 }

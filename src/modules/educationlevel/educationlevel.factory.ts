@@ -19,8 +19,7 @@ export class EducationLevelFactory {
   ): EducationLevelDto {
     return {
       id: educationLevel.id,
-      levelTh: educationLevel.levelTh,
-      levelEn: educationLevel.levelEn,
+      level: educationLevel.level,
       createdDate: educationLevel.createdDate,
       updatedDate: educationLevel.updatedDate,
     };

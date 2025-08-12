@@ -17,8 +17,7 @@ export class EducationLevelFactory {
   ): EducationLevelModel {
     return {
       id: data.id,
-      levelTh: data.levelTh,
-      levelEn: data.levelEn,
+      level: data.level,
       createdDate: data.createdDate,
       updatedDate: data.updatedDate,
     };
