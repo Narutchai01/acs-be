@@ -217,18 +217,19 @@ model Curriculum {
 }
 
 model Professor {
-  id                Int       @id @default(autoincrement()) @map("id")
-  userId            Int       @unique
+  id                Int         @id @default(autoincrement()) @map("id")
+  userId            Int         @unique
   academicPosition  Int
   majorPosition     Int
   profRoom          String
   fieldOffexpertise String
-  createdDate       DateTime  @default(now()) @map("created_date")
-  updatedDate       DateTime  @updatedAt @map("updated_date")
-  deletedDate       DateTime? @map("deleted_date")
-  createdBy         Int       @map("created_by")
-  updatedBy         Int       @map("updated_by")
-  user              User      @relation(fields: [userId], references: [id])
+  createdDate       DateTime    @default(now()) @map("created_date")
+  updatedDate       DateTime    @updatedAt @map("updated_date")
+  deletedDate       DateTime?   @map("deleted_date")
+  createdBy         Int         @map("created_by")
+  updatedBy         Int         @map("updated_by")
+  user              User        @relation(fields: [userId], references: [id])
+  Education         Education[]
 
   @@map("professors")
 }
@@ -244,10 +245,25 @@ model AcademicPosition {
 }
 
 model EducationLevel {
-  id          Int      @id @default(autoincrement()) @map("id")
-  level       String   @map("level_en")
-  createdDate DateTime @default(now()) @map("created_date")
-  updatedDate DateTime @updatedAt @map("updated_date")
+  id          Int         @id @default(autoincrement()) @map("id")
+  level       String      @map("level_en")
+  createdDate DateTime    @default(now()) @map("created_date")
+  updatedDate DateTime    @updatedAt @map("updated_date")
+  Education   Education[]
 
   @@map("education_levels")
+}
+
+model Education {
+  id             Int            @id @default(autoincrement()) @map("id")
+  levelId        Int
+  professorId    Int
+  education      String
+  createdDate    DateTime       @default(now()) @map("created_date")
+  updatedDate    DateTime       @updatedAt @map("updated_date")
+  deletedDate    DateTime?      @map("deleted_date")
+  createdBy      Int            @map("created_by")
+  updatedBy      Int            @map("updated_by")
+  professor      Professor      @relation(fields: [professorId], references: [id])
+  educationLevel EducationLevel @relation(fields: [levelId], references: [id])
 }
