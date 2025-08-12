@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserModel } from 'src/models/user';
 import { IUserRepository } from 'src/repositories/user/user.abstract';
 import { CreateUserDto } from './dto/create-user';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { IRoleRepository } from 'src/repositories/role/role.abtract';
 import { IAdminRepository } from 'src/repositories/admin/admin.abstract';
 import { PasswordService } from 'src/core/utils/password/password.service';
@@ -53,5 +54,37 @@ export class UsersService {
     }
 
     return user;
+  }
+
+  async updateUser(
+    id: number,
+    data: UpdateUserDto,
+    editerId: number,
+  ): Promise<UserModel> {
+    const existData = await this.userRepository.getUserById(id);
+
+    if (existData instanceof Error) {
+      throw new Error(`Failed to get user data: ${existData.message}`);
+    }
+
+    if (!existData) {
+      throw new Error(`userId '${id}' not found`);
+    }
+
+    const updateData = {
+      firstNameTh: data.firstNameTh || existData.firstNameTh,
+      lastNameTh: data.lastNameTh || existData.lastNameTh,
+      firstNameEn: data.firstNameEn || existData.firstNameEn,
+      lastNameEn: data.lastNameEn || existData.lastNameEn,
+      email: data.email || existData.email,
+      nickName: data.nickName || existData.nickName,
+      imageUrl: data.imageUrl || existData.imageUrl,
+      password: data.password
+        ? await this.passwordService.hashPassword(data.password)
+        : existData.password,
+      updatedBy: editerId,
+    };
+
+    return this.userRepository.updateUser(id, updateData);
   }
 }
