@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { UserFactory } from '../user/user.factory';
-import { ProfessorModel } from 'src/models/professor';
 import { ProfessorEntity } from 'src/entities/professor.entity';
+import { ProfessorModel } from 'src/models/professor';
 
 @Injectable()
 export class ProfessorFactory {
   constructor(private userFactory: UserFactory) {}
 
-  mapProfessorEntitiesToProfessorModel(
+  mapProfessorEntitiesToProfessorModels(
     entities: ProfessorEntity[],
   ): ProfessorModel[] {
     return entities.map((entity) =>
@@ -16,18 +16,18 @@ export class ProfessorFactory {
   }
 
   mapProfessorEntityToProfessorModel(data: ProfessorEntity): ProfessorModel {
-    const professorModel: ProfessorModel = {
+    const professorModel = {
       id: data.id,
       userId: data.userId,
       academicPosition: data.academicPosition,
       majorPosition: data.majorPosition,
       profRoom: data.profRoom,
-      fieldOffexpertise: data.fieldOffexpertise,
-      createdDate: data.createdDate,
+      fieldOfExpertise: data.fieldOfExpertise,
+      createdAt: data.createdDate,
+      updatedAt: data.updatedDate,
+      deletedAt: data.deletedDate,
       createdBy: data.createdBy,
-      updatedDate: data.updatedDate,
       updatedBy: data.updatedBy,
-      deletedDate: data.deletedDate,
       user: this.userFactory.mapUserEntityToUserModel(data.user),
     };
 
