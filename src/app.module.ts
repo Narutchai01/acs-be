@@ -38,6 +38,8 @@ import { EducationlevelModule } from './modules/educationlevel/educationlevel.mo
     TypecourseModule,
     CurriculumModule,
     AcademicPositionModule,
+    ProfessorModule,
+    EducationlevelModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],
