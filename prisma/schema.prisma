@@ -237,8 +237,17 @@ model AcademicPosition {
   id          Int      @id @default(autoincrement()) @map("id")
   positionTh  String
   positionEn  String
-  createdDate  DateTime @default(now()) @map("created_date")
+  createdDate DateTime @default(now()) @map("created_date")
   updatedDate DateTime @updatedAt @map("updated_date")
 
   @@map("academic_position")
+}
+
+model EducationLevel {
+  id          Int      @id @default(autoincrement()) @map("id")
+  level       String   @map("level_en")
+  createdDate DateTime @default(now()) @map("created_date")
+  updatedDate DateTime @updatedAt @map("updated_date")
+
+  @@map("education_levels")
 }

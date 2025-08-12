@@ -18,6 +18,7 @@ import { PasswordModule } from './core/utils/password/password.module';
 import { TypecourseModule } from './modules/typecourse/typecourse.module';
 import { CurriculumModule } from './modules/curriculum/curriculum.module';
 import { AcademicPositionModule } from './modules/academicposition/academicposition.module';
+import { EducationlevelModule } from './modules/educationlevel/educationlevel.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { AcademicPositionModule } from './modules/academicposition/academicposit
     TypecourseModule,
     CurriculumModule,
     AcademicPositionModule,
+    EducationlevelModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],
