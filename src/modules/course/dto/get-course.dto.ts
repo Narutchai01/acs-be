@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
 export class QueryCourseDto {
   @ApiProperty()
@@ -15,4 +15,10 @@ export class QueryCourseDto {
   @IsString()
   @IsOptional()
   searchByTypeCourse?: string;
+
+  @ApiProperty({ required: false, default: true })
+  @IsBoolean()
+  @Transform(({ value }) => value === 'true')
+  @IsOptional()
+  prerequisite?: boolean = true;
 }
