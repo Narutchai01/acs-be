@@ -19,6 +19,7 @@ import { TypecourseModule } from './modules/typecourse/typecourse.module';
 import { CurriculumModule } from './modules/curriculum/curriculum.module';
 import { AcademicPositionModule } from './modules/academicposition/academicposition.module';
 import { ProfessorModule } from './modules/professor/professor.module';
+import { EducationlevelModule } from './modules/educationlevel/educationlevel.module';
 
 @Module({
   imports: [
@@ -37,7 +38,6 @@ import { ProfessorModule } from './modules/professor/professor.module';
     TypecourseModule,
     CurriculumModule,
     AcademicPositionModule,
-    ProfessorModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],
