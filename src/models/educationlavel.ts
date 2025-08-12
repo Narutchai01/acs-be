@@ -1,4 +1,4 @@
-export interface EducationLevel {
+export interface EducationLevelModel {
   id: number;
   levelTh: string;
   levelEn: string;
