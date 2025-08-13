@@ -267,3 +267,15 @@ model Education {
   professor      Professor      @relation(fields: [professorId], references: [id])
   educationLevel EducationLevel @relation(fields: [levelId], references: [id])
 }
+
+model majorPosition {
+  id          Int       @id @default(autoincrement()) @map("id")
+  positionTh  String
+  positionEn  String
+  createdDate DateTime  @default(now()) @map("created_date")
+  updatedDate DateTime  @updatedAt @map("updated_date")
+  createdBy   Int       @map("created_by")
+  updatedBy   Int       @map("updated_by")
+  
+  @@map("majorPosition")
+}
