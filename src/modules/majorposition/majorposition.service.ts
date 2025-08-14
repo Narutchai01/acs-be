@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IMajorPositionRepository } from 'src/repositories/majorposition/majorposition.repository';
+import { IMajorPositionRepository } from 'src/repositories/majorposition/majorposition.abstract';
 import { QueryMajorPositionDto } from './dto/get-majorposition.dto';
 import { MajorPositionModel } from 'src/models/majorposition';
 
