@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { MajorPositionModel } from 'src/models/majorposition';
-import { MajorPositionDto } from './dto/majorposition.dto';
+import { MajorPositionDto } from './dto/get-majorposition.dto';
 
 @Injectable()
 export class MajorPositionFactory {
