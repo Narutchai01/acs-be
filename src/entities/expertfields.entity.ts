@@ -2,7 +2,7 @@ import { ExpertFields } from '@prisma/client';
 import { ProfessorEntity } from './professor.entity';
 import { ListTypeEntity } from './type.entity';
 
-export class ExpertFieldsEntity implements ExpertFields {
+export class ExpertFieldEntity implements ExpertFields {
   id: number;
   professorId: number;
   fieldId: number;
