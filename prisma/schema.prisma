@@ -270,7 +270,7 @@ model Education {
   educationLevel EducationLevel @relation(fields: [levelId], references: [id])
 }
 
-model majorPosition {
+model MajorPosition {
   id          Int      @id @default(autoincrement()) @map("id")
   positionTh  String
   positionEn  String
