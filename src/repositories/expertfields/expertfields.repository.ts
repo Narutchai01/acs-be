@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateExpertFields } from 'src/models/expertfields';
+import { CreateExpertField } from 'src/models/expertfields';
 import { IExpertFieldsRepository } from './expertfields.abstract';
 import { PrismaService } from 'src/provider/database/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
@@ -11,7 +11,7 @@ export class ExpertFieldsRepository extends IExpertFieldsRepository {
   }
 
   async create(
-    data: CreateExpertFields[],
+    data: CreateExpertField[],
     transaction: Prisma.TransactionClient,
   ): Promise<void> {
     await transaction.expertFields.createMany({ data, skipDuplicates: true });
