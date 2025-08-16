@@ -289,8 +289,6 @@ model ExpertFields {
   createdDate DateTime  @default(now()) @map("created_date")
   updatedDate DateTime  @updatedAt @map("updated_date")
   deletedDate DateTime? @map("deleted_date")
-  createdBy   Int       @map("created_by")
-  updatedBy   Int       @map("updated_by")
   professor   Professor @relation(fields: [professorId], references: [id])
   field       ListType  @relation(fields: [fieldId], references: [id])
 

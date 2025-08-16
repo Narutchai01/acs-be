@@ -9,3 +9,7 @@ export interface ExpertFields extends BaseModel {
   professor?: ProfessorModel;
   field?: ListTypeModel;
 }
+export interface CreateExpertFields {
+  professorId: number;
+  fieldId: number;
+}
