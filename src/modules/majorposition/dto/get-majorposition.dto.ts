@@ -1,13 +1,9 @@
-import { BaseDto } from 'src/models/dto/base.dto';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsOptional, IsString } from 'class-validator';
 
-export class MajorPositionDto extends BaseDto {
-  @ApiProperty()
-  id: number;
-
-  @ApiProperty()
-  positionTh: string;
-
-  @ApiProperty()
-  positionEn: string;
+export class QueryMajorPositionDto {
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  searchByMajorPosition?: string;
 }

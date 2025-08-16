@@ -100,13 +100,14 @@ model Type {
 }
 
 model ListType {
-  id          Int      @id @default(autoincrement()) @map("id")
-  name        String   @unique @map("name")
-  typeId      Int      @map("type_id")
-  type        Type     @relation(fields: [typeId], references: [id])
-  createdDate DateTime @default(now()) @map("created_at")
-  updatedDate DateTime @updatedAt @map("updated_at")
-  News        News[]
+  id           Int            @id @default(autoincrement()) @map("id")
+  name         String         @unique @map("name")
+  typeId       Int            @map("type_id")
+  type         Type           @relation(fields: [typeId], references: [id])
+  createdDate  DateTime       @default(now()) @map("created_at")
+  updatedDate  DateTime       @updatedAt @map("updated_at")
+  News         News[]
+  ExpertFields ExpertFields[]
 
   @@map("list_types")
 }
@@ -217,19 +218,20 @@ model Curriculum {
 }
 
 model Professor {
-  id                Int         @id @default(autoincrement()) @map("id")
-  userId            Int         @unique
+  id                Int            @id @default(autoincrement()) @map("id")
+  userId            Int            @unique
   academicPosition  Int
   majorPosition     Int
   profRoom          String
   fieldOffexpertise String
-  createdDate       DateTime    @default(now()) @map("created_date")
-  updatedDate       DateTime    @updatedAt @map("updated_date")
-  deletedDate       DateTime?   @map("deleted_date")
-  createdBy         Int         @map("created_by")
-  updatedBy         Int         @map("updated_by")
-  user              User        @relation(fields: [userId], references: [id])
+  createdDate       DateTime       @default(now()) @map("created_date")
+  updatedDate       DateTime       @updatedAt @map("updated_date")
+  deletedDate       DateTime?      @map("deleted_date")
+  createdBy         Int            @map("created_by")
+  updatedBy         Int            @map("updated_by")
+  user              User           @relation(fields: [userId], references: [id])
   Education         Education[]
+  ExpertFields      ExpertFields[]
 
   @@map("professors")
 }
@@ -269,13 +271,26 @@ model Education {
 }
 
 model majorPosition {
-  id          Int       @id @default(autoincrement()) @map("id")
+  id          Int      @id @default(autoincrement()) @map("id")
   positionTh  String
   positionEn  String
+  createdDate DateTime @default(now()) @map("created_date")
+  updatedDate DateTime @updatedAt @map("updated_date")
+  createdBy   Int      @map("created_by")
+  updatedBy   Int      @map("updated_by")
+
+  @@map("majorPosition")
+}
+
+model ExpertFields {
+  id          Int       @id @default(autoincrement()) @map("id")
+  professorId Int       @map("professor_id")
+  fieldId     Int       @map("field_id")
   createdDate DateTime  @default(now()) @map("created_date")
   updatedDate DateTime  @updatedAt @map("updated_date")
-  createdBy   Int       @map("created_by")
-  updatedBy   Int       @map("updated_by")
-  
-  @@map("majorPosition")
+  deletedDate DateTime? @map("deleted_date")
+  professor   Professor @relation(fields: [professorId], references: [id])
+  field       ListType  @relation(fields: [fieldId], references: [id])
+
+  @@map("expert_fields")
 }
