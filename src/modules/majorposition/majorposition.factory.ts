@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { MajorPositionModel } from 'src/models/majorposition';
-import { MajorPositionDto } from './dto/get-majorposition.dto';
+import { MajorPositionDto } from './dto/majorposition.dto';
 
 @Injectable()
 export class MajorPositionFactory {
@@ -15,8 +15,6 @@ export class MajorPositionFactory {
       positionEn: data.positionEn,
       createdDate: data.createdDate,
       updatedDate: data.updatedDate,
-      createdBy: data.createdBy,
-      updatedBy: data.updatedBy,
     };
   }
 }
