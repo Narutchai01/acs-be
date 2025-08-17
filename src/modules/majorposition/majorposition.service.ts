@@ -7,6 +7,6 @@ export class MajorPositionService {
   constructor(private majorPositionRepository: IMajorPositionRepository) {}
 
   async getMajorPosition(): Promise<MajorPositionModel[]> {
-    return await this.majorPositionRepository.getMajorPosition();
+    return await this.majorPositionRepository.get();
   }
 }
