@@ -39,6 +39,9 @@ import { ProfessorFactory } from './professor/professor.factory';
 import { IEducationLevelRepository } from './educationlevel/educationlvel.abstract';
 import { EducationLevelFactory } from './educationlevel/educationlvel.factory';
 import { EducationLevelRepository } from './educationlevel/educationlvel.repository';
+import { MajorPositionFactory } from './majorposition/majorposition.factory';
+import { IMajorPositionRepository } from './majorposition/majorposition.abstract';
+import { MajorPositionRepository } from './majorposition/majorposition.repository';
 
 @Module({
   imports: [PrismaModule],
@@ -95,6 +98,11 @@ import { EducationLevelRepository } from './educationlevel/educationlvel.reposit
       provide: IEducationLevelRepository,
       useClass: EducationLevelRepository,
     },
+    {
+      provide: IMajorPositionRepository,
+      useClass: MajorPositionRepository,
+    },
+    MajorPositionFactory,
     EducationLevelFactory,
     NewsFactory,
     RoleFactory,
@@ -123,6 +131,7 @@ import { EducationLevelRepository } from './educationlevel/educationlvel.reposit
     IAcademicPositionRepository,
     IProfessorRepository,
     IEducationLevelRepository,
+    IMajorPositionRepository,
   ],
 })
 export class RepositoriesModule {}
