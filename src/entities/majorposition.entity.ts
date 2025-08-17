@@ -1,13 +1,9 @@
-import { majorPosition } from '@prisma/client';
-import { UserEntity } from './user.entity';
+import { MajorPosition } from '@prisma/client';
 
-export class MajorPositionEntity implements majorPosition {
+export class MajorPositionEntity implements MajorPosition {
   id: number;
   positionTh: string;
   positionEn: string;
   createdDate: Date;
   updatedDate: Date;
-  createdBy: number;
-  updatedBy: number;
-  user: UserEntity;
 }

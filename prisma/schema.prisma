@@ -276,8 +276,6 @@ model MajorPosition {
   positionEn  String
   createdDate DateTime @default(now()) @map("created_date")
   updatedDate DateTime @updatedAt @map("updated_date")
-  createdBy   Int      @map("created_by")
-  updatedBy   Int      @map("updated_by")
 
   @@map("majorPosition")
 }
