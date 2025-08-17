@@ -3,7 +3,7 @@ import { IMajorPositionRepository } from 'src/repositories/majorposition/majorpo
 import { MajorPositionModel } from 'src/models/majorposition';
 
 @Injectable()
-export class MajorPositionService {
+export class MasterdataService {
   constructor(private majorPositionRepository: IMajorPositionRepository) {}
 
   async getMajorPosition(): Promise<MajorPositionModel[]> {

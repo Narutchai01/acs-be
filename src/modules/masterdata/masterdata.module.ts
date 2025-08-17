@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { MasterdataController } from './masterdata.controller.v1';
-import { MajorPositionService } from '../majorposition/majorposition.service';
-import { MajorPositionFactory } from '../majorposition/majorposition.factory';
+import { MasterdataService } from './masterdata.service';
+import { MasterdataControllerV1 } from './masterdata.controller.v1';
 import { RepositoriesModule } from 'src/repositories/repositories.module';
+import { MasterDataFactoryV1 } from './masterdata.factory.v1';
 
 @Module({
   imports: [RepositoriesModule],
-  controllers: [MasterdataController],
-  providers: [MajorPositionService, MajorPositionFactory],
+  controllers: [MasterdataControllerV1],
+  providers: [MasterdataService, MasterDataFactoryV1],
 })
 export class MasterdataModule {}

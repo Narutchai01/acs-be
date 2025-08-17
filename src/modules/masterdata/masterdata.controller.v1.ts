@@ -1,29 +1,24 @@
 import { Controller, Get, HttpStatus } from '@nestjs/common';
-import { MajorPositionService } from '../majorposition/majorposition.service';
-import { MajorPositionFactory } from '../majorposition/majorposition.factory';
+import { MasterdataService } from './masterdata.service';
+import { MasterDataFactoryV1 } from './masterdata.factory.v1';
+import { MajorPositionDto } from './dto/majorposition.v1.dto';
 import { ResponseDto } from 'src/models/dto/base.dto';
-import { MajorPositionDto } from '../majorposition/dto/majorposition.v1.dto';
 
-@Controller({ path: 'master-data', version: '1' })
-export class MasterdataController {
+@Controller({
+  path: 'master-data',
+  version: '1',
+})
+export class MasterdataControllerV1 {
   constructor(
-    private readonly majorPositionService: MajorPositionService,
-    private readonly majorPositionFactory: MajorPositionFactory,
+    private readonly masterDataService: MasterdataService,
+    private readonly masterDataFactory: MasterDataFactoryV1,
   ) {}
-
-  @Get()
-  getMasterData() {
-    return {
-      statusCode: HttpStatus.OK,
-      data: 'Master data retrieved successfully',
-    };
-  }
 
   @Get('/major-positions')
   async getMajorPosition(): Promise<ResponseDto<MajorPositionDto[]>> {
-    const position = await this.majorPositionService.getMajorPosition();
+    const majorPositions = await this.masterDataService.getMajorPosition();
     const dto =
-      this.majorPositionFactory.mapMajorPositionModelsToDtos(position);
+      this.masterDataFactory.mapMajorPositionModelsToDtos(majorPositions);
     return {
       statusCode: HttpStatus.OK,
       data: dto,

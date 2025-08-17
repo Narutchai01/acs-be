@@ -3,7 +3,7 @@ import { MajorPositionModel } from 'src/models/majorposition';
 import { MajorPositionDto } from './dto/majorposition.v1.dto';
 
 @Injectable()
-export class MajorPositionFactory {
+export class MasterDataFactoryV1 {
   mapMajorPositionModelsToDtos(data: MajorPositionModel[]): MajorPositionDto[] {
     return data.map((item) => this.mapMajorPositionModelToDto(item));
   }
