@@ -3,6 +3,7 @@ import { MasterdataService } from './masterdata.service';
 import { MasterDataFactoryV1 } from './masterdata.factory.v1';
 import { MajorPositionDto } from './dto/majorposition.v1.dto';
 import { ResponseDto } from 'src/models/dto/base.dto';
+import { success } from 'src/core/interceptors/response.helper';
 
 @Controller({
   path: 'master-data',
@@ -19,9 +20,6 @@ export class MasterdataControllerV1 {
     const majorPositions = await this.masterDataService.getMajorPosition();
     const dto =
       this.masterDataFactory.mapMajorPositionModelsToDtos(majorPositions);
-    return {
-      statusCode: HttpStatus.OK,
-      data: dto,
-    };
+    return success<MajorPositionDto[]>(dto, HttpStatus.OK);
   }
 }
