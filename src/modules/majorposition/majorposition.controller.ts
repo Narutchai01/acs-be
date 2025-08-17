@@ -1,8 +1,6 @@
-import { Get, Controller, Query } from '@nestjs/common';
+import { Get, Controller, HttpStatus } from '@nestjs/common';
 import { MajorPositionService } from './majorposition.service';
-import { MajorPositionModel } from 'src/models/majorposition';
 import { MajorPositionFactory } from './majorposition.factory';
-import { QueryMajorPositionDto } from './dto/query-majorposition.dto';
 
 @Controller('majorposition')
 export class MajorPositionController {
@@ -11,16 +9,13 @@ export class MajorPositionController {
     private readonly majorPositionFactory: MajorPositionFactory,
   ) {}
   @Get()
-  async getMajorPosition(
-    @Query() query: QueryMajorPositionDto,
-  ): Promise<MajorPositionModel[]> {
-    const majorPosition =
-      await this.majorPositionService.getMajorPosition(query);
-    if (majorPosition instanceof Error) {
-      throw majorPosition;
-    }
-    return this.majorPositionFactory.mapMajorPositionModelsToDtos(
-      majorPosition,
-    ) as MajorPositionModel[];
+  async getMajorPosition() {
+    const position = await this.majorPositionService.getMajorPosition();
+    const dto =
+      this.majorPositionFactory.mapMajorPositionModelsToDtos(position);
+    return {
+      statusCode: HttpStatus.OK,
+      data: dto,
+    };
   }
 }

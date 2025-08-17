@@ -7,7 +7,15 @@ import { UserFactory } from '../user/user.factory';
 export class MajorPositionFactory {
   constructor(private userFactory: UserFactory) {}
 
-  mapMajorPositionToMajorPositionModel(
+  mapMajorPositionEnitiesToMajorPositionModels(
+    data: MajorPositionEntity[],
+  ): MajorPositionModel[] {
+    return data.map((item) =>
+      this.mapMajorPositionEntityToMajorPositionModel(item),
+    );
+  }
+
+  mapMajorPositionEntityToMajorPositionModel(
     data: MajorPositionEntity,
   ): MajorPositionModel {
     return {
