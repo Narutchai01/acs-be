@@ -19,11 +19,8 @@ export class BaseDto {
 
 export class ResponseDto<T> {
   @ApiProperty()
-  status: boolean;
+  statusCode: number;
 
   @ApiProperty()
   data: T;
-
-  @ApiProperty()
-  error: string | null;
 }

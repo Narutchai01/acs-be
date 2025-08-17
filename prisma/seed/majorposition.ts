@@ -18,8 +18,22 @@ export const majorPositions: Prisma.MajorPositionCreateInput[] = [
 export const executeMajorPosition = async (
   prisma: PrismaClient,
 ): Promise<void> => {
-  await prisma.majorPosition.createMany({
-    data: majorPositions,
-    skipDuplicates: true,
-  });
+  try {
+    for (const majorPosition of majorPositions) {
+      const majorPositionData: Prisma.MajorPositionCreateInput = majorPosition;
+      const exists = await prisma.majorPosition.findFirst({
+        where: { positionTh: majorPositionData.positionTh },
+      });
+
+      if (!exists) {
+        await prisma.majorPosition.create({ data: majorPositionData });
+        console.log(`Created major position: ${majorPositionData.positionEn}`);
+      } else {
+        console.log(`Type already exists: ${majorPosition.positionEn}`);
+      }
+    }
+  } catch (error) {
+    console.error('Error executing major position seed:', error);
+    throw error;
+  }
 };
