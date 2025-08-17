@@ -19,6 +19,7 @@ import { TypecourseModule } from './modules/typecourse/typecourse.module';
 import { CurriculumModule } from './modules/curriculum/curriculum.module';
 import { AcademicPositionModule } from './modules/academicposition/academicposition.module';
 import { EducationlevelModule } from './modules/educationlevel/educationlevel.module';
+import { MasterdataModule } from './modules/masterdata/masterdata.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { EducationlevelModule } from './modules/educationlevel/educationlevel.mo
     CurriculumModule,
     AcademicPositionModule,
     EducationlevelModule,
+    MasterdataModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],
