@@ -3,6 +3,7 @@ import { MasterdataService } from './masterdata.service';
 import { MasterDataFactoryV1 } from './masterdata.factory.v1';
 import { MajorPositionDto } from './dto/majorposition.v1.dto';
 import { RoleDto } from './dto/role.v1.dto';
+import { TypeCourseDto } from './dto/typecourse.v1.dto';
 import { success } from 'src/core/interceptors/response.helper';
 
 @Controller({
@@ -33,5 +34,14 @@ export class MasterdataControllerV1 {
 
     const dto = this.masterDataFactory.mapRoleModelsToRoleDtos(roles);
     return success<RoleDto[]>(dto, HttpStatus.OK);
+  }
+
+  @Get('/typecourse')
+  async getTypeCourse() {
+    const data = await this.masterDataService.getTypeCourse();
+    const dto =
+      this.masterDataFactory.mapTypeCourseModelsToTypeCourseDtos(data);
+
+    return success<TypeCourseDto[]>(dto, HttpStatus.OK);
   }
 }
