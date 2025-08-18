@@ -15,11 +15,7 @@ export class MasterdataService {
     return await this.majorPositionRepository.get();
   }
 
-  async getList(): Promise<RoleModel[] | Error> {
+  async getRole(): Promise<RoleModel[] | Error> {
     return await this.roleRepository.getList();
-  }
-
-  async getByName(name: string): Promise<RoleModel | Error> {
-    return await this.roleRepository.getByName(name);
   }
 }
