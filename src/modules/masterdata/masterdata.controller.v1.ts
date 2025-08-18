@@ -26,6 +26,11 @@ export class MasterdataControllerV1 {
   @Get('/role')
   async getRole() {
     const roles = await this.masterDataService.getRole();
+
+    if (roles instanceof Error) {
+      throw roles;
+    }
+
     const dto = this.masterDataFactory.mapRoleModelsToRoleDtos(roles);
     return success<RoleDto[]>(dto, HttpStatus.OK);
   }
