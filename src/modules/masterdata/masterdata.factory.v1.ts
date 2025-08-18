@@ -3,6 +3,8 @@ import { MajorPositionModel } from 'src/models/majorposition';
 import { MajorPositionDto } from './dto/majorposition.v1.dto';
 import { RoleModel } from 'src/models/role';
 import { RoleDto } from './dto/role.v1.dto';
+import { TypeCourseModel } from 'src/models/course';
+import { TypeCourseDto } from './dto/typecourse.v1.dto';
 
 @Injectable()
 export class MasterDataFactoryV1 {
@@ -29,5 +31,20 @@ export class MasterDataFactoryV1 {
       id: data.id,
       name: data.name,
     };
+  }
+
+  mapTypeCourseModelsToTypeCourseDtos(
+    data: TypeCourseModel[],
+  ): TypeCourseDto[] {
+    return data.map((entity) => this.mapTypeCourseModelToTypeCourseDto(entity));
+  }
+
+  mapTypeCourseModelToTypeCourseDto(data: TypeCourseModel): TypeCourseDto {
+    const dto: TypeCourseDto = {
+      id: data.id,
+      name: data.name,
+      description: data.description,
+    };
+    return dto;
   }
 }
