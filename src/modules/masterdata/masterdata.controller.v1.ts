@@ -1,7 +1,9 @@
-import { Controller, Get, HttpStatus } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
 import { MasterdataService } from './masterdata.service';
 import { MasterDataFactoryV1 } from './masterdata.factory.v1';
 import { MajorPositionDto } from './dto/majorposition.v1.dto';
+import { RoleDto } from './dto/role.v1.dto';
+import { TypeCourseDto } from './dto/typecourse.v1.dto';
 import { success } from 'src/core/interceptors/response.helper';
 import { TypeDto } from './dto/type.v1.dto';
 @Controller({
@@ -27,5 +29,21 @@ export class MasterdataControllerV1 {
     const types = await this.masterDataService.getType();
     const dto = this.masterDataFactory.mapTypeModelsToDtos(types);
     return success<TypeDto[]>(dto, HttpStatus.OK);
+  }
+
+  @Get('/role')
+  async getRole() {
+    const roles = await this.masterDataService.getRole();
+    const dto = this.masterDataFactory.mapRoleModelsToRoleDtos(roles);
+    return success<RoleDto[]>(dto, HttpStatus.OK);
+  }
+
+  @Get('/typecourse')
+  async getTypeCourse() {
+    const data = await this.masterDataService.getTypeCourse();
+    const dto =
+      this.masterDataFactory.mapTypeCourseModelsToTypeCourseDtos(data);
+
+    return success<TypeCourseDto[]>(dto, HttpStatus.OK);
   }
 }
