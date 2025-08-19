@@ -11,6 +11,8 @@ import { TypeDto } from './dto/type.v1.dto';
 import { TypeModel } from 'src/models/type';
 import { TypeCourseModel } from 'src/models/course';
 import { TypeCourseDto } from './dto/typecourse.v1.dto';
+import { AcademicPositionModel } from 'src/models/academicposition';
+import { AcademicPositionDto } from './dto/academicposition.v1.dto';
 
 @Injectable()
 export class MasterDataFactoryV1 {
