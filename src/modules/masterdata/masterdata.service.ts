@@ -5,18 +5,18 @@ import { IRoleRepository } from 'src/repositories/role/role.abtract';
 import { ITypeCourseRepository } from 'src/repositories/typecourse/typecourse.abstract';
 import { RoleModel } from 'src/models/role';
 import { TypeCourseModel } from 'src/models/course';
-import { ITypeRepositoty } from 'src/repositories/type/type.abstact';
+import { ITypeRepository } from 'src/repositories/type/type.abstact';
 import { ListTypeModel } from 'src/models/type';
 import { IEducationLevelRepository } from 'src/repositories/educationlevel/educationlvel.abstract';
 import { EducationLevelModel } from 'src/models/educationlavel';
-
+import { TypeModel } from 'src/models/type';
 @Injectable()
 export class MasterdataService {
   constructor(
     private majorPositionRepository: IMajorPositionRepository,
     private roleRepository: IRoleRepository,
     private typeCourseRepository: ITypeCourseRepository,
-    private typeRepository: ITypeRepositoty,
+    private typeRepository: ITypeRepository,
     private educationLevelRepository: IEducationLevelRepository,
   ) {}
 
@@ -33,10 +33,14 @@ export class MasterdataService {
   }
 
   async getListType(type: string): Promise<ListTypeModel[]> {
-    return this.typeRepository.getListTypes(type);
+    return await this.typeRepository.getListTypes(type);
   }
 
   async getEducationLevels(): Promise<EducationLevelModel[]> {
-    return this.educationLevelRepository.getEducationLevels();
+    return await this.educationLevelRepository.getEducationLevels();
+  }
+
+  async getType(): Promise<TypeModel[]> {
+    return await this.typeRepository.getTypes();
   }
 }
