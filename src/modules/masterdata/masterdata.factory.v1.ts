@@ -19,7 +19,6 @@ export class MasterDataFactoryV1 {
   mapMajorPositionModelsToDtos(data: MajorPositionModel[]): MajorPositionDto[] {
     return data.map((item) => this.mapMajorPositionModelToDto(item));
   }
-
   mapMajorPositionModelToDto(data: MajorPositionModel): MajorPositionDto {
     return {
       id: data.id,
@@ -102,6 +101,24 @@ export class MasterDataFactoryV1 {
       id: data.id,
       name: data.name,
       description: data.description,
+      createdDate: data.createdDate,
+      updatedDate: data.updatedDate,
+    };
+  }
+
+  mapAcademicPositionModelsToDtos(
+    data: AcademicPositionModel[],
+  ): AcademicPositionDto[] {
+    return data.map((item) => this.mapAcademicPositionModelToDto(item));
+  }
+
+  mapAcademicPositionModelToDto(
+    data: AcademicPositionModel,
+  ): AcademicPositionDto {
+    return {
+      id: data.id,
+      positionTh: data.positionTh,
+      positionEn: data.positionEn,
       createdDate: data.createdDate,
       updatedDate: data.updatedDate,
     };
