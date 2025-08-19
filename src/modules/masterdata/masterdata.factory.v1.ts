@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { MajorPositionModel } from 'src/models/majorposition';
 import { MajorPositionDto } from './dto/majorposition.v1.dto';
+import { RoleModel } from 'src/models/role';
+import { RoleDto } from './dto/role.v1.dto';
 
 @Injectable()
 export class MasterDataFactoryV1 {
@@ -15,6 +17,17 @@ export class MasterDataFactoryV1 {
       positionEn: data.positionEn,
       createdDate: data.createdDate,
       updatedDate: data.updatedDate,
+    };
+  }
+
+  mapRoleModelsToRoleDtos(data: RoleModel[]): RoleDto[] {
+    return data.map((item) => this.mapRoleModelToRoleDto(item));
+  }
+
+  mapRoleModelToRoleDto(data: RoleModel): RoleDto {
+    return {
+      id: data.id,
+      name: data.name,
     };
   }
 }
