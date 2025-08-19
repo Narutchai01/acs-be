@@ -3,6 +3,7 @@ import { MasterdataService } from './masterdata.service';
 import { MasterDataFactoryV1 } from './masterdata.factory.v1';
 import { MajorPositionDto } from './dto/majorposition.v1.dto';
 import { success } from 'src/core/interceptors/response.helper';
+import { AcademicPositionDto } from './dto/academicposition.v1.dto';
 
 @Controller({
   path: 'master-data',
@@ -20,5 +21,14 @@ export class MasterdataControllerV1 {
     const dto =
       this.masterDataFactory.mapMajorPositionModelsToDtos(majorPositions);
     return success<MajorPositionDto[]>(dto, HttpStatus.OK);
+  }
+
+  @Get('/academic-positions')
+  async getAcademicPosition() {
+    const academicPositions =
+      await this.masterDataService.getAcademicPosition();
+    const dto =
+      this.masterDataFactory.mapAcademicPositionModelsToDtos(academicPositions);
+    return success<AcademicPositionDto[]>(dto, HttpStatus.OK);
   }
 }
