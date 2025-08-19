@@ -17,7 +17,7 @@ export class MasterdataService {
     return await this.majorPositionRepository.get();
   }
 
-  async getRole(): Promise<RoleModel[] | Error> {
+  async getRole(): Promise<RoleModel[]> {
     return await this.roleRepository.getList();
   }
 

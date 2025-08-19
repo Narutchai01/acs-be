@@ -11,13 +11,9 @@ export class RoleRepository implements IRoleRepository {
     protected roleFactory: RoleFactory,
   ) {}
 
-  async getList(): Promise<RoleModel[] | Error> {
-    try {
-      const data = await this.prisma.role.findMany();
-      return this.roleFactory.mapRoleEntitiesToRoleModels(data);
-    } catch (error) {
-      return new Error(`Failed to fetch roles: ${error}`);
-    }
+  async getList(): Promise<RoleModel[]> {
+    const data = await this.prisma.role.findMany();
+    return this.roleFactory.mapRoleEntitiesToRoleModels(data);
   }
 
   async getByName(name: string): Promise<RoleModel | Error> {
