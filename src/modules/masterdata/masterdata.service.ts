@@ -7,6 +7,8 @@ import { RoleModel } from 'src/models/role';
 import { TypeCourseModel } from 'src/models/course';
 import { ITypeRepositoty } from 'src/repositories/type/type.abstact';
 import { ListTypeModel } from 'src/models/type';
+import { IEducationLevelRepository } from 'src/repositories/educationlevel/educationlvel.abstract';
+import { EducationLevelModel } from 'src/models/educationlavel';
 
 @Injectable()
 export class MasterdataService {
@@ -15,6 +17,7 @@ export class MasterdataService {
     private roleRepository: IRoleRepository,
     private typeCourseRepository: ITypeCourseRepository,
     private typeRepository: ITypeRepositoty,
+    private educationLevelRepository: IEducationLevelRepository,
   ) {}
 
   async getMajorPosition(): Promise<MajorPositionModel[]> {
@@ -31,5 +34,9 @@ export class MasterdataService {
 
   async getListType(type: string): Promise<ListTypeModel[]> {
     return this.typeRepository.getListTypes(type);
+  }
+
+  async getEducationLevels(): Promise<EducationLevelModel[]> {
+    return this.educationLevelRepository.getEducationLevels();
   }
 }
