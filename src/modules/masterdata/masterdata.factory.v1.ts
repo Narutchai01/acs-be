@@ -36,7 +36,7 @@ export class MasterDataFactoryV1 {
   mapTypeCourseModelsToTypeCourseDtos(
     data: TypeCourseModel[],
   ): TypeCourseDto[] {
-    return data.map((entity) => this.mapTypeCourseModelToTypeCourseDto(entity));
+    return data.map((item) => this.mapTypeCourseModelToTypeCourseDto(item));
   }
 
   mapTypeCourseModelToTypeCourseDto(data: TypeCourseModel): TypeCourseDto {
