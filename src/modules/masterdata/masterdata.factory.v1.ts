@@ -23,4 +23,18 @@ export class MasterDataFactoryV1 {
       updatedDate: data.updatedDate,
     };
   }
+
+  mapListTypeModelsToListTypeDtos(data: ListTypeModel[]): ListTypeDto[] {
+    return data.map((item) => this.mapListTypeModelToListTypeDto(item));
+  }
+
+  mapListTypeModelToListTypeDto(data: ListTypeModel): ListTypeDto {
+    const dto: ListTypeDto = {
+      id: data.id,
+      name: data.name,
+      createdDate: data.createdDate,
+      updatedDate: data.updatedDate,
+    };
+    return dto;
+  }
 }

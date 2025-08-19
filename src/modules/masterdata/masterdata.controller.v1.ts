@@ -24,4 +24,11 @@ export class MasterdataControllerV1 {
       this.masterDataFactory.mapMajorPositionModelsToDtos(majorPositions);
     return success<MajorPositionDto[]>(dto, HttpStatus.OK);
   }
+
+  @Get('type/list')
+  async getListType(@Query('type') type: string) {
+    const types = await this.masterDataService.getListType(type);
+    const dto = this.masterDataFactory.mapListTypeModelsToListTypeDtos(types);
+    return success<ListTypeDto[]>(dto, HttpStatus.OK);
+  }
 }
