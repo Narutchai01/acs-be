@@ -3,6 +3,8 @@ import { MajorPositionModel } from 'src/models/majorposition';
 import { MajorPositionDto } from './dto/majorposition.v1.dto';
 import { ListTypeModel } from 'src/models/type';
 import { ListTypeDto } from './dto/typelist.v1.dto';
+import { EducationLevelModel } from 'src/models/educationlavel';
+import { EducationLevelDto } from './dto/educationlevel.v1.dto';
 
 @Injectable()
 export class MasterDataFactoryV1 {
@@ -32,5 +34,18 @@ export class MasterDataFactoryV1 {
       updatedDate: data.updatedDate,
     };
     return dto;
+  }
+
+  mapEducationModelsToDtos(educationLevels: EducationLevelModel[],): EducationLevelDto[] {
+    return educationLevels.map((educationLevel) => this.mapEducationModelToDto(educationLevel),);
+  }
+  
+  mapEducationModelToDto(educationLevel: EducationLevelModel,): EducationLevelDto {
+    return {
+      id: educationLevel.id,
+      level: educationLevel.level,
+      createdDate: educationLevel.createdDate,
+      updatedDate: educationLevel.updatedDate,
+    };
   }
 }

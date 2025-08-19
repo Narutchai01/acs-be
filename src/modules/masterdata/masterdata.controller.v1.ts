@@ -4,6 +4,7 @@ import { MasterDataFactoryV1 } from './masterdata.factory.v1';
 import { MajorPositionDto } from './dto/majorposition.v1.dto';
 import { success } from 'src/core/interceptors/response.helper';
 import { ListTypeDto } from './dto/typelist.v1.dto';
+import { EducationLevelDto } from './dto/educationlevel.v1.dto';
 
 @Controller({
   path: 'master-data',
@@ -29,5 +30,13 @@ export class MasterdataControllerV1 {
     const dto = 
       this.masterDataFactory.mapListTypeModelsToListTypeDtos(types);
     return success<ListTypeDto[]>(dto, HttpStatus.OK);
+  }
+
+  @Get('/educationlevel')
+  async getEducationLevels() {
+    const dataEducationLevels = await this.masterDataService.getEducationLevels();
+    const dto =
+      this.masterDataFactory.mapEducationModelsToDtos(dataEducationLevels);
+    return success<EducationLevelDto[]>(dto, HttpStatus.OK);
   }
 }
