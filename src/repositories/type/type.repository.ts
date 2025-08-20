@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { ITypeRepositoty } from './type.abstact';
+import { ITypeRepository } from './type.abstact';
 import { PrismaService } from 'src/provider/database/prisma/prisma.service';
 import { TypeFactory } from './type.factory';
 import { ListTypeModel, TypeModel } from 'src/models/type';
 
 @Injectable()
-export class TypeRepository implements ITypeRepositoty {
+export class TypeRepository implements ITypeRepository {
   constructor(
     private prisma: PrismaService,
     private typeFactory: TypeFactory,

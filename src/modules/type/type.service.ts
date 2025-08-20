@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { ITypeRepositoty } from 'src/repositories/type/type.abstact';
+import { ITypeRepository } from 'src/repositories/type/type.abstact';
 
 @Injectable()
 export class TypeService {
-  constructor(private typeRepository: ITypeRepositoty) {}
+  constructor(private typeRepository: ITypeRepository) {}
 
   async getTypes() {
     return this.typeRepository.getTypes();
