@@ -7,6 +7,10 @@ import { RoleModel } from 'src/models/role';
 import { RoleDto } from './dto/role.v1.dto';
 import { EducationLevelModel } from 'src/models/educationlavel';
 import { EducationLevelDto } from './dto/educationlevel.v1.dto';
+import { TypeDto } from './dto/type.v1.dto';
+import { TypeModel } from 'src/models/type';
+import { TypeCourseModel } from 'src/models/course';
+import { TypeCourseDto } from './dto/typecourse.v1.dto';
 
 @Injectable()
 export class MasterDataFactoryV1 {
@@ -22,6 +26,10 @@ export class MasterDataFactoryV1 {
       createdDate: data.createdDate,
       updatedDate: data.updatedDate,
     };
+  }
+
+  mapRoleModelsToRoleDtos(data: RoleModel[]): RoleDto[] {
+    return data.map((item) => this.mapRoleModelToRoleDto(item));
   }
 
   mapListTypeModelsToListTypeDtos(data: ListTypeModel[]): ListTypeDto[] {
@@ -65,6 +73,35 @@ export class MasterDataFactoryV1 {
       level: educationLevel.level,
       createdDate: educationLevel.createdDate,
       updatedDate: educationLevel.updatedDate,
+    };
+  }
+
+  mapTypeModelsToDtos(data: TypeModel[]): TypeDto[] {
+    return data.map((item) => this.mapTypeModelToDto(item));
+  }
+
+  mapTypeModelToDto(data: TypeModel): TypeDto {
+    return {
+      id: data.id,
+      name: data.name,
+      createdDate: data.createdDate,
+      updatedDate: data.updatedDate,
+    };
+  }
+
+  mapTypeCourseModelsToTypeCourseDtos(
+    data: TypeCourseModel[],
+  ): TypeCourseDto[] {
+    return data.map((item) => this.mapTypeCourseModelToDto(item));
+  }
+
+  mapTypeCourseModelToDto(data: TypeCourseModel): TypeCourseDto {
+    return {
+      id: data.id,
+      name: data.name,
+      description: data.description,
+      createdDate: data.createdDate,
+      updatedDate: data.updatedDate,
     };
   }
 }
