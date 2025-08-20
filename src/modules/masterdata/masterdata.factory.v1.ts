@@ -3,6 +3,8 @@ import { MajorPositionModel } from 'src/models/majorposition';
 import { MajorPositionDto } from './dto/majorposition.v1.dto';
 import { ListTypeModel } from 'src/models/type';
 import { ListTypeDto } from './dto/typelist.v1.dto';
+import { RoleModel } from 'src/models/role';
+import { RoleDto } from './dto/role.v1.dto';
 import { EducationLevelModel } from 'src/models/educationlavel';
 import { EducationLevelDto } from './dto/educationlevel.v1.dto';
 
@@ -36,11 +38,28 @@ export class MasterDataFactoryV1 {
     return dto;
   }
 
-  mapEducationModelsToDtos(educationLevels: EducationLevelModel[],): EducationLevelDto[] {
-    return educationLevels.map((educationLevel) => this.mapEducationModelToDto(educationLevel),);
+  mapRoleModelsToDtos(data: RoleModel[]): RoleDto[] {
+    return data.map((item) => this.mapRoleModelToRoleDto(item));
   }
-  
-  mapEducationModelToDto(educationLevel: EducationLevelModel,): EducationLevelDto {
+
+  mapRoleModelToRoleDto(data: RoleModel): RoleDto {
+    return {
+      id: data.id,
+      name: data.name,
+    };
+  }
+
+  mapEducationModelsToDtos(
+    educationLevels: EducationLevelModel[],
+  ): EducationLevelDto[] {
+    return educationLevels.map((educationLevel) =>
+      this.mapEducationModelToDto(educationLevel),
+    );
+  }
+
+  mapEducationModelToDto(
+    educationLevel: EducationLevelModel,
+  ): EducationLevelDto {
     return {
       id: educationLevel.id,
       level: educationLevel.level,
