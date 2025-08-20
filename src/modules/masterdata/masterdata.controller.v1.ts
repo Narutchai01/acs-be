@@ -39,7 +39,7 @@ export class MasterdataControllerV1 {
     return success<RoleDto[]>(dto, HttpStatus.OK);
   }
 
-  @Get('/educationlevel')
+  @Get('/education-level')
   async getEducationLevels() {
     const dataEducationLevels =
       await this.masterDataService.getEducationLevels();

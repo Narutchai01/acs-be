@@ -14,7 +14,10 @@ import { EducationLevelModel } from 'src/models/educationlavel';
 export class MasterdataService {
   constructor(
     private majorPositionRepository: IMajorPositionRepository,
+    private roleRepository: IRoleRepository,
+    private typeCourseRepository: ITypeCourseRepository,
     private typeRepository: ITypeRepositoty,
+    private educationLevelRepository: IEducationLevelRepository,
   ) {}
 
   async getMajorPosition(): Promise<MajorPositionModel[]> {
