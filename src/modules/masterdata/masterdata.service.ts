@@ -10,6 +10,8 @@ import { TypeCourseModel } from 'src/models/course';
 import { ListTypeModel } from 'src/models/type';
 import { IEducationLevelRepository } from 'src/repositories/educationlevel/educationlvel.abstract';
 import { EducationLevelModel } from 'src/models/educationlavel';
+import { IAcademicPositionRepository } from 'src/repositories/academicposition/academicposition.abstract';
+import { AcademicPositionModel } from 'src/models/academicposition';
 @Injectable()
 export class MasterdataService {
   constructor(
@@ -18,6 +20,7 @@ export class MasterdataService {
     private roleRepository: IRoleRepository,
     private typeCourseRepository: ITypeCourseRepository,
     private educationLevelRepository: IEducationLevelRepository,
+    private academicPositionRepository: IAcademicPositionRepository,
   ) {}
 
   async getMajorPosition(): Promise<MajorPositionModel[]> {
@@ -42,5 +45,9 @@ export class MasterdataService {
 
   async getEducationLevels(): Promise<EducationLevelModel[]> {
     return await this.educationLevelRepository.getEducationLevels();
+  }
+
+  async getAcademicPosition(): Promise<AcademicPositionModel[]> {
+    return this.academicPositionRepository.getAcademicPosition();
   }
 }
