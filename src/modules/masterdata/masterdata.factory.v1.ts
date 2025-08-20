@@ -5,6 +5,8 @@ import { ListTypeModel } from 'src/models/type';
 import { ListTypeDto } from './dto/typelist.v1.dto';
 import { RoleModel } from 'src/models/role';
 import { RoleDto } from './dto/role.v1.dto';
+import { EducationLevelModel } from 'src/models/educationlavel';
+import { EducationLevelDto } from './dto/educationlevel.v1.dto';
 
 @Injectable()
 export class MasterDataFactoryV1 {
@@ -44,6 +46,25 @@ export class MasterDataFactoryV1 {
     return {
       id: data.id,
       name: data.name,
+    };
+  }
+
+  mapEducationModelsToDtos(
+    educationLevels: EducationLevelModel[],
+  ): EducationLevelDto[] {
+    return educationLevels.map((educationLevel) =>
+      this.mapEducationModelToDto(educationLevel),
+    );
+  }
+
+  mapEducationModelToDto(
+    educationLevel: EducationLevelModel,
+  ): EducationLevelDto {
+    return {
+      id: educationLevel.id,
+      level: educationLevel.level,
+      createdDate: educationLevel.createdDate,
+      updatedDate: educationLevel.updatedDate,
     };
   }
 }
