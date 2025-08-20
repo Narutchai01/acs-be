@@ -4,7 +4,7 @@ import { Prisma } from '@prisma/client';
 
 @Injectable()
 export abstract class IRoleRepository {
-  abstract getList(): Promise<RoleModel[]>;
+  abstract getList(): Promise<RoleModel[] | Error>;
   abstract getByName(name: string): Promise<RoleModel | Error>;
   abstract createUserRole(
     data: { userId: number; roleId: number } | Prisma.UserRoleCreateInput,
