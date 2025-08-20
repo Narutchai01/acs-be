@@ -8,6 +8,8 @@ import { ListTypeDto } from './dto/typelist.v1.dto';
 import { RoleDto } from './dto/role.v1.dto';
 import { EducationLevelDto } from './dto/educationlevel.v1.dto';
 import { TypeCourseDto } from './dto/typecourse.v1.dto';
+import { AcademicPositionDto } from './dto/academicposition.v1.dto';
+
 @Controller({
   path: 'master-data',
   version: '1',
@@ -62,5 +64,14 @@ export class MasterdataControllerV1 {
     const types = await this.masterDataService.getType();
     const dto = this.masterDataFactory.mapTypeModelsToDtos(types);
     return success<TypeDto[]>(dto, HttpStatus.OK);
+  }
+
+  @Get('/academic-positions')
+  async getAcademicPosition() {
+    const academicPositions =
+      await this.masterDataService.getAcademicPosition();
+    const dto =
+      this.masterDataFactory.mapAcademicPositionModelsToDtos(academicPositions);
+    return success<AcademicPositionDto[]>(dto, HttpStatus.OK);
   }
 }
