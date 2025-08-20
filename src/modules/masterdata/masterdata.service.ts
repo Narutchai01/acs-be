@@ -7,11 +7,9 @@ import { IRoleRepository } from 'src/repositories/role/role.abtract';
 import { ITypeCourseRepository } from 'src/repositories/typecourse/typecourse.abstract';
 import { RoleModel } from 'src/models/role';
 import { TypeCourseModel } from 'src/models/course';
-import { ITypeRepository } from 'src/repositories/type/type.abstact';
 import { ListTypeModel } from 'src/models/type';
 import { IEducationLevelRepository } from 'src/repositories/educationlevel/educationlvel.abstract';
 import { EducationLevelModel } from 'src/models/educationlavel';
-import { TypeModel } from 'src/models/type';
 @Injectable()
 export class MasterdataService {
   constructor(
@@ -19,7 +17,6 @@ export class MasterdataService {
     private typeRepository: ITypeRepository,
     private roleRepository: IRoleRepository,
     private typeCourseRepository: ITypeCourseRepository,
-    private typeRepository: ITypeRepository,
     private educationLevelRepository: IEducationLevelRepository,
   ) {}
 
@@ -45,9 +42,5 @@ export class MasterdataService {
 
   async getEducationLevels(): Promise<EducationLevelModel[]> {
     return await this.educationLevelRepository.getEducationLevels();
-  }
-
-  async getType(): Promise<TypeModel[]> {
-    return await this.typeRepository.getTypes();
   }
 }
