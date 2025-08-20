@@ -3,8 +3,6 @@ import { MajorPositionModel } from 'src/models/majorposition';
 import { MajorPositionDto } from './dto/majorposition.v1.dto';
 import { RoleModel } from 'src/models/role';
 import { RoleDto } from './dto/role.v1.dto';
-import { TypeCourseModel } from 'src/models/course';
-import { TypeCourseDto } from './dto/typecourse.v1.dto';
 import { ListTypeModel } from 'src/models/type';
 import { ListTypeDto } from './dto/typelist.v1.dto';
 import { EducationLevelModel } from 'src/models/educationlavel';
@@ -13,6 +11,8 @@ import { TypeModel } from 'src/models/type';
 import { TypeDto } from './dto/type.v1.dto';
 import { AcademicPositionModel } from 'src/models/academicposition';
 import { AcademicPositionDto } from './dto/academicposition.v1.dto';
+import { TypeCourseModel } from 'src/models/course';
+import { TypeCourseDto } from './dto/typecourse.v1.dto';
 
 @Injectable()
 export class MasterDataFactoryV1 {
