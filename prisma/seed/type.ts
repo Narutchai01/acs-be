@@ -135,6 +135,18 @@ export const listTypes: Array<Omit<ListType, 'id'>> = [
     createdDate: now,
     updatedDate: now,
   },
+  {
+    name: 'announcement',
+    typeId: 4,
+    createdDate: now,
+    updatedDate: now,
+  },
+    {
+    name: 'newshigtlight',
+    typeId: 4,
+    createdDate: now,
+    updatedDate: now,
+  },
 ];
 
 export const executeType = async (prisma: PrismaClient): Promise<void> => {
