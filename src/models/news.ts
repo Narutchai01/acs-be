@@ -43,3 +43,9 @@ export interface NewsMediaModel extends BaseModel {
   type: ListTypeModel;
   user: UserModel;
 }
+
+export interface CreateNewsMediaModel extends BaseModel {
+  image: string;
+  newsId: number;
+  typeId: number;
+}
