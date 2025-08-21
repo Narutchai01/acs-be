@@ -69,9 +69,11 @@ model User {
   UserRole    UserRole[]
   Admin       Admin?
   News        News[]
+  NewsMedia   NewsMedia[]
   Course      Course[]
   Student     Student?
   Professor   Professor?
+  
 
   @@map("users") // Optional: maps the model to a table named "users" in the database
 }
@@ -127,9 +129,25 @@ model News {
   updatedBy   Int       @map("updated_by")
   category    ListType  @relation(fields: [categoryId], references: [id])
   user        User      @relation(fields: [updatedBy], references: [id])
+  NewsMedia   NewsMedia[]
 
   @@map("news")
 }
+
+model NewsMedia {
+  id          Int       @id @default(autoincrement()) @map("id")
+  image       String    @map("image")
+  newsId      Int       @map("news_id")
+  createdDate DateTime  @default(now()) @map("created_at")
+  updatedDate DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedDate DateTime? @map("deleted_at")
+  createdBy   Int       @map("created_by")
+  updatedBy   Int       @map("updated_by")
+  news        News      @relation(fields: [newsId], references: [id])
+  user        User      @relation(fields: [updatedBy], references: [id])
+
+  @@map("news_media")
+} 
 
 model TypeCourse {
   id          Int      @id @default(autoincrement()) @map("id")
