@@ -53,9 +53,9 @@ export class NewsFactory {
   mapNewsMediaEntityToNewsMediaModel(data: NewsMediaEntity): NewsMediaModel {
     const newsMediaModel = {
       id: data.id,
+      image: data.image,
       newsId: data.newsId,
       typeId: data.typeId,
-      image: data.image,
       createdAt: data.createdDate,
       updatedAt: data.updatedDate,
       deletedAt: data.deletedDate,
