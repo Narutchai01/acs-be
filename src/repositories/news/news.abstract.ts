@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateNewsModel, NewsModel, UpdateNewsModel } from 'src/models/news';
+import { CreateNewsModel, NewsModel, UpdateNewsModel,  NewsMediaModel, } from 'src/models/news';
 import { QueryNewsDto } from 'src/modules/news/dto/get-news.dto';
 
 @Injectable()
@@ -11,4 +11,5 @@ export abstract class INewsRepository {
   abstract updateNews(id: number, data: UpdateNewsModel): Promise<NewsModel>;
   abstract deleteNews(id: number, userId: number): Promise<NewsModel>;
   abstract count(query: QueryNewsDto): Promise<number>;
+  abstract getNewsMedia(): Promise<NewsMediaModel[]>;
 }
