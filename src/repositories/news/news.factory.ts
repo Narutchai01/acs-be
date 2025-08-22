@@ -63,7 +63,9 @@ export class NewsFactory {
       updatedBy: data.updatedBy,
       news: this.mapNewsEntityToNewsModel(data.news),
       type: this.typeFactory.mapListTypeEntityToListTypeModel(data.type),
-      user: this.userFactory.mapUserEntityToUserModel(data.user),
+      user: data.user
+        ? this.userFactory.mapUserEntityToUserModel(data.user)
+        : null,
     };
 
     return newsMediaModel;
