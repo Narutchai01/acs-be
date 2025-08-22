@@ -48,4 +48,6 @@ export interface CreateNewsMediaModel extends BaseModel {
   image: string;
   newsId: number;
   typeId: number;
+  createdBy: number;
+  updatedBy: number;
 }
