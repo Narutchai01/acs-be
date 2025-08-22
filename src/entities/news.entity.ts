@@ -1,4 +1,5 @@
 import { News } from '@prisma/client';
+import { NewsMedia } from '@prisma/client';
 import { ListTypeEntity } from './type.entity';
 import { UserEntity } from './user.entity';
 
@@ -17,4 +18,19 @@ export class NewsEntity implements News {
   id: number;
   category: ListTypeEntity;
   user: UserEntity;
+}
+
+export class NewsMediaEntity implements NewsMedia {
+  id: number;
+  image: string;
+  newsId: number;
+  typeId: number;
+  createdDate: Date;
+  updatedDate: Date;
+  deletedDate: Date | null;
+  createdBy: number;
+  updatedBy: number;
+  news: NewsEntity;
+  type: ListTypeEntity;
+  user: UserEntity | null;
 }
