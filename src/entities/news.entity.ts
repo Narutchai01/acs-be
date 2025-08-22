@@ -32,5 +32,5 @@ export class NewsMediaEntity implements NewsMedia {
   updatedBy: number;
   news: NewsEntity;
   type: ListTypeEntity;
-  user: UserEntity;
+  user: UserEntity | null;
 }
