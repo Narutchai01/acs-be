@@ -41,7 +41,7 @@ export interface NewsMediaModel extends BaseModel {
   typeId: number;
   news: NewsModel;
   type: ListTypeModel;
-  user: UserModel;
+  user: UserModel | null;
 }
 
 export interface CreateNewsMediaModel extends BaseModel {
