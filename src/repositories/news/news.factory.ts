@@ -56,13 +56,15 @@ export class NewsFactory {
       image: data.image,
       newsId: data.newsId,
       typeId: data.typeId,
-      createdAt: data.createdDate,
-      updatedAt: data.updatedDate,
-      deletedAt: data.deletedDate,
+      createdDate: data.createdDate,
+      updatedDate: data.updatedDate,
+      deletedDate: data.deletedDate,
       createdBy: data.createdBy,
       updatedBy: data.updatedBy,
       news: this.mapNewsEntityToNewsModel(data.news),
-      type: this.typeFactory.mapListTypeEntityToListTypeModel(data.type),
+      type: data.type
+        ? this.typeFactory.mapListTypeEntityToListTypeModel(data.type)
+        : null,
       user: data.user
         ? this.userFactory.mapUserEntityToUserModel(data.user)
         : null,
