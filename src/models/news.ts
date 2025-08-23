@@ -40,8 +40,8 @@ export interface NewsMediaModel extends BaseModel {
   newsId: number;
   typeId: number;
   news: NewsModel;
-  type: ListTypeModel;
-  user: UserModel | null;
+  type?: ListTypeModel | null;
+  user?: UserModel | null;
 }
 
 export interface CreateNewsMediaModel extends BaseModel {
