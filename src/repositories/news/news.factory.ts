@@ -42,7 +42,7 @@ export class NewsFactory {
     return newsModel;
   }
 
-   mapNewsMediaEntitiesToNewsMediaModels(
+  mapNewsMediaEntitiesToNewsMediaModels(
     entities: NewsMediaEntity[],
   ): NewsMediaModel[] {
     return entities.map((entity) =>
