@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateNewsDto } from './dto/creat-news.dto';
-import { NewsModel } from 'src/models/news';
+import { CreateNewsDto, CreateNewsMediaDto } from './dto/creat-news.dto';
+import { NewsModel, NewsMediaModel } from 'src/models/news';
 import { INewsRepository } from 'src/repositories/news/news.abstract';
 import { SupabaseService } from 'src/provider/store/supabase/supabase.service';
 import { QueryNewsDto } from './dto/get-news.dto';
@@ -80,5 +80,19 @@ export class NewsService {
 
   async deleteNews(id: number, userId: number): Promise<NewsModel> {
     return this.newsRespository.deleteNews(id, userId);
+  }
+
+  async createNewsMedia(
+    createNewsMedia: CreateNewsMediaDto,
+    file: Express.Multer.File,
+  ): Promise<NewsMediaModel> {
+    const image_url = await this.storage.uploadFile(file, 'news-media');
+
+    const newsMediaData = {
+      ...createNewsMedia,
+      image: image_url,
+    };
+
+    return this.newsRespository.createNewsMedia(newsMediaData);
   }
 }
