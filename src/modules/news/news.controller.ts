@@ -119,7 +119,7 @@ export class NewsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('media')
+  @Post('news-media')
   @UseInterceptors(FileInterceptor('image'))
   async createNewsMedia(
     @UploadedFile() file: Express.Multer.File,
