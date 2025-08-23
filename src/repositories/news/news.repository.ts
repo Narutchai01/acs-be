@@ -11,6 +11,7 @@ import { PrismaService } from 'src/provider/database/prisma/prisma.service';
 import { NewsFactory } from './news.factory';
 import { QueryNewsDto } from 'src/modules/news/dto/get-news.dto';
 import calculatePagination from 'src/core/utils/calculatePagination';
+import { NewsMediaEntity } from 'src/entities/news.entity';
 
 @Injectable()
 export class NewsRepository implements INewsRepository {
@@ -193,7 +194,9 @@ export class NewsRepository implements INewsRepository {
           user: true,
         },
       });
-      return this.newsFactory.mapNewsMediaEntityToNewsMediaModel(newsMedia);
+      return this.newsFactory.mapNewsMediaEntityToNewsMediaModel(
+        newsMedia as NewsMediaEntity,
+      );
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error('Create news media failed:', error.message);
