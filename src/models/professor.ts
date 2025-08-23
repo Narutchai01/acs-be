@@ -1,5 +1,6 @@
 import { BaseModel } from '.';
 import { UserModel } from './user';
+import { CourseModel } from './course';
 
 export interface ProfessorModel extends BaseModel {
   id: number;
@@ -29,4 +30,20 @@ export interface CreateProfessorModel extends BaseModel {
   createDate: Date;
   createdBy: number;
   updatedBy: number;
+}
+
+export interface TeachingAssignmentModel extends BaseModel {
+  id: number;
+  professorId: number;
+  courseId: number;
+  semesterId: number;
+  academicYearId: number;
+  createdDate: Date;
+  updatedDate: Date;
+  deletedDate: Date | null;
+  createdBy: number;
+  updatedBy: number;
+  professor?: ProfessorModel | null;
+  course: CourseModel;
+  user?: UserModel | null;
 }
