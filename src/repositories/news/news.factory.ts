@@ -3,6 +3,8 @@ import { TypeFactory } from '../type/type.factory';
 import { UserFactory } from '../user/user.factory';
 import { NewsEntity } from 'src/entities/news.entity';
 import { NewsModel } from 'src/models/news';
+import { NewsMediaEntity } from 'src/entities/news.entity';
+import { NewsMediaModel } from 'src/models/news';
 
 // Type for News with included relations
 
@@ -38,5 +40,36 @@ export class NewsFactory {
     };
 
     return newsModel;
+  }
+
+  mapNewsMediaEntitiesToNewsMediaModels(
+    entities: NewsMediaEntity[],
+  ): NewsMediaModel[] {
+    return entities.map((entity) =>
+      this.mapNewsMediaEntityToNewsMediaModel(entity),
+    );
+  }
+
+  mapNewsMediaEntityToNewsMediaModel(data: NewsMediaEntity): NewsMediaModel {
+    const newsMediaModel = {
+      id: data.id,
+      image: data.image,
+      newsId: data.newsId,
+      typeId: data.typeId,
+      createdDate: data.createdDate,
+      updatedDate: data.updatedDate,
+      deletedDate: data.deletedDate,
+      createdBy: data.createdBy,
+      updatedBy: data.updatedBy,
+      news: this.mapNewsEntityToNewsModel(data.news),
+      type: data.type
+        ? this.typeFactory.mapListTypeEntityToListTypeModel(data.type)
+        : null,
+      user: data.user
+        ? this.userFactory.mapUserEntityToUserModel(data.user)
+        : null,
+    };
+
+    return newsMediaModel;
   }
 }

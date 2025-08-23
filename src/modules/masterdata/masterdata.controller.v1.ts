@@ -20,6 +20,46 @@ export class MasterdataControllerV1 {
     private readonly masterDataFactory: MasterDataFactoryV1,
   ) {}
 
+  @Get()
+  async getMasterData(@Query('type') type: string) {
+    const [
+      majorPositions,
+      types,
+      roles,
+      typeCourses,
+      listTypes,
+      educationLevels,
+      academicPositions,
+    ] = await Promise.all([
+      this.masterDataService.getMajorPosition(),
+      this.masterDataService.getType(),
+      this.masterDataService.getRole(),
+      this.masterDataService.getTypeCourse(),
+      this.masterDataService.getListType(type),
+      this.masterDataService.getEducationLevels(),
+      this.masterDataService.getAcademicPosition(),
+    ]);
+
+    const dtos = {
+      majorPositions:
+        this.masterDataFactory.mapMajorPositionModelsToDtos(majorPositions),
+      types: this.masterDataFactory.mapTypeModelsToDtos(types),
+      roles: this.masterDataFactory.mapRoleModelsToDtos(roles),
+      typeCourses:
+        this.masterDataFactory.mapTypeCourseModelsToTypeCourseDtos(typeCourses),
+      listTypes:
+        this.masterDataFactory.mapListTypeModelsToListTypeDtos(listTypes),
+      educationLevels:
+        this.masterDataFactory.mapEducationModelsToDtos(educationLevels),
+      academicPositions:
+        this.masterDataFactory.mapAcademicPositionModelsToDtos(
+          academicPositions,
+        ),
+    };
+
+    return success(dtos, HttpStatus.OK);
+  }
+
   @Get('/major-positions')
   async getMajorPosition() {
     const majorPositions = await this.masterDataService.getMajorPosition();
