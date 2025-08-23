@@ -1,5 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CreateNewsModel, NewsModel, UpdateNewsModel } from 'src/models/news';
+import {
+  CreateNewsModel,
+  NewsModel,
+  UpdateNewsModel,
+  NewsMediaModel,
+  CreateNewsMediaModel,
+} from 'src/models/news';
 import { QueryNewsDto } from 'src/modules/news/dto/get-news.dto';
 
 @Injectable()
