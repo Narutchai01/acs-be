@@ -147,7 +147,7 @@ model NewsMedia {
   updatedBy   Int       @map("updated_by")
   news        News      @relation(fields: [newsId], references: [id])
   type        ListType  @relation(fields: [typeId], references: [id])
-  user        User      @relation(fields: [updatedBy], references: [id])
+  user        User?      @relation(fields: [updatedBy], references: [id])
 
   @@map("news_medias")
 } 
