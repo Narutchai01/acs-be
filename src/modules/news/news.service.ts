@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateNewsDto, CreateNewsMediaDto } from './dto/creat-news.dto';
 import { NewsModel, NewsMediaModel } from 'src/models/news';
 import { INewsRepository } from 'src/repositories/news/news.abstract';
@@ -6,12 +6,15 @@ import { SupabaseService } from 'src/provider/store/supabase/supabase.service';
 import { QueryNewsDto } from './dto/get-news.dto';
 import { UpdateNewsDto } from './dto/update-news.dto';
 import { Pageable } from 'src/models';
+import { ITypeRepository } from 'src/repositories/type/type.abstact';
+import { QueryNewsMediaDto } from './dto/get-newsmedia.dto';
 
 @Injectable()
 export class NewsService {
   constructor(
     private newsRespository: INewsRepository,
     private storage: SupabaseService,
+    private typeRepository: ITypeRepository,
   ) {}
 
   async createNews(
@@ -85,14 +88,32 @@ export class NewsService {
   async createNewsMedia(
     createNewsMedia: CreateNewsMediaDto,
     file: Express.Multer.File,
+    userId: number,
   ): Promise<NewsMediaModel> {
     const image_url = await this.storage.uploadFile(file, 'news-media');
 
     const newsMediaData = {
       ...createNewsMedia,
       image: image_url,
+      createdBy: userId,
+      updatedBy: userId,
     };
 
     return this.newsRespository.createNewsMedia(newsMediaData);
+  }
+
+  async getNewsMedia(query: QueryNewsMediaDto): Promise<NewsMediaModel[]> {
+    const type = await this.typeRepository.getListTypeByName(query.type);
+    if (!type)
+      throw new HttpException(
+        ` type with name ${query.type} not found `,
+        HttpStatus.NOT_FOUND,
+      );
+    const typeId = type.id;
+    return this.newsRespository.getNewsMedia(
+      typeId,
+      query.isUser,
+      query.pageSize,
+    );
   }
 }
