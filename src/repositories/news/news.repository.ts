@@ -1,6 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { INewsRepository } from './news.abstract';
-import { CreateNewsModel, NewsModel, UpdateNewsModel } from 'src/models/news';
+import {
+  CreateNewsModel,
+  NewsModel,
+  UpdateNewsModel,
+  NewsMediaModel,
+  CreateNewsMediaModel,
+} from 'src/models/news';
 import { PrismaService } from 'src/provider/database/prisma/prisma.service';
 import { NewsFactory } from './news.factory';
 import { QueryNewsDto } from 'src/modules/news/dto/get-news.dto';
@@ -173,6 +179,33 @@ export class NewsRepository implements INewsRepository {
       } else {
         console.error('Unknown error:', error);
         throw new Error('Unable to count news: Unknown error occurred');
+      }
+    }
+  }
+
+  async createNewsMedia(data: CreateNewsMediaModel): Promise<NewsMediaModel> {
+    try {
+      const newsMedia = await this.prisma.newsMedia.create({
+        data,
+        include: {
+          news: {
+            include: {
+              category: true,
+              user: true,
+            },
+          },
+          type: true,
+          user: true,
+        },
+      });
+      return this.newsFactory.mapNewsMediaEntityToNewsMediaModel(newsMedia);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Create news media failed:', error.message);
+        throw new Error(`Unable to create news media: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to create news media: Unknown error occurred');
       }
     }
   }
