@@ -22,6 +22,7 @@ import { Response } from 'express';
 import { NewsFactory } from './news.factory';
 import { QueryNewsDto } from './dto/get-news.dto';
 import { UpdateNewsDto } from './dto/update-news.dto';
+import { QueryNewsMediaDto } from './dto/get-newsmedia.dto';
 
 interface AuthenticatedRequest extends ExpressRequest {
   user: {
@@ -72,6 +73,19 @@ export class NewsController {
       status: true,
       data: data,
       error: null,
+    });
+  }
+
+  @Get('news-media')
+  async getNewsMedia(@Res() res: Response , @Query() query : QueryNewsMediaDto) {
+    const newsmedia = await this.newsService.getNewsMedia(query);
+    const dto = newsmedia.map((item) =>
+      this.newsFactory.mapNewsMediaModelToNewsMediaDto(item),
+    );
+    return res.json({
+      status: true,
+      error: null,
+      data: dto,
     });
   }
 
