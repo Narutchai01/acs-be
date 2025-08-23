@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { INewsRepository } from './news.abstract';
-import { CreateNewsModel, NewsModel, UpdateNewsModel } from 'src/models/news';
+import { CreateNewsModel, NewsModel, UpdateNewsModel, NewsMediaModel } from 'src/models/news';
 import { PrismaService } from 'src/provider/database/prisma/prisma.service';
 import { NewsFactory } from './news.factory';
 import { QueryNewsDto } from 'src/modules/news/dto/get-news.dto';
@@ -173,6 +173,36 @@ export class NewsRepository implements INewsRepository {
       } else {
         console.error('Unknown error:', error);
         throw new Error('Unable to count news: Unknown error occurred');
+      }
+    }
+  }
+
+  async getNewsMedia(typeId : number , isUser: boolean , pageSize:number): Promise<NewsMediaModel[]> {
+    try {
+      const newsMediaEntities = await this.prisma.newsMedia.findMany({
+        where: { typeId: typeId , deletedDate: null}, 
+        orderBy: { createdDate: 'desc'},
+        include: {
+        news: {
+            include: {
+              category: true, 
+              user: true,    
+            },
+          },
+        type: true,
+        user: isUser,
+        },
+        take: pageSize,
+      })
+
+      return this.newsFactory.mapNewsMediaEntitiesToNewsMediaModels(newsMediaEntities);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Get news media failed:', error.message);
+        throw new Error(`Unable to get news media: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to get news media: Unknown error occurred');
       }
     }
   }
