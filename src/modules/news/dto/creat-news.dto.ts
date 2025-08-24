@@ -5,3 +5,8 @@ export interface CreateNewsDto {
   categoryId: number;
   dueDate: Date | null;
 }
+
+export interface CreateNewsMediaDto {
+  newsId: number;
+  typeId: number;
+}

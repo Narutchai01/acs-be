@@ -15,7 +15,7 @@ import {
 } from '@nestjs/common';
 import { NewsService } from './news.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CreateNewsDto } from './dto/creat-news.dto';
+import { CreateNewsDto, CreateNewsMediaDto } from './dto/creat-news.dto';
 import { Request as ExpressRequest } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Response } from 'express';
@@ -115,6 +115,17 @@ export class NewsController {
   ) {
     const IdNumber = Number(id);
     const result = await this.newsService.deleteNews(IdNumber, req.user.userId);
+    return result;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('news-media')
+  @UseInterceptors(FileInterceptor('image'))
+  async createNewsMedia(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() body: CreateNewsMediaDto,
+  ) {
+    const result = await this.newsService.createNewsMedia(body, file);
     return result;
   }
 }
