@@ -22,6 +22,7 @@ import { Response } from 'express';
 import { NewsFactory } from './news.factory';
 import { QueryNewsDto } from './dto/get-news.dto';
 import { UpdateNewsDto } from './dto/update-news.dto';
+import { QueryNewsMediaDto } from './dto/get-newsmedia.dto';
 
 interface AuthenticatedRequest extends ExpressRequest {
   user: {
@@ -75,6 +76,35 @@ export class NewsController {
     });
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Post('news-media')
+  @UseInterceptors(FileInterceptor('image'))
+  async createNewsMedia(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() body: CreateNewsMediaDto,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    const result = await this.newsService.createNewsMedia(
+      body,
+      file,
+      req.user.userId,
+    );
+    return result;
+  }
+
+  @Get('news-media')
+  async getNewsMedia(@Res() res: Response, @Query() query: QueryNewsMediaDto) {
+    const newsmedia = await this.newsService.getNewsMedia(query);
+    const dto = newsmedia.map((item) =>
+      this.newsFactory.mapNewsMediaModelToNewsMediaDto(item),
+    );
+    return res.json({
+      status: true,
+      error: null,
+      data: dto,
+    });
+  }
+
   @Get(':id')
   async getNewsById(@Res() res: Response, @Param('id') id: string) {
     const IdNumber = Number(id);
@@ -115,17 +145,6 @@ export class NewsController {
   ) {
     const IdNumber = Number(id);
     const result = await this.newsService.deleteNews(IdNumber, req.user.userId);
-    return result;
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Post('news-media')
-  @UseInterceptors(FileInterceptor('image'))
-  async createNewsMedia(
-    @UploadedFile() file: Express.Multer.File,
-    @Body() body: CreateNewsMediaDto,
-  ) {
-    const result = await this.newsService.createNewsMedia(body, file);
     return result;
   }
 }
