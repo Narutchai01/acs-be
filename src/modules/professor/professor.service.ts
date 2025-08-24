@@ -38,7 +38,7 @@ export class ProfessorService {
       firstNameEn: data.firstNameEn,
       lastNameEn: data.lastNameEn,
       email: data.email,
-      image: image_url,
+      imageUrl: image_url,
       password: password,
       createdBy: createBy,
       updatedBy: createBy,
@@ -48,8 +48,8 @@ export class ProfessorService {
 
     const professorData = {
       userId: user.id,
-      majorPositionId: data.majorPosition,
-      academicPositionId: data.academicPosition,
+      majorPositionId: data.majorPositionId,
+      academicPositionId: data.academicPositionId,
       profRoom: data.profRoom,
       createdBy: createBy,
       updatedBy: createBy,
