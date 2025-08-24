@@ -76,6 +76,22 @@ export class NewsController {
     });
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Post('news-media')
+  @UseInterceptors(FileInterceptor('image'))
+  async createNewsMedia(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() body: CreateNewsMediaDto,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    const result = await this.newsService.createNewsMedia(
+      body,
+      file,
+      req.user.userId,
+    );
+    return result;
+  }
+
   @Get('news-media')
   async getNewsMedia(@Res() res: Response, @Query() query: QueryNewsMediaDto) {
     const newsmedia = await this.newsService.getNewsMedia(query);
