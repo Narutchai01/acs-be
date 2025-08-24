@@ -34,10 +34,9 @@ export interface UpdateProfessorModel extends BaseModel {
 
 export interface CreateProfessorModel extends BaseModel {
   userId: number;
-  academicPosition: number;
-  majorPosition: number;
+  academicPositionId: number;
+  majorPositionId: number;
   profRoom: string;
-  createDate: Date;
   createdBy: number;
   updatedBy: number;
 }

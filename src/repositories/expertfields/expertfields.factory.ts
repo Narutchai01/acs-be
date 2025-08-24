@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { ExpertFieldEntity } from 'src/entities/expertfields.entity';
 import { ExpertFieldModel } from 'src/models/expertfields';
 import { ProfessorFactory } from '../professor/professor.factory';
@@ -6,6 +6,7 @@ import { TypeFactory } from '../type/type.factory';
 @Injectable()
 export class ExpertFieldsFactory {
   constructor(
+    @Inject(forwardRef(() => ProfessorFactory))
     private professorFactory: ProfessorFactory,
     private typeListFactory: TypeFactory,
   ) {}
@@ -21,23 +22,14 @@ export class ExpertFieldsFactory {
   mapExpertFieldEntityToExpertFieldModel(
     data: ExpertFieldEntity,
   ): ExpertFieldModel {
-    return {
+    const expertField: ExpertFieldModel = {
       id: data.id,
       professorId: data.professorId,
-      fieldId: data.fieldId,
+      field: data.field,
       createdDate: data.createdDate,
       updatedDate: data.updatedDate,
       deletedDate: data.deletedDate,
-      createdBy: data.createdBy,
-      updatedBy: data.updatedBy,
-      professor: data.professor
-        ? this.professorFactory.mapProfessorEntityToProfessorModel(
-            data.professor,
-          )
-        : undefined,
-      field: data.field
-        ? this.typeListFactory.mapListTypeEntityToListTypeModel(data.field)
-        : undefined,
     };
+    return expertField;
   }
 }

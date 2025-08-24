@@ -237,21 +237,21 @@ model Curriculum {
 }
 
 model Professor {
-  id                  Int              @id @default(autoincrement()) @map("id")
-  userId              Int              @unique
-  academicPositionId  Int
-  majorPositionId     Int
-  profRoom            String
-  createdDate         DateTime         @default(now()) @map("created_date")
-  updatedDate         DateTime         @updatedAt @map("updated_date")
-  deletedDate         DateTime?        @map("deleted_date")
-  createdBy           Int              @map("created_by")
-  updatedBy           Int              @map("updated_by")
-  user                User             @relation(fields: [userId], references: [id])
-  education           Education[]
-  expertFields        ExpertFields[]
-  academicPositionRel AcademicPosition @relation(fields: [academicPositionId], references: [id])
-  majorPosition       MajorPosition    @relation(fields: [majorPositionId], references: [id])
+  id                 Int              @id @default(autoincrement()) @map("id")
+  userId             Int              @unique
+  academicPositionId Int
+  majorPositionId    Int
+  profRoom           String
+  createdDate        DateTime         @default(now()) @map("created_date")
+  updatedDate        DateTime         @updatedAt @map("updated_date")
+  deletedDate        DateTime?        @map("deleted_date")
+  createdBy          Int              @map("created_by")
+  updatedBy          Int              @map("updated_by")
+  user               User             @relation(fields: [userId], references: [id])
+  education          Education[]
+  expertFields       ExpertFields[]
+  academicPosition   AcademicPosition @relation(fields: [academicPositionId], references: [id])
+  majorPosition      MajorPosition    @relation(fields: [majorPositionId], references: [id])
 
   @@map("professors")
 }

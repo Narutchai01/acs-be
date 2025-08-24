@@ -42,6 +42,12 @@ import { EducationLevelRepository } from './educationlevel/educationlvel.reposit
 import { MajorPositionFactory } from './majorposition/majorposition.factory';
 import { IMajorPositionRepository } from './majorposition/majorposition.abstract';
 import { MajorPositionRepository } from './majorposition/majorposition.repository';
+import { EducationFactory } from './education/education.factory';
+import { IEducationRepository } from './education/education.abstract';
+import { EducationRepository } from './education/education.repository';
+import { ExpertFieldsFactory } from './expertfields/expertfields.factory';
+import { IExpertFieldsRepository } from './expertfields/expertfields.abstract';
+import { ExpertFieldsRepository } from './expertfields/expertfields.repository';
 
 @Module({
   imports: [PrismaModule],
@@ -102,6 +108,14 @@ import { MajorPositionRepository } from './majorposition/majorposition.repositor
       provide: IMajorPositionRepository,
       useClass: MajorPositionRepository,
     },
+    {
+      provide: IEducationRepository,
+      useClass: EducationRepository,
+    },
+    {
+      provide: IExpertFieldsRepository,
+      useClass: ExpertFieldsRepository,
+    },
     MajorPositionFactory,
     EducationLevelFactory,
     NewsFactory,
@@ -116,6 +130,8 @@ import { MajorPositionRepository } from './majorposition/majorposition.repositor
     TypeCourseFactory,
     AcademicPositionFactory,
     ProfessorFactory,
+    EducationFactory,
+    ExpertFieldsFactory,
   ],
   exports: [
     ITypeRepository,
@@ -132,6 +148,8 @@ import { MajorPositionRepository } from './majorposition/majorposition.repositor
     IProfessorRepository,
     IEducationLevelRepository,
     IMajorPositionRepository,
+    IEducationRepository,
+    IExpertFieldsRepository,
   ],
 })
 export class RepositoriesModule {}

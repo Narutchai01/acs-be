@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { UserFactory } from '../user/user.factory';
 import { ProfessorEntity } from 'src/entities/professor.entity';
 import { ProfessorModel } from 'src/models/professor';
@@ -11,7 +11,9 @@ import { MajorPositionFactory } from '../majorposition/majorposition.factory';
 export class ProfessorFactory {
   constructor(
     private userFactory: UserFactory,
+    @Inject(forwardRef(() => EducationFactory))
     private educationFactory: EducationFactory,
+    @Inject(forwardRef(() => ExpertFieldsFactory))
     private expertFieldFactory: ExpertFieldsFactory,
     private academicPositionFactory: AcademicPositionFactory,
     private majorPositionFactory: MajorPositionFactory,
