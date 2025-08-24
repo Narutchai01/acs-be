@@ -1,14 +1,27 @@
 import { BaseModel } from '.';
+import { AcademicPositionModel } from './academicposition';
+import { EducationModel } from './education';
+import { ExpertFieldModel } from './expertfields';
+import { MajorPositionModel } from './majorposition';
 import { UserModel } from './user';
 
 export interface ProfessorModel extends BaseModel {
   id: number;
   userId: number;
-  academicPosition: number;
-  majorPosition: number;
+  academicPositionId: number;
+  majorPositionId: number;
   profRoom: string;
   fieldOffexpertise: string;
-  user: UserModel;
+  createdDate: Date;
+  updatedDate: Date;
+  deletedDate: Date | null;
+  createdBy: number;
+  updatedBy: number;
+  user?: UserModel | null;
+  education: EducationModel[];
+  expertFields: ExpertFieldModel[];
+  academicPosition?: AcademicPositionModel | null;
+  majorPosition?: MajorPositionModel | null;
 }
 
 export interface UpdateProfessorModel extends BaseModel {

@@ -19,6 +19,6 @@ export class ProfessorEntity implements Professor {
   user?: UserEntity | null;
   education: EducationEntity[];
   expertFields: ExpertFieldEntity[];
-  academicPositionRel?: AcademicPositionEntity | null;
+  academicPosition?: AcademicPositionEntity | null;
   majorPosition?: MajorPositionEntity | null;
 }

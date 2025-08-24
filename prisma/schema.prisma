@@ -60,7 +60,7 @@ model User {
   email       String      @unique @map("email")
   nickName    String?     @map("nick_name")
   imageUrl    String?     @map("image_url")
-  password    String      @map("password")
+  password    String?     @map("password")
   createdDate DateTime    @default(now()) @map("created_date")
   updatedDate DateTime    @default(now()) @updatedAt @map("updated_date")
   deletedDate DateTime?   @map("deleted_date")

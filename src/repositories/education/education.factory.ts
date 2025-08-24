@@ -11,6 +11,12 @@ export class EducationFactory {
     private educationLevelFactory: EducationLevelFactory,
   ) {}
 
+  mapEducationEntitiesToEducationModels(
+    data: EducationEntity[],
+  ): EducationModel[] {
+    return data.map((item) => this.mapEducationEntityToEducationModel(item));
+  }
+
   mapEducationEntityToEducationModel(data: EducationEntity): EducationModel {
     return {
       id: data.id,
