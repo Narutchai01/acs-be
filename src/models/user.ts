@@ -14,6 +14,6 @@ export interface UserModel extends BaseModel {
   email: string;
   nickName: string | null;
   imageUrl?: string | null;
-  password: string;
+  password?: string | null;
   userRole: UserRoleModel[];
 }

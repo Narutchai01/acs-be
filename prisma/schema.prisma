@@ -242,7 +242,6 @@ model Professor {
   academicPositionId  Int
   majorPositionId     Int
   profRoom            String
-  fieldOffexpertise   String
   createdDate         DateTime         @default(now()) @map("created_date")
   updatedDate         DateTime         @updatedAt @map("updated_date")
   deletedDate         DateTime?        @map("deleted_date")

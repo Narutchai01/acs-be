@@ -24,7 +24,6 @@ export class ProfessorFactory {
       academicPositionId: data.academicPositionId,
       majorPositionId: data.majorPositionId,
       profRoom: data.profRoom,
-      fieldOffexpertise: data.fieldOffexpertise,
       createdDate: data.createdDate,
       updatedDate: data.updatedDate,
       deletedDate: data.deletedDate,

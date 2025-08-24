@@ -11,7 +11,6 @@ export interface ProfessorModel extends BaseModel {
   academicPositionId: number;
   majorPositionId: number;
   profRoom: string;
-  fieldOffexpertise: string;
   createdDate: Date;
   updatedDate: Date;
   deletedDate: Date | null;
@@ -38,7 +37,6 @@ export interface CreateProfessorModel extends BaseModel {
   academicPosition: number;
   majorPosition: number;
   profRoom: string;
-  fieldOffexpertise: string;
   createDate: Date;
   createdBy: number;
   updatedBy: number;
