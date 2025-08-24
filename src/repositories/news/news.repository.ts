@@ -209,4 +209,40 @@ export class NewsRepository implements INewsRepository {
       }
     }
   }
+
+  async getNewsMedia(
+    typeId: number,
+    isUser: boolean,
+    pageSize: number,
+  ): Promise<NewsMediaModel[]> {
+    try {
+      const newsMediaEntities = await this.prisma.newsMedia.findMany({
+        where: { typeId: typeId, deletedDate: null },
+        orderBy: { createdDate: 'desc' },
+        include: {
+          news: {
+            include: {
+              category: true,
+              user: true,
+            },
+          },
+          type: true,
+          user: isUser,
+        },
+        take: pageSize,
+      });
+
+      return this.newsFactory.mapNewsMediaEntitiesToNewsMediaModels(
+        newsMediaEntities,
+      );
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Get news media failed:', error.message);
+        throw new Error(`Unable to get news media: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to get news media: Unknown error occurred');
+      }
+    }
+  }
 }

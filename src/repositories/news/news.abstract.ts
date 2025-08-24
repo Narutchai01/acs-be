@@ -18,4 +18,9 @@ export abstract class INewsRepository {
   abstract deleteNews(id: number, userId: number): Promise<NewsModel>;
   abstract count(query: QueryNewsDto): Promise<number>;
   abstract createNewsMedia(data: CreateNewsMediaModel): Promise<NewsMediaModel>;
+  abstract getNewsMedia(
+    typeId: number,
+    isUser: boolean,
+    pageSize: number,
+  ): Promise<NewsMediaModel[]>;
 }
