@@ -15,7 +15,7 @@ import {
 } from '@nestjs/common';
 import { NewsService } from './news.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CreateNewsDto } from './dto/creat-news.dto';
+import { CreateNewsDto, CreateNewsMediaDto } from './dto/creat-news.dto';
 import { Request as ExpressRequest } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Response } from 'express';
@@ -77,7 +77,7 @@ export class NewsController {
   }
 
   @Get('news-media')
-  async getNewsMedia(@Res() res: Response , @Query() query : QueryNewsMediaDto) {
+  async getNewsMedia(@Res() res: Response, @Query() query: QueryNewsMediaDto) {
     const newsmedia = await this.newsService.getNewsMedia(query);
     const dto = newsmedia.map((item) =>
       this.newsFactory.mapNewsMediaModelToNewsMediaDto(item),

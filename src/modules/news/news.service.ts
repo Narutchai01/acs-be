@@ -1,7 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { CreateNewsDto } from './dto/creat-news.dto';
-import { NewsModel } from 'src/models/news';
-import { NewsMediaModel } from 'src/models/news';
+import { CreateNewsDto, CreateNewsMediaDto } from './dto/creat-news.dto';
+import { NewsModel, NewsMediaModel } from 'src/models/news';
 import { INewsRepository } from 'src/repositories/news/news.abstract';
 import { SupabaseService } from 'src/provider/store/supabase/supabase.service';
 import { QueryNewsDto } from './dto/get-news.dto';
@@ -15,7 +14,7 @@ export class NewsService {
   constructor(
     private newsRespository: INewsRepository,
     private storage: SupabaseService,
-    private typeRepository : ITypeRepository
+    private typeRepository: ITypeRepository,
   ) {}
 
   async createNews(
@@ -86,10 +85,35 @@ export class NewsService {
     return this.newsRespository.deleteNews(id, userId);
   }
 
+  async createNewsMedia(
+    createNewsMedia: CreateNewsMediaDto,
+    file: Express.Multer.File,
+    userId: number,
+  ): Promise<NewsMediaModel> {
+    const image_url = await this.storage.uploadFile(file, 'news-media');
+
+    const newsMediaData = {
+      ...createNewsMedia,
+      image: image_url,
+      createdBy: userId,
+      updatedBy: userId,
+    };
+
+    return this.newsRespository.createNewsMedia(newsMediaData);
+  }
+
   async getNewsMedia(query: QueryNewsMediaDto): Promise<NewsMediaModel[]> {
-    const type = await this.typeRepository.getListTypeByName(query.type)
-    if (!type) throw new HttpException(` type with name ${query.type} not found `, HttpStatus.NOT_FOUND)
-    const typeId = type.id
-    return this.newsRespository.getNewsMedia(typeId, query.isUser, query.pageSize);
+    const type = await this.typeRepository.getListTypeByName(query.type);
+    if (!type)
+      throw new HttpException(
+        ` type with name ${query.type} not found `,
+        HttpStatus.NOT_FOUND,
+      );
+    const typeId = type.id;
+    return this.newsRespository.getNewsMedia(
+      typeId,
+      query.isUser,
+      query.pageSize,
+    );
   }
 }
