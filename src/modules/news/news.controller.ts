@@ -12,6 +12,7 @@ import {
   Param,
   Patch,
   Delete,
+  HttpStatus,
 } from '@nestjs/common';
 import { NewsService } from './news.service';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -23,6 +24,10 @@ import { NewsFactory } from './news.factory';
 import { QueryNewsDto } from './dto/get-news.dto';
 import { UpdateNewsDto } from './dto/update-news.dto';
 import { QueryNewsMediaDto } from './dto/get-newsmedia.dto';
+import { success } from 'src/core/interceptors/response.helper';
+import { NewsMediaDto } from './dto/newsmedia.dto';
+import { NewsDto } from './dto/news.dto';
+import { Pageable } from 'src/models';
 
 interface AuthenticatedRequest extends ExpressRequest {
   user: {
@@ -31,7 +36,10 @@ interface AuthenticatedRequest extends ExpressRequest {
   };
 }
 
-@Controller('news')
+@Controller({
+  path: 'news',
+  version: '1',
+})
 export class NewsController {
   constructor(
     private readonly newsService: NewsService,
@@ -56,7 +64,7 @@ export class NewsController {
   }
 
   @Get()
-  async getNews(@Res() res: Response, @Query() quey: QueryNewsDto) {
+  async getNews(@Query() quey: QueryNewsDto) {
     const news = await this.newsService.getNews(quey);
     const dto = news.rows.map((item) =>
       this.newsFactory.mapNewsModelToNewsDto(item),
@@ -69,11 +77,7 @@ export class NewsController {
       pageSize: news.pageSize,
     };
 
-    return res.json({
-      status: true,
-      data: data,
-      error: null,
-    });
+    return success<Pageable<NewsDto>>(data, HttpStatus.OK);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -89,20 +93,16 @@ export class NewsController {
       file,
       req.user.userId,
     );
-    return result;
+    return success<NewsMediaDto>(result, HttpStatus.CREATED);
   }
 
   @Get('news-media')
-  async getNewsMedia(@Res() res: Response, @Query() query: QueryNewsMediaDto) {
+  async getNewsMedia(@Query() query: QueryNewsMediaDto) {
     const newsmedia = await this.newsService.getNewsMedia(query);
     const dto = newsmedia.map((item) =>
       this.newsFactory.mapNewsMediaModelToNewsMediaDto(item),
     );
-    return res.json({
-      status: true,
-      error: null,
-      data: dto,
-    });
+    return success<NewsMediaDto[]>(dto, HttpStatus.OK);
   }
 
   @Get(':id')
@@ -134,7 +134,7 @@ export class NewsController {
       req.user.userId,
     );
 
-    return result;
+    return success<NewsDto>(result, HttpStatus.OK);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -145,6 +145,6 @@ export class NewsController {
   ) {
     const IdNumber = Number(id);
     const result = await this.newsService.deleteNews(IdNumber, req.user.userId);
-    return result;
+    return success<NewsDto>(result, HttpStatus.OK);
   }
 }

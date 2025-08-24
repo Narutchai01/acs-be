@@ -6,10 +6,7 @@ import { TypeFactory } from '../type/type.factory';
 
 @Injectable()
 export class NewsFactory {
-  constructor(
-    private typeFactory: TypeFactory,
-  ) {}
-
+  constructor(private typeFactory: TypeFactory) {}
 
   mapNewsModelsToNewsDtos(data: NewsModel[]): NewsDto[] {
     return data.map((item) => this.mapNewsModelToNewsDto(item));
@@ -33,25 +30,26 @@ export class NewsFactory {
     return dto;
   }
 
-   mapNewsMediaModelsToNewsMediaDtos(data: NewsMediaModel[]): NewsMediaDto[] {
-      return data.map((item) => this.mapNewsMediaModelToNewsMediaDto(item));
-    }
-  
-    mapNewsMediaModelToNewsMediaDto(data: NewsMediaModel): NewsMediaDto {
-      const newsMediaDto = {
-        id: data.id,
-        image: data.image,
-        newsId: data.newsId,
-        typeId: data.typeId,
-        createdAt: data.createdDate,
-        updatedAt: data.updatedDate,
-        deletedAt: data.deletedDate,
-        createdBy: data.createdBy,
-        updatedBy: data.updatedBy,
-        news: this.mapNewsModelToNewsDto(data.news),
-        type: this.typeFactory.mapListTypeModelToListTypeDto(data.type),
-      };    
-      return newsMediaDto;
-    }
+  mapNewsMediaModelsToNewsMediaDtos(data: NewsMediaModel[]): NewsMediaDto[] {
+    return data.map((item) => this.mapNewsMediaModelToNewsMediaDto(item));
+  }
 
+  mapNewsMediaModelToNewsMediaDto(data: NewsMediaModel): NewsMediaDto {
+    const newsMediaDto = {
+      id: data.id,
+      image: data.image,
+      newsId: data.newsId,
+      typeId: data.typeId,
+      createdAt: data.createdDate,
+      updatedAt: data.updatedDate,
+      deletedAt: data.deletedDate,
+      createdBy: data.createdBy,
+      updatedBy: data.updatedBy,
+      news: this.mapNewsModelToNewsDto(data.news),
+      type: data.type
+        ? this.typeFactory.mapListTypeModelToListTypeDto(data.type)
+        : null,
+    };
+    return newsMediaDto;
+  }
 }
