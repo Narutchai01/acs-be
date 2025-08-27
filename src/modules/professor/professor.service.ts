@@ -5,6 +5,7 @@ import { IUserRepository } from 'src/repositories/user/user.abstract';
 import { CreateProfessorDtoV1 } from './dto/create-professor.dto.v1';
 import { PasswordService } from 'src/core/utils/password/password.service';
 import { SupabaseService } from 'src/provider/store/supabase/supabase.service';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class ProfessorService {
@@ -13,6 +14,7 @@ export class ProfessorService {
     private userRepository: IUserRepository,
     private passwordService: PasswordService,
     private supabaseService: SupabaseService,
+    private mailService: MailService,
   ) {}
 
   async createProfessor(
@@ -20,11 +22,12 @@ export class ProfessorService {
     image: Express.Multer.File,
     createBy: number,
   ): Promise<ProfessorModel> {
-    const password = data.isPassword
-      ? await this.passwordService.hashPassword(
-          await this.passwordService.generateRandomPassword(12),
-        )
-      : null;
+    let password: string = '';
+    let hashPassword: string = '';
+    if (data.isPassword) {
+      password = await this.passwordService.generateRandomPassword(8);
+      hashPassword = await this.passwordService.hashPassword(password);
+    }
 
     const image_url = await this.supabaseService.uploadFile(image, 'professor');
 
@@ -39,7 +42,7 @@ export class ProfessorService {
       lastNameEn: data.lastNameEn,
       email: data.email,
       imageUrl: image_url,
-      password: password,
+      password: hashPassword,
       createdBy: createBy,
       updatedBy: createBy,
     };
@@ -76,6 +79,10 @@ export class ProfessorService {
     await this.professorRepository.createExpertFields(expertFields);
 
     professor = await this.professorRepository.getProfessorById(professor.id);
+
+    if (data.isPassword && password) {
+      await this.mailService.sendProfessorCode(user.email, password);
+    }
 
     return professor;
   }

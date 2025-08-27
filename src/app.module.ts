@@ -21,6 +21,7 @@ import { AcademicPositionModule } from './modules/academicposition/academicposit
 import { EducationlevelModule } from './modules/educationlevel/educationlevel.module';
 import { MasterdataModule } from './modules/masterdata/masterdata.module';
 import { ProfessorModule } from './modules/professor/professor.module';
+import { MailModule } from './modules/mail/mail.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { ProfessorModule } from './modules/professor/professor.module';
     EducationlevelModule,
     MasterdataModule,
     ProfessorModule,
+    MailModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],
