@@ -9,7 +9,7 @@ export class UserEntity implements User {
   email!: string;
   nickName!: string | null;
   imageUrl!: string | null;
-  password!: string;
+  password!: string | null;
   createdDate!: Date;
   updatedDate!: Date;
   deletedDate!: Date | null;

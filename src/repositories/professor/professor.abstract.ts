@@ -1,15 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import {
-  CreateProfessorModel,
-  UpdateProfessorModel,
-  ProfessorModel,
-} from 'src/models/professor';
+import { CreateEducationModel } from 'src/models/education';
+import { CreateProfessorModel, ProfessorModel } from 'src/models/professor';
+import { CreateExpertField } from 'src/models/expertfields';
 
 @Injectable()
 export abstract class IProfessorRepository {
   abstract createProfessor(data: CreateProfessorModel): Promise<ProfessorModel>;
-  abstract updateProfessor(
-    id: number,
-    data: UpdateProfessorModel,
-  ): Promise<ProfessorModel>;
+  abstract createEducations(data: CreateEducationModel[]): Promise<void>;
+  abstract createExpertFields(data: CreateExpertField[]): Promise<void>;
+  abstract getProfessorById(id: number): Promise<ProfessorModel>;
 }

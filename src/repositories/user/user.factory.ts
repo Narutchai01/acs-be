@@ -24,7 +24,7 @@ export class UserFactory {
       email: data.email,
       nickName: data.nickName || null,
       imageUrl: data.imageUrl || null,
-      password: data.password,
+      password: data.password || null,
       createdDate: data.createdDate,
       updatedDate: data.updatedDate,
       deletedDate: data.deletedDate || null,

@@ -6,6 +6,7 @@ export interface EducationModel {
   levelId: number;
   professorId: number;
   education: string;
+  university: string;
   createdDate: Date;
   updatedDate: Date;
   deletedDate: Date | null;
@@ -19,6 +20,7 @@ export interface CreateEducationModel {
   professorId: number;
   education: string;
   levelId: number;
+  university: string;
   createdBy: number;
   updatedBy: number;
 }

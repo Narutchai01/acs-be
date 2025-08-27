@@ -3,6 +3,7 @@ import { ProfessorEntity } from './professor.entity';
 import { EducationLevel } from '@prisma/client';
 
 export class EducationEntity implements Education {
+  university: string;
   id: number;
   levelId: number;
   professorId: number;

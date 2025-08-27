@@ -20,6 +20,8 @@ import { CurriculumModule } from './modules/curriculum/curriculum.module';
 import { AcademicPositionModule } from './modules/academicposition/academicposition.module';
 import { EducationlevelModule } from './modules/educationlevel/educationlevel.module';
 import { MasterdataModule } from './modules/masterdata/masterdata.module';
+import { ProfessorModule } from './modules/professor/professor.module';
+import { MailModule } from './modules/mail/mail.module';
 
 @Module({
   imports: [
@@ -40,6 +42,8 @@ import { MasterdataModule } from './modules/masterdata/masterdata.module';
     AcademicPositionModule,
     EducationlevelModule,
     MasterdataModule,
+    ProfessorModule,
+    MailModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],

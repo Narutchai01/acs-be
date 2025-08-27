@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { EducationEntity } from 'src/entities/education.entity';
 import { EducationModel } from 'src/models/education';
 import { ProfessorFactory } from '../professor/professor.factory';
@@ -7,9 +7,16 @@ import { EducationLevelFactory } from '../educationlevel/educationlvel.factory';
 @Injectable()
 export class EducationFactory {
   constructor(
+    @Inject(forwardRef(() => ProfessorFactory))
     private professorFactory: ProfessorFactory,
     private educationLevelFactory: EducationLevelFactory,
   ) {}
+
+  mapEducationEntitiesToEducationModels(
+    data: EducationEntity[],
+  ): EducationModel[] {
+    return data.map((item) => this.mapEducationEntityToEducationModel(item));
+  }
 
   mapEducationEntityToEducationModel(data: EducationEntity): EducationModel {
     return {
@@ -17,6 +24,7 @@ export class EducationFactory {
       levelId: data.levelId,
       professorId: data.professorId,
       education: data.education,
+      university: data.university,
       createdDate: data.createdDate,
       updatedDate: data.updatedDate,
       deletedDate: data.deletedDate,

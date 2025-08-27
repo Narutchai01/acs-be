@@ -1,69 +1,75 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/provider/database/prisma/prisma.service';
+import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
 import { IProfessorRepository } from './professor.abstract';
+import { CreateProfessorModel, ProfessorModel } from 'src/models/professor';
+import { PrismaService } from 'src/provider/database/prisma/prisma.service';
 import { ProfessorFactory } from './professor.factory';
-import {
-  ProfessorModel,
-  UpdateProfessorModel,
-  CreateProfessorModel,
-} from 'src/models/professor';
+import { CreateEducationModel } from 'src/models/education';
+import { CreateExpertField } from 'src/models/expertfields';
 
 @Injectable()
 export class ProfessorRepository implements IProfessorRepository {
   constructor(
-    private readonly prisma: PrismaService,
-    private readonly ProfessorFactory: ProfessorFactory,
+    private prisma: PrismaService,
+    private professorFactory: ProfessorFactory,
   ) {}
 
   async createProfessor(data: CreateProfessorModel): Promise<ProfessorModel> {
-    try {
-      const professor = await this.prisma.professor.create({
-        data,
-        include: {
-          user: true,
+    const professor = await this.prisma.professor.create({
+      data,
+      include: {
+        user: true,
+        education: {
+          where: { deletedDate: null },
+          include: {
+            educationLevel: true,
+          },
         },
-      });
-      return this.ProfessorFactory.mapProfessorEntityToProfessorModel(
-        professor,
-      );
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error('Create professor failed:', error.message);
-        throw new Error(`Unable to create professor: ${error.message}`);
-      } else {
-        console.error('Unknown error:', error);
-        throw new Error('Unable to create professor: Unknown error occurred');
-      }
-    }
+        expertFields: {
+          where: { deletedDate: null },
+        },
+        academicPosition: true,
+        majorPosition: true,
+      },
+    });
+
+    return this.professorFactory.mapProfessorEntityToProfessorModel(professor);
   }
 
-  async updateProfessor(
-    id: number,
-    data: UpdateProfessorModel,
-  ): Promise<ProfessorModel> {
-    try {
-      const updateData = {
-        ...data,
-        updatedBy: data.updatedBy === null ? undefined : data.updatedBy,
-      };
-      const professorEntity = await this.prisma.professor.update({
-        where: { id: id },
-        data: updateData,
-        include: {
-          user: true,
+  async createEducations(data: CreateEducationModel[]): Promise<void> {
+    await this.prisma.education.createMany({
+      data,
+    });
+  }
+
+  async createExpertFields(data: CreateExpertField[]): Promise<void> {
+    await this.prisma.expertFields.createMany({
+      data,
+    });
+  }
+
+  async getProfessorById(id: number): Promise<ProfessorModel> {
+    const professor = await this.prisma.professor.findFirst({
+      where: { id, deletedDate: null },
+      include: {
+        user: true,
+        education: {
+          where: { deletedDate: null },
+          include: {
+            educationLevel: true,
+          },
         },
-      });
-      return this.ProfessorFactory.mapProfessorEntityToProfessorModel(
-        professorEntity,
-      );
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error('Update professor failed:', error.message);
-        throw new Error(`Unable to update professor: ${error.message}`);
-      } else {
-        console.error('Unknown error:', error);
-        throw new Error('Unable to update professor: Unknown error occurred');
-      }
+        expertFields: {
+          where: { deletedDate: null },
+        },
+        academicPosition: true,
+        majorPosition: true,
+      },
+    });
+
+    if (!professor) {
+      throw new HttpException('Professor not found', HttpStatus.NOT_FOUND);
     }
+
+    return this.professorFactory.mapProfessorEntityToProfessorModel(professor);
   }
 }

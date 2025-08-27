@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { IRoleRepository } from 'src/repositories/role/role.abtract';
 import { IUserRepository } from 'src/repositories/user/user.abstract';
 import { UserModel } from 'src/models/user';
@@ -35,6 +35,10 @@ export class AuthService {
     const roleResult = await this.RoleRepository.getByName(role);
     if (roleResult instanceof Error) {
       return null;
+    }
+
+    if (!user.password) {
+      throw new HttpException('Password not set', HttpStatus.UNAUTHORIZED);
     }
 
     const isPasswordValid = await this.passwordService.comparePassword(
