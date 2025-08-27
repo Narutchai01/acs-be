@@ -17,7 +17,6 @@ import {
 import { NewsService } from './news.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateNewsDto, CreateNewsMediaDto } from './dto/creat-news.dto';
-import { Request as ExpressRequest } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Response } from 'express';
 import { NewsFactory } from './news.factory';
@@ -28,13 +27,7 @@ import { success } from 'src/core/interceptors/response.helper';
 import { NewsMediaDto } from './dto/newsmedia.dto';
 import { NewsDto } from './dto/news.dto';
 import { Pageable } from 'src/models';
-
-interface AuthenticatedRequest extends ExpressRequest {
-  user: {
-    userId: number;
-    roleId: number;
-  };
-}
+import { AuthenticatedRequest } from 'src/models/auth';
 
 @Controller({
   path: 'news',
@@ -60,7 +53,8 @@ export class NewsController {
       req.user.userId,
     );
 
-    return result;
+    const dto = this.newsFactory.mapNewsModelToNewsDto(result);
+    return success<NewsDto>(dto, HttpStatus.CREATED);
   }
 
   @Get()
@@ -110,11 +104,7 @@ export class NewsController {
     const IdNumber = Number(id);
     const news = await this.newsService.getNewsById(IdNumber);
     const dto = this.newsFactory.mapNewsModelToNewsDto(news);
-    return res.json({
-      status: true,
-      data: dto,
-      error: null,
-    });
+    return success<NewsDto>(dto, HttpStatus.OK);
   }
 
   @UseGuards(JwtAuthGuard)

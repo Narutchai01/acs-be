@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { NewsModel, NewsMediaModel } from 'src/models/news';
 import { NewsDto } from './dto/news.dto';
 import { NewsMediaDto } from './dto/newsmedia.dto';
-import { TypeFactory } from '../type/type.factory';
+import { MasterDataFactoryV1 } from '../masterdata/masterdata.factory.v1';
 
 @Injectable()
 export class NewsFactory {
-  constructor(private typeFactory: TypeFactory) {}
+  constructor(private masterDataFactory: MasterDataFactoryV1) {}
 
   mapNewsModelsToNewsDtos(data: NewsModel[]): NewsDto[] {
     return data.map((item) => this.mapNewsModelToNewsDto(item));
@@ -47,7 +47,7 @@ export class NewsFactory {
       updatedBy: data.updatedBy,
       news: this.mapNewsModelToNewsDto(data.news),
       type: data.type
-        ? this.typeFactory.mapListTypeModelToListTypeDto(data.type)
+        ? this.masterDataFactory.mapListTypeModelToListTypeDto(data.type)
         : null,
     };
     return newsMediaDto;
