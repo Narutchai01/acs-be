@@ -5,8 +5,6 @@ import { HealthController } from './modules/health/health.controller';
 
 import { PrismaModule } from './provider/database/prisma/prisma.module';
 import { RepositoriesModule } from './repositories/repositories.module';
-import { TypeModule } from './modules/type/type.module';
-import { RoleModule } from './modules/role/role.module';
 import { UsersModule } from './modules/users/users.module';
 import { ExampleModule } from './modules/example/example.module';
 import { CourseModule } from './modules/course/course.module';
@@ -15,10 +13,7 @@ import { AdminModule } from './modules/admin/admin.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { NewsModule } from './modules/news/news.module';
 import { PasswordModule } from './core/utils/password/password.module';
-import { TypecourseModule } from './modules/typecourse/typecourse.module';
 import { CurriculumModule } from './modules/curriculum/curriculum.module';
-import { AcademicPositionModule } from './modules/academicposition/academicposition.module';
-import { EducationlevelModule } from './modules/educationlevel/educationlevel.module';
 import { MasterdataModule } from './modules/masterdata/masterdata.module';
 import { ProfessorModule } from './modules/professor/professor.module';
 import { MailModule } from './modules/mail/mail.module';
@@ -28,8 +23,6 @@ import { MailModule } from './modules/mail/mail.module';
     PrismaModule,
     RepositoriesModule,
     PasswordModule,
-    TypeModule,
-    RoleModule,
     UsersModule,
     ExampleModule,
     SupabaseModule,
@@ -37,10 +30,7 @@ import { MailModule } from './modules/mail/mail.module';
     AuthModule,
     NewsModule,
     CourseModule,
-    TypecourseModule,
     CurriculumModule,
-    AcademicPositionModule,
-    EducationlevelModule,
     MasterdataModule,
     ProfessorModule,
     MailModule,

@@ -3,14 +3,7 @@ import { Controller, Get, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { AdminService } from './admin.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { Request as ExpressRequest } from 'express';
-
-interface AuthenticatedRequest extends ExpressRequest {
-  user: {
-    userId: number;
-    roleId: number;
-  };
-}
+import { AuthenticatedRequest } from 'src/models/auth';
 
 @Controller('admin')
 export class AdminController {
