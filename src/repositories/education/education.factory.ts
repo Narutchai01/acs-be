@@ -24,6 +24,7 @@ export class EducationFactory {
       levelId: data.levelId,
       professorId: data.professorId,
       education: data.education,
+      university: data.university,
       createdDate: data.createdDate,
       updatedDate: data.updatedDate,
       deletedDate: data.deletedDate,

@@ -281,7 +281,8 @@ model Education {
   id             Int            @id @default(autoincrement()) @map("id")
   levelId        Int
   professorId    Int
-  education      String
+  education      String         @map("education")
+  university     String         @map("university")
   createdDate    DateTime       @default(now()) @map("created_date")
   updatedDate    DateTime       @updatedAt @map("updated_date")
   deletedDate    DateTime?      @map("deleted_date")
@@ -289,6 +290,8 @@ model Education {
   updatedBy      Int            @map("updated_by")
   professor      Professor      @relation(fields: [professorId], references: [id])
   educationLevel EducationLevel @relation(fields: [levelId], references: [id])
+
+  @@map("education")
 }
 
 model MajorPosition {

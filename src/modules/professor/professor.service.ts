@@ -55,6 +55,28 @@ export class ProfessorService {
       updatedBy: createBy,
     };
 
-    return await this.professorRepository.createProfessor(professorData);
+    let professor =
+      await this.professorRepository.createProfessor(professorData);
+
+    const educations = data.education.map((education) => ({
+      professorId: professor.id,
+      education: education.education,
+      levelId: education.levelId,
+      university: education.university,
+      createdBy: createBy,
+      updatedBy: createBy,
+    }));
+
+    const expertFields = data.expertFields.map((field) => ({
+      professorId: professor.id,
+      field: field,
+    }));
+
+    await this.professorRepository.createEducations(educations);
+    await this.professorRepository.createExpertFields(expertFields);
+
+    professor = await this.professorRepository.getProfessorById(professor.id);
+
+    return professor;
   }
 }
