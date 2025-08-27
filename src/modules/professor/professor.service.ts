@@ -17,6 +17,7 @@ export class ProfessorService {
     private mailService: MailService,
   ) {}
 
+  //TODO: clean after demo
   async createProfessor(
     data: CreateProfessorDtoV1,
     image: Express.Multer.File,
