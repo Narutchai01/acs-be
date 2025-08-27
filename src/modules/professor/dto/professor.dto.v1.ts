@@ -1,14 +1,15 @@
+import { AcademicPositionDto } from 'src/modules/masterdata/dto/academicposition.v1.dto';
+import { MajorPositionDto } from 'src/modules/masterdata/dto/majorposition.v1.dto';
+import { EducationDtoV1 } from './education.dto.v1';
+import { UserDto } from 'src/modules/users/dto/user.dto';
+import { ExpertFieldsDtoV1 } from './exprt-fields.dto.v1';
+
 export class ProfessorDtoV1 {
-  firstNameTh: string;
-  lastNameTh: string;
-  firstNameEn: string;
-  lastNameEn: string;
-  email: string;
+  id: number;
   profRoom: string;
-  education: {
-    education: string;
-    levelId: number;
-    university: string;
-  }[];
-  isPassword: boolean;
+  academicPosition: AcademicPositionDto | null;
+  majorPosition: MajorPositionDto | null;
+  educations: EducationDtoV1[] | [];
+  user: UserDto | null;
+  expertFields?: ExpertFieldsDtoV1[] | [];
 }

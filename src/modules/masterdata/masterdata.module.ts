@@ -8,5 +8,6 @@ import { MasterDataFactoryV1 } from './masterdata.factory.v1';
   imports: [RepositoriesModule],
   controllers: [MasterdataControllerV1],
   providers: [MasterdataService, MasterDataFactoryV1],
+  exports: [MasterDataFactoryV1],
 })
 export class MasterdataModule {}

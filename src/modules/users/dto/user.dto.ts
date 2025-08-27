@@ -1,9 +1,11 @@
-export class UserDto {
-  id: number;
+import { BaseDto } from 'src/models/dto/base.dto';
+export class UserDto extends BaseDto {
+  id!: number;
+  firstNameTh!: string;
+  lastNameTh!: string;
+  firstNameEn: string | null;
+  lastNameEn: string | null;
   email: string;
-  firstName: string;
-  lastName: string;
-  //   createdAt: Date;
-  //   updatedAt: Date;
-  //   deletedAt: Date | null;
+  nickName: string | null;
+  imageUrl?: string | null;
 }
