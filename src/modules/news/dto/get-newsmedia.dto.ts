@@ -1,16 +1,15 @@
-import { IsOptional, IsString, IsBoolean, IsNumber, } from "class-validator"
-import { Transform } from "class-transformer";
+import { IsOptional, IsString, IsBoolean, IsNumber } from 'class-validator';
+import { Transform } from 'class-transformer';
 
-export class QueryNewsMediaDto
-{
-    @IsString()
-    type: string
+export class QueryNewsMediaDto {
+  @IsString()
+  type: string;
 
-    @IsBoolean()
-    @IsOptional()
-    isUser : boolean
+  @IsBoolean()
+  @IsOptional()
+  isUser: boolean;
 
-    @IsNumber()
-    @Transform(({ value }) => parseInt(value))
-    pageSize: number;
+  @IsNumber()
+  @Transform(({ value }) => parseInt(value))
+  pageSize: number;
 }

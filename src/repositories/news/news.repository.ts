@@ -42,12 +42,15 @@ export class NewsRepository implements INewsRepository {
 
   async getNews(quey: QueryNewsDto): Promise<NewsModel[]> {
     try {
-      const { page, pageSize, category } = quey;
+      const { page, pageSize, category, title } = quey;
       const safeCategory = category ?? '';
       const categories = safeCategory.split(',').map((cat) => cat.trim());
 
       // condition query
       const whereClause = {
+        title: title
+          ? { contains: title, mode: 'insensitive' as const }
+          : undefined,
         deletedDate: null,
         ...(safeCategory !== '' && {
           category: {
@@ -158,10 +161,15 @@ export class NewsRepository implements INewsRepository {
 
   async count(query: QueryNewsDto): Promise<number> {
     try {
-      const { category } = query;
+      const { category, title } = query;
       const safeCategory = category ?? '';
       const categories = safeCategory.split(',').map((cat) => cat.trim());
+
+      // condition query
       const whereClause = {
+        title: title
+          ? { contains: title, mode: 'insensitive' as const }
+          : undefined,
         deletedDate: null,
         ...(safeCategory !== '' && {
           category: {
@@ -169,6 +177,7 @@ export class NewsRepository implements INewsRepository {
           },
         }),
       };
+
       return this.prisma.news.count({
         where: whereClause,
       });
