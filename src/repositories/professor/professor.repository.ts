@@ -19,13 +19,13 @@ export class ProfessorRepository implements IProfessorRepository {
       include: {
         user: true,
         education: {
-          where: { deletedDate: null },
+          where: { deletedAt: null },
           include: {
             educationLevel: true,
           },
         },
         expertFields: {
-          where: { deletedDate: null },
+          where: { deletedAt: null },
         },
         academicPosition: true,
         majorPosition: true,
@@ -49,17 +49,17 @@ export class ProfessorRepository implements IProfessorRepository {
 
   async getProfessorById(id: number): Promise<ProfessorModel> {
     const professor = await this.prisma.professor.findFirst({
-      where: { id, deletedDate: null },
+      where: { id, deletedAt: null },
       include: {
         user: true,
         education: {
-          where: { deletedDate: null },
+          where: { deletedAt: null },
           include: {
             educationLevel: true,
           },
         },
         expertFields: {
-          where: { deletedDate: null },
+          where: { deletedAt: null },
         },
         academicPosition: true,
         majorPosition: true,

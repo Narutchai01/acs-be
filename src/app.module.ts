@@ -9,7 +9,6 @@ import { UsersModule } from './modules/users/users.module';
 import { ExampleModule } from './modules/example/example.module';
 import { CourseModule } from './modules/course/course.module';
 import { SupabaseModule } from './provider/store/supabase/supabase.module';
-import { AdminModule } from './modules/admin/admin.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { NewsModule } from './modules/news/news.module';
 import { PasswordModule } from './core/utils/password/password.module';
@@ -26,7 +25,6 @@ import { MailModule } from './modules/mail/mail.module';
     UsersModule,
     ExampleModule,
     SupabaseModule,
-    AdminModule,
     AuthModule,
     NewsModule,
     CourseModule,

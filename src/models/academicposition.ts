@@ -1,7 +1,7 @@
-import { BaseModel } from ".";
+import { BaseModel } from '.';
 
 export interface AcademicPositionModel extends BaseModel {
-    id: number;
-    positionTh: string;
-    positionEn: string;
+  id: number;
+  positionTh: string;
+  positionEn: string;
 }

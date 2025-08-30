@@ -20,16 +20,8 @@ export class EducationFactory {
 
   mapEducationEntityToEducationModel(data: EducationEntity): EducationModel {
     return {
-      id: data.id,
-      levelId: data.levelId,
-      professorId: data.professorId,
-      education: data.education,
-      university: data.university,
-      createdDate: data.createdDate,
-      updatedDate: data.updatedDate,
-      deletedDate: data.deletedDate,
-      updatedBy: data.updatedBy,
-      createdBy: data.createdBy,
+      ...data,
+      deletedAt: data.deletedAt ?? undefined,
       professor: data.professor
         ? this.professorFactory.mapProfessorEntityToProfessorModel(
             data.professor,

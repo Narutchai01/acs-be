@@ -12,9 +12,9 @@ export class CourseEntity implements Course {
   courseNameEn: string;
   credits: string;
   courseDetail: string;
-  createdDate: Date;
-  updatedDate: Date;
-  deletedDate: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
   createdBy: number;
   updatedBy: number;
   user?: UserEntity | null;
@@ -27,6 +27,6 @@ export class TypeCourseEntity implements TypeCourse {
   id: number;
   name: string;
   description: string;
-  createdDate: Date;
-  updatedDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }

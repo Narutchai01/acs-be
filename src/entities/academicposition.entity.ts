@@ -4,6 +4,6 @@ export class AcademicPositionEntity implements AcademicPosition {
   id: number;
   positionTh: string;
   positionEn: string;
-  createdDate: Date;
-  updatedDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }

@@ -22,8 +22,8 @@ export class MajorPositionFactory {
       id: data.id,
       positionTh: data.positionTh,
       positionEn: data.positionEn,
-      createdDate: data.createdDate,
-      updatedDate: data.updatedDate,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
     };
   }
 }

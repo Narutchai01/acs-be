@@ -8,9 +8,9 @@ export class EducationEntity implements Education {
   levelId: number;
   professorId: number;
   education: string;
-  createdDate: Date;
-  updatedDate: Date;
-  deletedDate: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
   updatedBy: number;
   createdBy: number;
   professor?: ProfessorEntity | null;

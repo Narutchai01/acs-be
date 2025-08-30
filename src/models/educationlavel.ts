@@ -1,6 +1,5 @@
-export interface EducationLevelModel {
+import { BaseModel } from '.';
+export interface EducationLevelModel extends BaseModel {
   id: number;
   level: string;
-  createdDate: Date;
-  updatedDate: Date;
 }

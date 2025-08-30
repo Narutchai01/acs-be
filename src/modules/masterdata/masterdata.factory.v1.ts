@@ -25,8 +25,8 @@ export class MasterDataFactoryV1 {
       id: data.id,
       positionTh: data.positionTh,
       positionEn: data.positionEn,
-      createdDate: data.createdDate,
-      updatedDate: data.updatedDate,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
     };
   }
 
@@ -42,8 +42,8 @@ export class MasterDataFactoryV1 {
     const dto: ListTypeDto = {
       id: data.id,
       name: data.name,
-      createdDate: data.createdDate,
-      updatedDate: data.updatedDate,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
     };
     return dto;
   }
@@ -73,8 +73,8 @@ export class MasterDataFactoryV1 {
     return {
       id: educationLevel.id,
       level: educationLevel.level,
-      createdDate: educationLevel.createdDate,
-      updatedDate: educationLevel.updatedDate,
+      createdAt: educationLevel.createdAt,
+      updatedAt: educationLevel.updatedAt,
     };
   }
 
@@ -86,8 +86,8 @@ export class MasterDataFactoryV1 {
     return {
       id: data.id,
       name: data.name,
-      createdDate: data.createdDate,
-      updatedDate: data.updatedDate,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
     };
   }
 
@@ -102,8 +102,8 @@ export class MasterDataFactoryV1 {
       id: data.id,
       name: data.name,
       description: data.description,
-      createdDate: data.createdDate,
-      updatedDate: data.updatedDate,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
     };
   }
 
@@ -120,8 +120,8 @@ export class MasterDataFactoryV1 {
       id: data.id,
       positionTh: data.positionTh,
       positionEn: data.positionEn,
-      createdDate: data.createdDate,
-      updatedDate: data.updatedDate,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
     };
   }
 }

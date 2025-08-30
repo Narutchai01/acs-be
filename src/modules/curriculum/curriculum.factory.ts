@@ -19,8 +19,8 @@ export class CurriculumFactory {
       fileUrl: data.fileUrl,
       createdBy: data.createdBy,
       updatedBy: data.updatedBy,
-      createdDate: data.createdDate,
-      updatedDate: data.updatedDate,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
     };
 
     return dto;

@@ -18,8 +18,8 @@ export class EducationLevelFactory {
     return {
       id: data.id,
       level: data.level,
-      createdDate: data.createdDate,
-      updatedDate: data.updatedDate,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
     };
   }
 }

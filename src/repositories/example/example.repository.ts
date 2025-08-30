@@ -3,6 +3,7 @@ import { IExampleRepository } from './example.abstract';
 import { PrismaService } from 'src/provider/database/prisma/prisma.service';
 import { ExampleFactory } from './example.factory';
 import { ExampleModel, ExampleModelCreate } from 'src/models/example';
+import { ExampleEntity } from 'src/entities/example.entity';
 
 @Injectable()
 export class ExampleRepository implements IExampleRepository {
@@ -17,7 +18,9 @@ export class ExampleRepository implements IExampleRepository {
       if (!data) {
         return new Error('No example data found');
       }
-      return this.exampleFactory.mapExampleEntitiesToExampleModels(data);
+      return this.exampleFactory.mapExampleEntitiesToExampleModels(
+        data as ExampleEntity[],
+      );
     } catch (error) {
       return new Error(
         error instanceof Error
@@ -32,7 +35,9 @@ export class ExampleRepository implements IExampleRepository {
   ): Promise<ExampleModel | Error> {
     try {
       const createdData = await this.prisma.example.create({ data });
-      return this.exampleFactory.mapExampleEntityToExampleModel(createdData);
+      return this.exampleFactory.mapExampleEntityToExampleModel(
+        createdData as ExampleEntity,
+      );
     } catch (error) {
       return new Error(
         error instanceof Error

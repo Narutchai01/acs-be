@@ -19,8 +19,8 @@ export class CourseFactory {
       courseNameEn: data.courseNameEn,
       credits: data.credits,
       courseDetail: data.courseDetail,
-      createdDate: data.createdDate,
-      updatedDate: data.updatedDate,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
       createdBy: data.createdBy,
       updatedBy: data.updatedBy,
       curriculum: data.curriculum

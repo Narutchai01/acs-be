@@ -2,19 +2,19 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class BaseDto {
   @ApiProperty()
-  createdDate?: Date;
+  createdAt?: Date;
 
   @ApiProperty()
   createdBy?: number;
 
   @ApiProperty()
-  updatedDate?: Date;
+  updatedAt?: Date;
 
   @ApiProperty()
   updatedBy?: number | null;
 
   @ApiProperty()
-  deletedDate?: Date | null;
+  deletedAt?: Date | null;
 }
 
 export class ResponseDto<T> {

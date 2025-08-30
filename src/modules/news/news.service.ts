@@ -12,7 +12,7 @@ import { QueryNewsMediaDto } from './dto/get-newsmedia.dto';
 @Injectable()
 export class NewsService {
   constructor(
-    private newsRespository: INewsRepository,
+    private newsRepository: INewsRepository,
     private storage: SupabaseService,
     private typeRepository: ITypeRepository,
   ) {}
@@ -35,13 +35,13 @@ export class NewsService {
       updatedBy: userId,
     };
 
-    return this.newsRespository.createNews(data);
+    return this.newsRepository.createNews(data);
   }
 
   async getNews(query: QueryNewsDto): Promise<Pageable<NewsModel>> {
     const [news, count] = await Promise.all([
-      this.newsRespository.getNews(query),
-      this.newsRespository.count(query),
+      this.newsRepository.getNews(query),
+      this.newsRepository.count(query),
     ]);
     return {
       rows: news,
@@ -52,7 +52,7 @@ export class NewsService {
   }
 
   async getNewsById(id: number): Promise<NewsModel> {
-    return this.newsRespository.getNewsById(id);
+    return this.newsRepository.getNewsById(id);
   }
 
   async updateNews(
@@ -61,7 +61,7 @@ export class NewsService {
     file: Express.Multer.File,
     userId: number,
   ): Promise<NewsModel> {
-    const existingNews = await this.newsRespository.getNewsById(id);
+    const existingNews = await this.newsRepository.getNewsById(id);
     let image_url: string = existingNews.image;
 
     if (file) {
@@ -78,28 +78,37 @@ export class NewsService {
       updatedBy: userId,
     };
 
-    return this.newsRespository.updateNews(id, updateData);
+    return this.newsRepository.updateNews(id, updateData);
   }
 
   async deleteNews(id: number, userId: number): Promise<NewsModel> {
-    return this.newsRespository.deleteNews(id, userId);
+    return this.newsRepository.deleteNews(id, userId);
   }
 
   async createNewsMedia(
     createNewsMedia: CreateNewsMediaDto,
     file: Express.Multer.File,
     userId: number,
+    type: string,
   ): Promise<NewsMediaModel> {
+    const typeData = await this.typeRepository.getListTypeByName(type);
+    if (!typeData)
+      throw new HttpException(
+        ` type with name ${type} not found `,
+        HttpStatus.NOT_FOUND,
+      );
+
     const image_url = await this.storage.uploadFile(file, 'news-media');
 
     const newsMediaData = {
-      ...createNewsMedia,
+      newsId: Number(createNewsMedia.newsId),
+      typeId: typeData.id,
       image: image_url,
       createdBy: userId,
       updatedBy: userId,
     };
 
-    return this.newsRespository.createNewsMedia(newsMediaData);
+    return this.newsRepository.createNewsMedia(newsMediaData);
   }
 
   async getNewsMedia(query: QueryNewsMediaDto): Promise<NewsMediaModel[]> {
@@ -110,7 +119,7 @@ export class NewsService {
         HttpStatus.NOT_FOUND,
       );
     const typeId = type.id;
-    return this.newsRespository.getNewsMedia(
+    return this.newsRepository.getNewsMedia(
       typeId,
       query.isUser,
       query.pageSize,

@@ -1,17 +1,13 @@
 import { ProfessorModel } from './professor';
 import { EducationLevelModel } from './educationlavel';
+import { BaseModel } from '.';
 
-export interface EducationModel {
+export interface EducationModel extends BaseModel {
   id: number;
   levelId: number;
   professorId: number;
   education: string;
   university: string;
-  createdDate: Date;
-  updatedDate: Date;
-  deletedDate: Date | null;
-  updatedBy: number;
-  createdBy: number;
   professor?: ProfessorModel | null;
   educationLevel: EducationLevelModel;
 }

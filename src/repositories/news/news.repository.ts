@@ -85,7 +85,7 @@ export class NewsRepository implements INewsRepository {
       const newsEntity = await this.prisma.news.findUnique({
         where: {
           id: id,
-          deletedDate: null, // Ensure we only fetch non-deleted news
+          deletedAt: null, // Ensure we only fetch non-deleted news
         },
         include: {
           category: true,
@@ -139,7 +139,7 @@ export class NewsRepository implements INewsRepository {
       const newsEntity = await this.prisma.news.update({
         where: { id: id },
         data: {
-          deletedDate: new Date(),
+          deletedAt: new Date(),
           updatedBy: userId,
         },
         include: {
@@ -226,8 +226,8 @@ export class NewsRepository implements INewsRepository {
   ): Promise<NewsMediaModel[]> {
     try {
       const newsMediaEntities = await this.prisma.newsMedia.findMany({
-        where: { typeId: typeId, deletedDate: null },
-        orderBy: { createdDate: 'desc' },
+        where: { typeId: typeId, deletedAt: null },
+        orderBy: { createdAt: 'desc' },
         include: {
           news: {
             include: {

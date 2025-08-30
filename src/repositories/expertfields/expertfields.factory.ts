@@ -23,12 +23,8 @@ export class ExpertFieldsFactory {
     data: ExpertFieldEntity,
   ): ExpertFieldModel {
     const expertField: ExpertFieldModel = {
-      id: data.id,
-      professorId: data.professorId,
-      field: data.field,
-      createdDate: data.createdDate,
-      updatedDate: data.updatedDate,
-      deletedDate: data.deletedDate,
+      ...data,
+      deletedAt: data.deletedAt ?? undefined,
     };
     return expertField;
   }

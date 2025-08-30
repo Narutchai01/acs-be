@@ -13,8 +13,8 @@ export class ExampleFactory {
       id: data.id,
       name: data.name,
       description: data.description,
-      createdDate: data.createdDate,
-      updatedDate: data.updatedDate,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
     };
   }
 }

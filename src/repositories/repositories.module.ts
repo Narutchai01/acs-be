@@ -9,9 +9,6 @@ import { RoleFactory } from './role/role.factory';
 import { UserFactory } from './user/user.factory';
 import { IUserRepository } from './user/user.abstract';
 import { UserRepository } from './user/user.repository';
-import { AdminFactory } from './admin/admin.factory';
-import { IAdminRepository } from './admin/admin.abstract';
-import { AdminRepository } from './admin/admin.repository';
 import { ExampleFactory } from './example/example.factory';
 import { IExampleRepository } from './example/example.abstract';
 import { ExampleRepository } from './example/example.repository';
@@ -63,10 +60,6 @@ import { ExpertFieldsRepository } from './expertfields/expertfields.repository';
     {
       provide: IUserRepository,
       useClass: UserRepository,
-    },
-    {
-      provide: IAdminRepository,
-      useClass: AdminRepository,
     },
     {
       provide: IExampleRepository,
@@ -122,7 +115,6 @@ import { ExpertFieldsRepository } from './expertfields/expertfields.repository';
     RoleFactory,
     TypeFactory,
     UserFactory,
-    AdminFactory,
     ExampleFactory,
     CourseFactory,
     CurriculumFactory,
@@ -137,7 +129,6 @@ import { ExpertFieldsRepository } from './expertfields/expertfields.repository';
     ITypeRepository,
     IRoleRepository,
     IUserRepository,
-    IAdminRepository,
     IExampleRepository,
     INewsRepository,
     ICourseRepository,

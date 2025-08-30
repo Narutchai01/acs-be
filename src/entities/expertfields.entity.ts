@@ -4,7 +4,7 @@ export class ExpertFieldEntity implements ExpertFields {
   id: number;
   professorId: number;
   field: string;
-  createdDate: Date;
-  updatedDate: Date;
-  deletedDate: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
 }

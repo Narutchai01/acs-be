@@ -16,20 +16,10 @@ export class UserFactory {
 
   mapUserEntityToUserModel(data: UserEntity): UserModel {
     return {
-      id: data.id,
-      firstNameTh: data.firstNameTh,
-      lastNameTh: data.lastNameTh,
-      firstNameEn: data.firstNameEn || null,
-      lastNameEn: data.lastNameEn || null,
-      email: data.email,
-      nickName: data.nickName || null,
-      imageUrl: data.imageUrl || null,
-      password: data.password || null,
-      createdDate: data.createdDate,
-      updatedDate: data.updatedDate,
-      deletedDate: data.deletedDate || null,
+      ...data,
       createdBy: data.createdBy ?? undefined,
-      updatedBy: data.updatedBy ?? null,
+      updatedBy: data.updatedBy ?? undefined,
+      deletedAt: data.deletedAt ?? undefined,
       userRole: this.roleFactory.mapUserRoleEntitiesToUserRoleModels(
         data.UserRole || [],
       ),

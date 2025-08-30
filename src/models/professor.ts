@@ -11,9 +11,6 @@ export interface ProfessorModel extends BaseModel {
   academicPositionId: number;
   majorPositionId: number;
   profRoom: string;
-  createdDate: Date;
-  updatedDate: Date;
-  deletedDate: Date | null;
   createdBy: number;
   updatedBy: number;
   user?: UserModel | null;

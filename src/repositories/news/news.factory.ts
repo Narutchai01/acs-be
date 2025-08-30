@@ -21,18 +21,8 @@ export class NewsFactory {
 
   mapNewsEntityToNewsModel(data: NewsEntity): NewsModel {
     const newsModel = {
-      id: data.id,
-      title: data.title,
-      image: data.image,
-      detail: data.detail,
-      categoryId: data.categoryId,
-      startDate: data.startDate,
-      dueDate: data.dueDate,
-      createdAt: data.createdDate,
-      updatedAt: data.updatedDate,
-      deletedAt: data.deletedDate,
-      createdBy: data.createdBy,
-      updatedBy: data.updatedBy,
+      ...data,
+      deletedAt: data.deletedAt || null,
       category: this.typeFactory.mapListTypeEntityToListTypeModel(
         data.category,
       ),
@@ -52,15 +42,8 @@ export class NewsFactory {
 
   mapNewsMediaEntityToNewsMediaModel(data: NewsMediaEntity): NewsMediaModel {
     const newsMediaModel = {
-      id: data.id,
-      image: data.image,
-      newsId: data.newsId,
-      typeId: data.typeId,
-      createdDate: data.createdDate,
-      updatedDate: data.updatedDate,
-      deletedDate: data.deletedDate,
-      createdBy: data.createdBy,
-      updatedBy: data.updatedBy,
+      ...data,
+      deletedAt: data.deletedAt || undefined,
       news: this.mapNewsEntityToNewsModel(data.news),
       type: data.type
         ? this.typeFactory.mapListTypeEntityToListTypeModel(data.type)

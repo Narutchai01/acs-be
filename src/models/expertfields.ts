@@ -5,9 +5,6 @@ export interface ExpertFieldModel extends BaseModel {
   id: number;
   professorId: number;
   field: string;
-  createdDate: Date;
-  updatedDate: Date;
-  deletedDate: Date | null;
   professor?: ProfessorModel;
 }
 export interface CreateExpertField {

@@ -1,10 +1,8 @@
 import { BaseModel } from '.';
 
-export interface TypeModel {
+export interface TypeModel extends BaseModel {
   id: number;
   name: string;
-  createdDate?: Date;
-  updatedDate?: Date;
 }
 
 export interface ListTypeModel extends BaseModel {

@@ -1,4 +1,5 @@
 import { CourseModel } from './course';
+import { BaseModel } from '.';
 
 export interface CreateCurriculumModel {
   year: string;
@@ -9,17 +10,12 @@ export interface CreateCurriculumModel {
   updatedBy: number;
 }
 
-export interface CurriculumModel {
+export interface CurriculumModel extends BaseModel {
   id: number;
   year: string;
   fileUrl: string;
   imageUrl: string;
   description: string;
-  createdDate: Date;
-  updatedDate: Date;
-  deletedDate: Date | null;
-  createdBy: number;
-  updatedBy: number;
   courses: CourseModel[];
 }
 

@@ -3,7 +3,6 @@ import { UserModel } from 'src/models/user';
 import { IUserRepository } from 'src/repositories/user/user.abstract';
 import { CreateUserDto } from './dto/create-user';
 import { IRoleRepository } from 'src/repositories/role/role.abtract';
-import { IAdminRepository } from 'src/repositories/admin/admin.abstract';
 import { PasswordService } from 'src/core/utils/password/password.service';
 
 @Injectable()
@@ -11,7 +10,6 @@ export class UsersService {
   constructor(
     private userRepository: IUserRepository,
     private roleRepository: IRoleRepository,
-    private adminRepository: IAdminRepository,
     private passwordService: PasswordService,
   ) {}
   async createUser(
@@ -39,13 +37,6 @@ export class UsersService {
 
     if (UserRoles instanceof Error) {
       throw new Error(`Failed to assign role to user: ${UserRoles.message}`);
-    }
-    if (role === 'admin') {
-      const admin = await this.adminRepository.create(user.id);
-
-      if (admin instanceof Error) {
-        throw new Error(`Failed to create admin: ${admin.message}`);
-      }
     }
 
     if (UserRoles instanceof Error) {

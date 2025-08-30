@@ -21,8 +21,8 @@ export class AcademicPositionFactory {
       id: data.id,
       positionTh: data.positionTh,
       positionEn: data.positionEn,
-      createdDate: data.createdDate,
-      updatedDate: data.updatedDate,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
     };
   }
 }

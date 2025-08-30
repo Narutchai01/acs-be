@@ -8,5 +8,4 @@ export interface CreateNewsDto {
 
 export interface CreateNewsMediaDto {
   newsId: number;
-  typeId: number;
 }

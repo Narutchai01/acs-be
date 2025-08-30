@@ -3,7 +3,6 @@ import {
   Controller,
   Get,
   Post,
-  Res,
   Request,
   UploadedFile,
   UseGuards,
@@ -75,19 +74,23 @@ export class NewsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('news-media')
+  @Post('news-media/:type')
   @UseInterceptors(FileInterceptor('image'))
   async createNewsMedia(
     @UploadedFile() file: Express.Multer.File,
     @Body() body: CreateNewsMediaDto,
     @Request() req: AuthenticatedRequest,
+    @Param('type') type: string,
   ) {
     const result = await this.newsService.createNewsMedia(
       body,
       file,
       req.user.userId,
+      type,
     );
-    return success<NewsMediaDto>(result, HttpStatus.CREATED);
+
+    const dto = this.newsFactory.mapNewsMediaModelToNewsMediaDto(result);
+    return success<NewsMediaDto>(dto, HttpStatus.CREATED);
   }
 
   @Get('news-media')
@@ -100,7 +103,7 @@ export class NewsController {
   }
 
   @Get(':id')
-  async getNewsById(@Res() res: Response, @Param('id') id: string) {
+  async getNewsById(@Param('id') id: string) {
     const IdNumber = Number(id);
     const news = await this.newsService.getNewsById(IdNumber);
     const dto = this.newsFactory.mapNewsModelToNewsDto(news);

@@ -27,8 +27,8 @@ export class ProfessorFactory {
     return {
       id: data.id,
       field: data.field,
-      createdDate: data.createdDate,
-      updatedDate: data.updatedDate,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
     };
   }
 
@@ -41,8 +41,8 @@ export class ProfessorFactory {
       education: data.education,
       university: data.university,
       level: this.masterDataFactory.mapEducationModelToDto(data.educationLevel),
-      createdDate: data.createdDate,
-      updatedDate: data.updatedDate,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
       createdBy: data.createdBy,
       updatedBy: data.updatedBy,
     };

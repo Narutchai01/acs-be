@@ -11,9 +11,9 @@ export class StudentEntity implements Student {
   yearOfFirstAdmission!: number;
   yearOfCompletion: number | null;
   classOf!: string;
-  createdDate: Date;
-  updatedDate: Date;
-  deletedDate: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
   createdBy: number;
   updatedBy: number;
 }

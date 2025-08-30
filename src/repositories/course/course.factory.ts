@@ -28,8 +28,8 @@ export class CourseFactory {
       courseNameEn: data.courseNameEn,
       credits: data.credits,
       courseDetail: data.courseDetail,
-      createdDate: data.createdDate,
-      updatedDate: data.updatedDate,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
       createdBy: data.createdBy,
       updatedBy: data.updatedBy,
       user: data.user
@@ -70,8 +70,8 @@ export class CourseFactory {
       id: data.id,
       name: data.name,
       description: data.description,
-      createdDate: data.createdDate,
-      updatedDate: data.updatedDate,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
     };
 
     return typeCourseModel;

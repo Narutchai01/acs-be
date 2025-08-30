@@ -10,9 +10,9 @@ export class ProfessorEntity implements Professor {
   academicPositionId: number;
   majorPositionId: number;
   profRoom: string;
-  createdDate: Date;
-  updatedDate: Date;
-  deletedDate: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
   createdBy: number;
   updatedBy: number;
   user?: UserEntity | null;

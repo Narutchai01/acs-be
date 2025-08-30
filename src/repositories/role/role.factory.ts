@@ -34,8 +34,8 @@ export class RoleFactory {
       role: this.mapRoleEntityToRoleModel(data.role),
       userId: data.userId,
       roleId: data.roleId,
-      createdDate: data.createdDate,
-      updatedDate: data.updatedDate,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
     };
   }
 }

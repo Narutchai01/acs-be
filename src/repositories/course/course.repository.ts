@@ -87,7 +87,7 @@ export class CourseRepository implements ICourseRepository {
       const { page, pageSize, searchByTypeCourse, prerequisite } = query;
       const course = await this.prisma.course.findMany({
         where: {
-          deletedDate: null,
+          deletedAt: null,
           TypeCourse: {
             name: {
               contains: searchByTypeCourse,
@@ -128,7 +128,7 @@ export class CourseRepository implements ICourseRepository {
       const course = await this.prisma.course.findUnique({
         where: {
           id: id,
-          deletedDate: null,
+          deletedAt: null,
         },
         include: {
           curriculum: true,
@@ -164,7 +164,7 @@ export class CourseRepository implements ICourseRepository {
       const courseEntity = await this.prisma.course.update({
         where: { id: id },
         data: {
-          deletedDate: new Date(),
+          deletedAt: new Date(),
           updatedBy: userId,
         },
         include: {
@@ -191,7 +191,7 @@ export class CourseRepository implements ICourseRepository {
   count(query: QueryCourseDto): Promise<number> {
     return this.prisma.course.count({
       where: {
-        deletedDate: null,
+        deletedAt: null,
         TypeCourse: {
           name: {
             contains: query.searchByTypeCourse,
