@@ -51,7 +51,7 @@ export class NewsRepository implements INewsRepository {
         title: title
           ? { contains: title, mode: 'insensitive' as const }
           : undefined,
-        deletedDate: null,
+        deletedAt: null,
         ...(safeCategory !== '' && {
           category: {
             name: { in: categories },
@@ -170,7 +170,7 @@ export class NewsRepository implements INewsRepository {
         title: title
           ? { contains: title, mode: 'insensitive' as const }
           : undefined,
-        deletedDate: null,
+        deletedAt: null,
         ...(safeCategory !== '' && {
           category: {
             name: { in: categories },
