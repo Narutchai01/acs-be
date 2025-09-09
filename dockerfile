@@ -43,7 +43,7 @@ CMD ["npm", "run", "start:dev"]
 FROM base AS prod-deps
 COPY package.json package-lock.json ./
 RUN --mount=type=cache,target=/root/.npm \
-    npm ci --omit=dev
+    npm ci --omit=dev --ignore-scripts
 
 # ---------- production: บาง เบา ----------
 FROM base AS production
