@@ -1,143 +1,61 @@
-name: CI/CD Pipeline
+name: CI - Build & Push to GHCR
 
 on:
   push:
-    branches:
-      - main
-      - develop
+    branches: [main, development, testci]
     tags:
-      - 'v*.*.*'
-  pull_request:
-    branches:
-      - main
-      - develop
+      - 'v*' # เช่น v1.0.0
+
+permissions:
+  contents: read
+  packages: write
 
 env:
-  REGISTRY: docker.io
-  IMAGE_NAME: acs-be
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }} # owner/repo
 
 jobs:
-  test:
+  docker:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_USER: postgres
-          POSTGRES_DB: test_db
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.10.0'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run linting
-        run: npm run lint
-
-      - name: Generate Prisma Client
-        run: npx prisma generate
-
-      - name: Run tests
-        run: npm run test
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
-
-  build-and-push:
-    needs: test
-    runs-on: ubuntu-latest
-    if: github.event_name != 'pull_request' || (github.event_name == 'pull_request' && github.event.action != 'closed')
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Set up QEMU (for multi-arch, optional)
+        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-        with:
-          driver-opts: |
-            network=host
 
-      - name: Debug build context
-        run: |
-          echo "Current directory:"
-          pwd
-          echo "Directory contents:"
-          ls -la
-          echo "Package.json exists:"
-          test -f package.json && echo "YES" || echo "NO"
-          echo "Dockerfile exists:"
-          test -f dockerfile && echo "YES" || echo "NO"
-          echo "Node version:"
-          node --version
-          echo "NPM version:"
-          npm --version
-
-      - name: Log in to Docker Hub
-        if: github.event_name != 'pull_request'
+      - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata
+      - name: Docker meta (tags & labels)
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
             type=raw,value=latest,enable={{is_default_branch}}
+            type=ref,event=tag
+            type=ref,event=branch
+            type=sha
+          labels: |
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
 
-      - name: Build and push Docker image
-        id: build-push
-        uses: docker/build-push-action@v5
+      - name: Build & Push
+        uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./dockerfile
-          platforms: linux/amd64
-          push: ${{ github.event_name != 'pull_request' }}
+          platforms: linux/amd64,linux/arm64
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          target: production
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          build-args: |
-            BUILDKIT_INLINE_CACHE=1
-            DOCKER_BUILDKIT=1
-        env:
-          DOCKER_BUILDKIT: 1
-
-      - name: Image digest
-        run: echo ${{ steps.build-push.outputs.digest }}
-
-      - name: Update deployment status
-        if: github.event_name != 'pull_request'
-        run: |
-          echo "Docker image pushed successfully!"
-          echo "Image: ${{ env.REGISTRY }}/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}"
-          echo "Tags: ${{ steps.meta.outputs.tags }}"
