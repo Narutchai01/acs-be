@@ -31,13 +31,15 @@ export class TypeRepository implements ITypeRepository {
   }
 
   async getListTypeByName(type: string): Promise<ListTypeModel> {
-      const data = await this.prisma.listType.findUnique(
-        {
-          where: {name: type},
-        }
-      );
+    const data = await this.prisma.listType.findUnique({
+      where: { name: type },
+    });
 
-      if(!data) throw new HttpException(`type with  name ${type} not found`,HttpStatus.NOT_FOUND);
-      return this.typeFactory.mapListTypeEntityToListTypeModel(data)
+    if (!data)
+      throw new HttpException(
+        `type with  name ${type} not found`,
+        HttpStatus.NOT_FOUND,
+      );
+    return this.typeFactory.mapListTypeEntityToListTypeModel(data);
   }
 }
