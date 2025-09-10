@@ -1,9 +1,7 @@
 import { Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
-import { AuthenticatedRequest } from 'src/models/auth'; // Adjust the import path as necessary
-
-// ** eslint-disable-next-line @typescript-eslint/no-unused-vars **
+import { AuthenticatedRequest } from 'src/models/auth';
 
 @Controller('auth')
 export class AuthController {
