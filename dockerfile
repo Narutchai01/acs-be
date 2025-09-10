@@ -48,25 +48,23 @@ RUN --mount=type=cache,target=/root/.npm \
 # ---------- production: บาง เบา ----------
 FROM base AS production
 ENV NODE_ENV=production
-# สร้าง user ปลอดภัย (node มีอยู่แล้วใน image) หรือใช้ user node
+
 USER node
 
-# คัดลอกเฉพาะที่ต้องใช้รันจริง
 COPY --chown=node:node --from=prod-deps /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=builder   /usr/src/app/dist        ./dist
 COPY --chown=node:node prisma ./prisma
 COPY --chown=node:node package.json ./
 
-# (ถ้า seed ต้องอ่านไฟล์ใน prisma/ หรือ script อื่น ให้คัดลอกมาด้วยแล้วระบุใน package.json)
+# ✅ สร้าง Prisma Client/Binaries สำหรับ linux-musl (Alpine)
+RUN npx prisma generate
 
-# แนะนำให้ migrate ใน prod (แทน db push)
-# สร้าง entrypoint เล็กๆ สำหรับ migrate + seed แล้ว start
-# จะถูกคัดลอกจากด้านล่าง (ดูบล็อกไฟล์)
 COPY --chown=node:node ./scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["node", "dist/main"]
+
 
 
 

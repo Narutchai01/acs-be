@@ -1,13 +1,35 @@
 #!/bin/sh
 set -e
 
-# รอ DB ถ้าจำเป็น (ออปชัน) - ใส่ตัว wait-for เช่น nc หรือ wait-for-it ถ้าคุณต้องใช้
-# nc -z $DATABASE_HOST $DATABASE_PORT -w 5 || echo "DB might not be ready yet"
+# === Config (optional) ===
+: "${DB_WAIT_TIMEOUT:=60}"        # วินาที
+: "${SKIP_MIGRATE:=false}"        # ตั้งเป็น "true" เพื่อข้าม migrate ชั่วคราว (เช่น ตอน baseline)
 
-# ใน production ควรใช้ migrate deploy
-npx prisma migrate deploy
+# === Wait for DB (optional) ===
+if [ -n "$DATABASE_HOST" ] && [ -n "$DATABASE_PORT" ]; then
+  echo "Waiting for DB at $DATABASE_HOST:$DATABASE_PORT (timeout ${DB_WAIT_TIMEOUT}s)..."
+  start_ts=$(date +%s)
+  while ! nc -z "$DATABASE_HOST" "$DATABASE_PORT" 2>/dev/null; do
+    sleep 1
+    now_ts=$(date +%s)
+    elapsed=$((now_ts - start_ts))
+    if [ "$elapsed" -ge "$DB_WAIT_TIMEOUT" ]; then
+      echo "Timed out waiting for DB after ${DB_WAIT_TIMEOUT}s"
+      exit 1
+    fi
+  done
+  echo "DB is ready."
+fi
 
-# seed ถ้าต้องการ (ทำให้เป็นออปชันด้วย ENV จะดี)
+# === Prisma migrate deploy (prod) ===
+if [ "$SKIP_MIGRATE" = "true" ]; then
+  echo "Skipping Prisma migrate deploy (SKIP_MIGRATE=true)"
+else
+  echo "Running Prisma migrations..."
+  npx prisma migrate deploy
+fi
+
+# === (Optional) seed ===
 if [ "$RUN_SEED" = "true" ]; then
   echo "Seeding database..."
   npm run db:seed
