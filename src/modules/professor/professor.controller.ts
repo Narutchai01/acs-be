@@ -56,7 +56,7 @@ export class ProfessorController {
     const dto = professors.rows.map((professor) =>
       this.professorFactory.mapProfessorModelToProfessorDto(professor),
     );
-    
+
     const data = {
       rows: dto,
       totalRecords: professors.totalRecords,
