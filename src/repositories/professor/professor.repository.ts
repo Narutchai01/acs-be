@@ -13,7 +13,7 @@ export class ProfessorRepository implements IProfessorRepository {
   constructor(
     private prisma: PrismaService,
     private professorFactory: ProfessorFactory,
-  ) {}
+  ) { }
 
   async createProfessor(data: CreateProfessorModel): Promise<ProfessorModel> {
     const professor = await this.prisma.professor.create({
@@ -82,21 +82,21 @@ export class ProfessorRepository implements IProfessorRepository {
       const whereClause = {
         searchByName: searchByName
           ? {
-              OR: [
-                {
-                  firstNameTh: {
-                    contains: searchByName,
-                    mode: 'insensitive' as const,
-                  },
+            OR: [
+              {
+                firstNameTh: {
+                  contains: searchByName,
+                  mode: 'insensitive' as const,
                 },
-                {
-                  lastNameTh: {
-                    contains: searchByName,
-                    mode: 'insensitive' as const,
-                  },
+              },
+              {
+                lastNameTh: {
+                  contains: searchByName,
+                  mode: 'insensitive' as const,
                 },
-              ],
-            }
+              },
+            ],
+          }
           : undefined,
         deletedAt: null,
       };
@@ -128,6 +128,46 @@ export class ProfessorRepository implements IProfessorRepository {
       } else {
         console.error('Unknown error:', error);
         throw new Error('Unable to get professors: Unknown error occurred');
+      }
+    }
+  }
+
+  async countProfessors(query: QueryProfessorDto): Promise<number> {
+    try {
+      const { searchByName } = query;
+
+      const whereClause = {
+        user: searchByName
+          ? {
+            OR: [
+              {
+                firstNameTh: {
+                  contains: searchByName,
+                  mode: 'insensitive' as const,
+                },
+              },
+              {
+                lastNameTh: {
+                  contains: searchByName,
+                  mode: 'insensitive' as const,
+                },
+              },
+            ],
+          }
+          : undefined,
+        deletedAt: null,
+      };
+
+      return this.prisma.professor.count({
+        where: whereClause,
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Count professors failed:', error.message);
+        throw new Error(`Unable to count professors: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to count professors: Unknown error occurred');
       }
     }
   }

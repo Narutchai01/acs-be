@@ -11,4 +11,5 @@ export abstract class IProfessorRepository {
   abstract createExpertFields(data: CreateExpertField[]): Promise<void>;
   abstract getProfessorById(id: number): Promise<ProfessorModel>;
   abstract getProfessors(query: QueryProfessorDto): Promise<ProfessorModel[]>;
+  abstract countProfessors(query: QueryProfessorDto): Promise<number>;
 }
