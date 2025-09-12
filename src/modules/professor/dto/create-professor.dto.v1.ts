@@ -1,6 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsBoolean, IsNumber, IsString, IsArray } from 'class-validator';
+import {
+  IsBoolean,
+  IsNumber,
+  IsString,
+  IsArray,
+  IsOptional,
+} from 'class-validator';
 
 export class CreateProfessorDtoV1 {
   @ApiProperty()
@@ -22,6 +28,11 @@ export class CreateProfessorDtoV1 {
   @ApiProperty()
   @IsString()
   email: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  nickName: string;
 
   @ApiProperty()
   @IsNumber()

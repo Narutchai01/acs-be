@@ -6,6 +6,7 @@ import { CreateProfessorDtoV1 } from './dto/create-professor.dto.v1';
 import { PasswordService } from 'src/core/utils/password/password.service';
 import { SupabaseService } from 'src/provider/store/supabase/supabase.service';
 import { MailService } from '../mail/mail.service';
+import { UsersService } from 'src/modules/users/users.service';
 
 @Injectable()
 export class ProfessorService {
@@ -15,6 +16,7 @@ export class ProfessorService {
     private passwordService: PasswordService,
     private supabaseService: SupabaseService,
     private mailService: MailService,
+    private userService: UsersService,
   ) {}
 
   //TODO: clean after demo
@@ -85,6 +87,65 @@ export class ProfessorService {
       await this.mailService.sendProfessorCode(user.email, password);
     }
 
+    return professor;
+  }
+
+  async createProfessorV2(
+    data: CreateProfessorDtoV1,
+    createBy: number,
+    file?: Express.Multer.File,
+  ) {
+    const {
+      firstNameTh,
+      lastNameTh,
+      firstNameEn,
+      lastNameEn,
+      email,
+      nickName,
+    } = data;
+    const user = await this.userService.createUserV2(
+      {
+        firstNameTh,
+        lastNameTh,
+        firstNameEn,
+        lastNameEn,
+        email,
+        nickName,
+      },
+      file,
+      'professor',
+    );
+
+    let professor: ProfessorModel;
+
+    const professorData = {
+      userId: user.id,
+      majorPositionId: data.majorPositionId,
+      academicPositionId: data.academicPositionId,
+      profRoom: data.profRoom,
+      createdBy: createBy,
+      updatedBy: createBy,
+    };
+
+    professor = await this.professorRepository.createProfessor(professorData);
+
+    const educations = data.education.map((education) => ({
+      professorId: professor.id,
+      education: education.education,
+      levelId: education.levelId,
+      university: education.university,
+      createdBy: createBy,
+      updatedBy: createBy,
+    }));
+
+    const expertFields = data.expertFields.map((field) => ({
+      professorId: professor.id,
+      field: field,
+    }));
+
+    await this.professorRepository.createEducations(educations);
+    await this.professorRepository.createExpertFields(expertFields);
+    professor = await this.professorRepository.getProfessorById(professor.id);
     return professor;
   }
 }
