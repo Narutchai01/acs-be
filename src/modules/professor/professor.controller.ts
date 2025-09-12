@@ -45,4 +45,5 @@ export class ProfessorController {
       this.professorFactory.mapProfessorModelToProfessorDto(professor);
     return success<ProfessorDtoV1>(dto, HttpStatus.CREATED);
   }
+
 }
