@@ -13,7 +13,7 @@ export class ProfessorRepository implements IProfessorRepository {
   constructor(
     private prisma: PrismaService,
     private professorFactory: ProfessorFactory,
-  ) { }
+  ) {}
 
   async createProfessor(data: CreateProfessorModel): Promise<ProfessorModel> {
     const professor = await this.prisma.professor.create({
@@ -80,12 +80,24 @@ export class ProfessorRepository implements IProfessorRepository {
       const { page, pageSize, searchByName } = query;
 
       const whereClause = {
-        searchByName: searchByName ? {
-          OR: [
-            { firstNameTh: { contains: searchByName, mode: 'insensitive' as const } },
-            { lastNameTh: { contains: searchByName, mode: 'insensitive' as const } },
-          ]
-        } : undefined,
+        searchByName: searchByName
+          ? {
+              OR: [
+                {
+                  firstNameTh: {
+                    contains: searchByName,
+                    mode: 'insensitive' as const,
+                  },
+                },
+                {
+                  lastNameTh: {
+                    contains: searchByName,
+                    mode: 'insensitive' as const,
+                  },
+                },
+              ],
+            }
+          : undefined,
         deletedAt: null,
       };
 
@@ -106,7 +118,9 @@ export class ProfessorRepository implements IProfessorRepository {
         skip: calculatePagination(page, pageSize),
       });
 
-      return this.professorFactory.mapProfessorEntitiesToProfessorModels(professorEntities);
+      return this.professorFactory.mapProfessorEntitiesToProfessorModels(
+        professorEntities,
+      );
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error('Get professors failed:', error.message);
