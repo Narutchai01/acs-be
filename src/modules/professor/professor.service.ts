@@ -89,8 +89,10 @@ export class ProfessorService {
 
     return professor;
   }
-  
-  async getProfessors(query: QueryProfessorDto): Promise<Pageable<ProfessorModel>> {
+
+  async getProfessors(
+    query: QueryProfessorDto,
+  ): Promise<Pageable<ProfessorModel>> {
     const [professors, count] = await Promise.all([
       this.professorRepository.getProfessors(query),
       this.professorRepository.countProfessors(query),
