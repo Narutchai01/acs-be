@@ -22,7 +22,7 @@ export class ProfessorFactory {
   mapProfessorEntitiesToProfessorModels(
     entities: ProfessorEntity[],
   ): ProfessorModel[] {
-    return entities.map(entity =>
+    return entities.map((entity) =>
       this.mapProfessorEntityToProfessorModel(entity),
     );
   }
