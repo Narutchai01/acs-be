@@ -13,7 +13,7 @@ export class ProfessorRepository implements IProfessorRepository {
   constructor(
     private prisma: PrismaService,
     private professorFactory: ProfessorFactory,
-  ) { }
+  ) {}
 
   async createProfessor(data: CreateProfessorModel): Promise<ProfessorModel> {
     const professor = await this.prisma.professor.create({
@@ -82,21 +82,21 @@ export class ProfessorRepository implements IProfessorRepository {
       const whereClause = {
         searchByName: searchByName
           ? {
-            OR: [
-              {
-                firstNameTh: {
-                  contains: searchByName,
-                  mode: 'insensitive' as const,
+              OR: [
+                {
+                  firstNameTh: {
+                    contains: searchByName,
+                    mode: 'insensitive' as const,
+                  },
                 },
-              },
-              {
-                lastNameTh: {
-                  contains: searchByName,
-                  mode: 'insensitive' as const,
+                {
+                  lastNameTh: {
+                    contains: searchByName,
+                    mode: 'insensitive' as const,
+                  },
                 },
-              },
-            ],
-          }
+              ],
+            }
           : undefined,
         deletedAt: null,
       };
@@ -139,21 +139,21 @@ export class ProfessorRepository implements IProfessorRepository {
       const whereClause = {
         user: searchByName
           ? {
-            OR: [
-              {
-                firstNameTh: {
-                  contains: searchByName,
-                  mode: 'insensitive' as const,
+              OR: [
+                {
+                  firstNameTh: {
+                    contains: searchByName,
+                    mode: 'insensitive' as const,
+                  },
                 },
-              },
-              {
-                lastNameTh: {
-                  contains: searchByName,
-                  mode: 'insensitive' as const,
+                {
+                  lastNameTh: {
+                    contains: searchByName,
+                    mode: 'insensitive' as const,
+                  },
                 },
-              },
-            ],
-          }
+              ],
+            }
           : undefined,
         deletedAt: null,
       };

@@ -6,6 +6,8 @@ import { CreateProfessorDtoV1 } from './dto/create-professor.dto.v1';
 import { PasswordService } from 'src/core/utils/password/password.service';
 import { SupabaseService } from 'src/provider/store/supabase/supabase.service';
 import { MailService } from '../mail/mail.service';
+import { Pageable } from 'src/models';
+import { QueryProfessorDto } from './dto/get-professors.dto';
 
 @Injectable()
 export class ProfessorService {
@@ -86,5 +88,18 @@ export class ProfessorService {
     }
 
     return professor;
+  }
+  
+  async getProfessors(query: QueryProfessorDto): Promise<Pageable<ProfessorModel>> {
+    const [professors, count] = await Promise.all([
+      this.professorRepository.getProfessors(query),
+      this.professorRepository.countProfessors(query),
+    ]);
+    return {
+      rows: professors,
+      totalRecords: count,
+      page: query.page || 1,
+      pageSize: query.pageSize || 10,
+    };
   }
 }
