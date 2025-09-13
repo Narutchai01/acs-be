@@ -89,6 +89,9 @@ export class ProfessorService {
 
     return professor;
   }
+  async getProfessorById(id: number): Promise<ProfessorModel> {
+    return this.professorRepository.getProfessorById(id);
+  }
 
   async getProfessors(
     query: QueryProfessorDto,
