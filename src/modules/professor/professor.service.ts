@@ -6,6 +6,8 @@ import { CreateProfessorDtoV1 } from './dto/create-professor.dto.v1';
 import { PasswordService } from 'src/core/utils/password/password.service';
 import { SupabaseService } from 'src/provider/store/supabase/supabase.service';
 import { MailService } from '../mail/mail.service';
+import { UsersService } from 'src/modules/users/users.service';
+import type { File as MulterFile } from 'multer';
 import { Pageable } from 'src/models';
 import { QueryProfessorDto } from './dto/get-professors.dto';
 
@@ -17,12 +19,13 @@ export class ProfessorService {
     private passwordService: PasswordService,
     private supabaseService: SupabaseService,
     private mailService: MailService,
+    private userService: UsersService,
   ) {}
 
   //TODO: clean after demo
   async createProfessor(
     data: CreateProfessorDtoV1,
-    image: Express.Multer.File,
+    image: MulterFile,
     createBy: number,
   ): Promise<ProfessorModel> {
     let password: string = '';
@@ -87,6 +90,76 @@ export class ProfessorService {
       await this.mailService.sendProfessorCode(user.email, password);
     }
 
+    return professor;
+  }
+  async getProfessorById(id: number): Promise<ProfessorModel> {
+    return this.professorRepository.getProfessorById(id);
+  }
+
+  async createProfessorV2(
+    data: CreateProfessorDtoV1,
+    createBy: number,
+    file?: MulterFile,
+  ) {
+    const {
+      firstNameTh,
+      lastNameTh,
+      firstNameEn,
+      lastNameEn,
+      email,
+      nickName,
+    } = data;
+
+    const { user, password } = await this.userService.createUserV2(
+      {
+        firstNameTh,
+        lastNameTh,
+        firstNameEn,
+        lastNameEn,
+        email,
+        nickName,
+        createdBy: createBy,
+        updatedBy: createBy,
+      },
+      file,
+      'professor',
+    );
+
+    let professor: ProfessorModel;
+
+    const professorData = {
+      userId: user.id,
+      majorPositionId: data.majorPositionId,
+      academicPositionId: data.academicPositionId,
+      profRoom: data.profRoom,
+      createdBy: createBy,
+      updatedBy: createBy,
+    };
+
+    professor = await this.professorRepository.createProfessor(professorData);
+
+    const educations = data.education.map((education) => ({
+      professorId: professor.id,
+      education: education.education,
+      levelId: education.levelId,
+      university: education.university,
+      createdBy: createBy,
+      updatedBy: createBy,
+    }));
+
+    const expertFields = data.expertFields.map((field) => ({
+      professorId: professor.id,
+      field: field,
+    }));
+
+    await this.professorRepository.createEducations(educations);
+    await this.professorRepository.createExpertFields(expertFields);
+
+    if (user.password && password) {
+      await this.mailService.sendProfessorCode(user.email, password);
+    }
+
+    professor = await this.professorRepository.getProfessorById(professor.id);
     return professor;
   }
 

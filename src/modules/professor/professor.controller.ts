@@ -8,6 +8,7 @@ import {
   UseGuards,
   UseInterceptors,
   Get,
+  Param,
   Query,
 } from '@nestjs/common';
 import { ProfessorService } from './professor.service';
@@ -18,6 +19,7 @@ import { AuthenticatedRequest } from 'src/models/auth';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ProfessorFactory } from './professor.factory';
 import { ProfessorDtoV1 } from './dto/professor.dto.v1';
+import type { File as MulterFile } from 'multer';
 import { QueryProfessorDto } from './dto/get-professors.dto';
 import { Pageable } from 'src/models';
 
@@ -36,18 +38,28 @@ export class ProfessorController {
   @UseInterceptors(FileInterceptor('image'))
   async createProfessor(
     @Body() body: CreateProfessorDtoV1,
-    @UploadedFile() image: Express.Multer.File,
+    @UploadedFile() image: MulterFile,
     @Req() req: AuthenticatedRequest,
   ) {
-    const professor = await this.professorService.createProfessor(
+    const professor = await this.professorService.createProfessorV2(
       body,
-      image,
       req.user.userId,
+      image,
     );
+    console.log('created professor success');
 
     const dto =
       this.professorFactory.mapProfessorModelToProfessorDto(professor);
     return success<ProfessorDtoV1>(dto, HttpStatus.CREATED);
+  }
+
+  @Get(':id')
+  async getProfessorById(@Param('id') id: string) {
+    const IdNumber = Number(id);
+    const professor = await this.professorService.getProfessorById(IdNumber);
+    const dto =
+      this.professorFactory.mapProfessorModelToProfessorDto(professor);
+    return success<ProfessorDtoV1>(dto, HttpStatus.OK);
   }
 
   @Get()
