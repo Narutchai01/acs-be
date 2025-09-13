@@ -1,30 +1,27 @@
 import {
-  Body,
   Controller,
-  HttpStatus,
   Post,
-  Req,
-  UploadedFile,
   UseGuards,
   UseInterceptors,
-  Get,
-  Param,
+  UploadedFile,
+  Body,
+  Req,
 } from '@nestjs/common';
 import { ProfessorService } from './professor.service';
-import { CreateProfessorDtoV1 } from './dto/create-professor.dto.v1';
-import { success } from 'src/core/interceptors/response.helper';
-import { FileInterceptor } from '@nestjs/platform-express/multer/interceptors/file.interceptor';
-import { AuthenticatedRequest } from 'src/models/auth';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { ProfessorFactory } from './professor.factory';
-import { ProfessorDtoV1 } from './dto/professor.dto.v1';
+import { FileInterceptor } from '@nestjs/platform-express/multer/interceptors/file.interceptor';
+import { CreateProfessorDtoV1 } from './dto/create-professor.dto.v1';
+import { AuthenticatedRequest } from 'src/models/auth';
 import type { File as MulterFile } from 'multer';
+import { ProfessorFactory } from './professor.factory';
+import { success } from 'src/core/interceptors/response.helper';
+import { ProfessorDtoV1 } from './dto/professor.dto.v1';
 
 @Controller({
+  version: '2',
   path: 'professors',
-  version: '1',
 })
-export class ProfessorController {
+export class ProfessorControllerV2 {
   constructor(
     private readonly professorService: ProfessorService,
     private readonly professorFactory: ProfessorFactory,
@@ -33,29 +30,19 @@ export class ProfessorController {
   @UseGuards(JwtAuthGuard)
   @Post()
   @UseInterceptors(FileInterceptor('image'))
-  async createProfessor(
+  async create(
+    @UploadedFile() file: MulterFile,
     @Body() body: CreateProfessorDtoV1,
-    @UploadedFile() image: MulterFile,
     @Req() req: AuthenticatedRequest,
   ) {
     const professor = await this.professorService.createProfessorV2(
       body,
       req.user.userId,
-      image,
+      file,
     );
-    console.log('created professor success');
-
     const dto =
       this.professorFactory.mapProfessorModelToProfessorDto(professor);
-    return success<ProfessorDtoV1>(dto, HttpStatus.CREATED);
-  }
 
-  @Get(':id')
-  async getProfessorById(@Param('id') id: string) {
-    const IdNumber = Number(id);
-    const professor = await this.professorService.getProfessorById(IdNumber);
-    const dto =
-      this.professorFactory.mapProfessorModelToProfessorDto(professor);
-    return success<ProfessorDtoV1>(dto, HttpStatus.OK);
+    return success<ProfessorDtoV1>(dto, 201);
   }
 }
