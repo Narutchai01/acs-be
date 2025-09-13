@@ -7,6 +7,8 @@ import {
   UploadedFile,
   UseGuards,
   UseInterceptors,
+  Get,
+  Param,
 } from '@nestjs/common';
 import { ProfessorService } from './professor.service';
 import { CreateProfessorDtoV1 } from './dto/create-professor.dto.v1';
@@ -46,5 +48,14 @@ export class ProfessorController {
     const dto =
       this.professorFactory.mapProfessorModelToProfessorDto(professor);
     return success<ProfessorDtoV1>(dto, HttpStatus.CREATED);
+  }
+
+  @Get(':id')
+  async getProfessorById(@Param('id') id: string) {
+    const IdNumber = Number(id);
+    const professor = await this.professorService.getProfessorById(IdNumber);
+    const dto =
+      this.professorFactory.mapProfessorModelToProfessorDto(professor);
+    return success<ProfessorDtoV1>(dto, HttpStatus.OK);
   }
 }
