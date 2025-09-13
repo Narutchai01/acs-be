@@ -7,6 +7,7 @@ import { PasswordService } from 'src/core/utils/password/password.service';
 import { SupabaseService } from 'src/provider/store/supabase/supabase.service';
 import { MailService } from '../mail/mail.service';
 import { UsersService } from 'src/modules/users/users.service';
+import type { File as MulterFile } from 'multer';
 
 @Injectable()
 export class ProfessorService {
@@ -22,7 +23,7 @@ export class ProfessorService {
   //TODO: clean after demo
   async createProfessor(
     data: CreateProfessorDtoV1,
-    image: Express.Multer.File,
+    image: MulterFile,
     createBy: number,
   ): Promise<ProfessorModel> {
     let password: string = '';
@@ -93,7 +94,7 @@ export class ProfessorService {
   async createProfessorV2(
     data: CreateProfessorDtoV1,
     createBy: number,
-    file?: Express.Multer.File,
+    file?: MulterFile,
   ) {
     const {
       firstNameTh,
@@ -104,7 +105,7 @@ export class ProfessorService {
       nickName,
     } = data;
 
-    const createResult = await this.userService.createUserV2(
+    const { user, password } = await this.userService.createUserV2(
       {
         firstNameTh,
         lastNameTh,
@@ -116,12 +117,6 @@ export class ProfessorService {
       file,
       'professor',
     );
-
-    if (createResult instanceof Error) {
-      throw new HttpException("Can't create user", 500);
-    }
-
-    const { user, password } = createResult;
 
     let professor: ProfessorModel;
 

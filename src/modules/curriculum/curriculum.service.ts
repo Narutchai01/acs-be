@@ -5,6 +5,7 @@ import { CurriculumModel } from 'src/models/curriculum';
 import { Pageable } from 'src/models';
 import { UpdateCurriculumDto } from './dto/update-curriculum.dto';
 import { SupabaseService } from 'src/provider/store/supabase/supabase.service';
+import type { File as MulterFile } from 'multer';
 
 @Injectable()
 export class CurriculumService {
@@ -16,7 +17,7 @@ export class CurriculumService {
   async createCurriculum(
     curriculumData: CreateCurriculumDto,
     createdBy: number,
-    file: Express.Multer.File,
+    file: MulterFile,
   ): Promise<CurriculumModel> {
     const imageUrl = await this.storage.uploadFile(file, 'curriculum');
     const newsData = {
@@ -51,7 +52,7 @@ export class CurriculumService {
     curriculumId: number,
     data: UpdateCurriculumDto,
     updatedBy: number,
-    file?: Express.Multer.File,
+    file?: MulterFile,
   ): Promise<CurriculumModel> {
     const imageUrl = file
       ? await this.storage.uploadFile(file, 'curriculum')
