@@ -54,12 +54,13 @@ export class UsersService {
     file?: Express.Multer.File,
     role: string = 'user',
     isPassword: boolean = false,
-  ): Promise<UserModel> {
+  ): Promise<{ user: UserModel; password?: string }> {
     let imageUrl: string | undefined;
+    let hashPassword: string | undefined;
     let password: string | undefined;
     if (isPassword) {
       password = await this.passwordService.generateRandomPassword(8);
-      password = await this.passwordService.hashPassword(password);
+      hashPassword = await this.passwordService.hashPassword(password);
     }
     if (file) {
       imageUrl = await this.supabaseService.uploadFile(file, role);
@@ -67,10 +68,10 @@ export class UsersService {
 
     const newData = {
       ...data,
-      password: isPassword ? password : null,
+      password: isPassword ? hashPassword : null,
       ...(imageUrl ? { imageUrl } : null),
     };
     const user = await this.userRepository.createUser(newData);
-    return user;
+    return { user, password };
   }
 }

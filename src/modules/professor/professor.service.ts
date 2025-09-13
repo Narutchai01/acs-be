@@ -103,7 +103,8 @@ export class ProfessorService {
       email,
       nickName,
     } = data;
-    const user = await this.userService.createUserV2(
+
+    const createResult = await this.userService.createUserV2(
       {
         firstNameTh,
         lastNameTh,
@@ -115,6 +116,12 @@ export class ProfessorService {
       file,
       'professor',
     );
+
+    if (createResult instanceof Error) {
+      throw new HttpException("Can't create user", 500);
+    }
+
+    const { user, password } = createResult;
 
     let professor: ProfessorModel;
 
@@ -145,6 +152,11 @@ export class ProfessorService {
 
     await this.professorRepository.createEducations(educations);
     await this.professorRepository.createExpertFields(expertFields);
+
+    if (user.password && password) {
+      await this.mailService.sendProfessorCode(user.email, password);
+    }
+
     professor = await this.professorRepository.getProfessorById(professor.id);
     return professor;
   }
