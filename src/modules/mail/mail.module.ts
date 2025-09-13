@@ -13,6 +13,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
           user: process.env.MAIL_USER,
           pass: process.env.MAIL_PASS,
         },
+        logger: false, // Disable transporter logging
       },
       defaults: {
         from: `"ACS System" <${process.env.MAIL_FROM || process.env.MAIL_USER}>`,

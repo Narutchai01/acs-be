@@ -8,6 +8,7 @@ import { MailModule } from '../mail/mail.module';
 import { ProfessorFactory } from './professor.factory';
 import { UsersModule } from '../users/users.module';
 import { MasterdataModule } from '../masterdata/masterdata.module';
+import { ProfessorControllerV2 } from './professor.controller.v2';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { MasterdataModule } from '../masterdata/masterdata.module';
     UsersModule,
     MasterdataModule,
   ],
-  controllers: [ProfessorController],
+  controllers: [ProfessorController, ProfessorControllerV2],
   providers: [ProfessorService, ProfessorFactory],
 })
 export class ProfessorModule {}
