@@ -113,6 +113,8 @@ export class ProfessorService {
         lastNameEn,
         email,
         nickName,
+        createdBy: createBy,
+        updatedBy: createBy,
       },
       file,
       'professor',

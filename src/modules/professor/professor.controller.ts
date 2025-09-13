@@ -36,11 +36,12 @@ export class ProfessorController {
     @UploadedFile() image: MulterFile,
     @Req() req: AuthenticatedRequest,
   ) {
-    const professor = await this.professorService.createProfessor(
+    const professor = await this.professorService.createProfessorV2(
       body,
-      image,
       req.user.userId,
+      image,
     );
+    console.log('created professor success');
 
     const dto =
       this.professorFactory.mapProfessorModelToProfessorDto(professor);
