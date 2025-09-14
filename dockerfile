@@ -58,8 +58,7 @@ COPY --chown=node:node package.json ./
 
 # ✅ สร้าง Prisma Client/Binaries สำหรับ linux-musl (Alpine)
 RUN npx prisma generate
-
-COPY --chown=node:node ./scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY --chown=node:node ./scripts /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
