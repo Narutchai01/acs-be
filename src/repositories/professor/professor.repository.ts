@@ -5,6 +5,8 @@ import { PrismaService } from 'src/provider/database/prisma/prisma.service';
 import { ProfessorFactory } from './professor.factory';
 import { CreateEducationModel } from 'src/models/education';
 import { CreateExpertField } from 'src/models/expertfields';
+import { QueryProfessorDto } from 'src/modules/professor/dto/get-professors.dto';
+import calculatePagination from 'src/core/utils/calculatePagination';
 
 @Injectable()
 export class ProfessorRepository implements IProfessorRepository {
@@ -71,5 +73,62 @@ export class ProfessorRepository implements IProfessorRepository {
     }
 
     return this.professorFactory.mapProfessorEntityToProfessorModel(professor);
+  }
+
+  async getProfessors(query: QueryProfessorDto): Promise<ProfessorModel[]> {
+    try {
+      const { page, pageSize, searchByName } = query;
+
+      const whereClause = {
+        searchByName: searchByName
+          ? {
+              OR: [
+                {
+                  firstNameTh: {
+                    contains: searchByName,
+                    mode: 'insensitive' as const,
+                  },
+                },
+                {
+                  lastNameTh: {
+                    contains: searchByName,
+                    mode: 'insensitive' as const,
+                  },
+                },
+              ],
+            }
+          : undefined,
+        deletedAt: null,
+      };
+
+      const professorEntities = await this.prisma.professor.findMany({
+        where: whereClause,
+        include: {
+          user: true,
+          education: {
+            include: {
+              educationLevel: true,
+            },
+          },
+          expertFields: true,
+          academicPosition: true,
+          majorPosition: true,
+        },
+        take: pageSize,
+        skip: calculatePagination(page, pageSize),
+      });
+
+      return this.professorFactory.mapProfessorEntitiesToProfessorModels(
+        professorEntities,
+      );
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Get professors failed:', error.message);
+        throw new Error(`Unable to get professors: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to get professors: Unknown error occurred');
+      }
+    }
   }
 }

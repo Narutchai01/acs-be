@@ -19,6 +19,14 @@ export class ProfessorFactory {
     private majorPositionFactory: MajorPositionFactory,
   ) {}
 
+  mapProfessorEntitiesToProfessorModels(
+    entities: ProfessorEntity[],
+  ): ProfessorModel[] {
+    return entities.map((entity) =>
+      this.mapProfessorEntityToProfessorModel(entity),
+    );
+  }
+
   mapProfessorEntityToProfessorModel(data: ProfessorEntity): ProfessorModel {
     return {
       id: data.id,
