@@ -131,4 +131,44 @@ export class ProfessorRepository implements IProfessorRepository {
       }
     }
   }
+
+  async countProfessors(query: QueryProfessorDto): Promise<number> {
+    try {
+      const { searchByName } = query;
+
+      const whereClause = {
+        user: searchByName
+          ? {
+              OR: [
+                {
+                  firstNameTh: {
+                    contains: searchByName,
+                    mode: 'insensitive' as const,
+                  },
+                },
+                {
+                  lastNameTh: {
+                    contains: searchByName,
+                    mode: 'insensitive' as const,
+                  },
+                },
+              ],
+            }
+          : undefined,
+        deletedAt: null,
+      };
+
+      return this.prisma.professor.count({
+        where: whereClause,
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Count professors failed:', error.message);
+        throw new Error(`Unable to count professors: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to count professors: Unknown error occurred');
+      }
+    }
+  }
 }
