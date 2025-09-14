@@ -114,8 +114,8 @@ export class ProfessorRepository implements IProfessorRepository {
           academicPosition: true,
           majorPosition: true,
         },
-        take: pageSize,
-        skip: calculatePagination(page, pageSize),
+        take: Number(pageSize),
+        skip: calculatePagination(page, Number(pageSize)),
       });
 
       return this.professorFactory.mapProfessorEntitiesToProfessorModels(
