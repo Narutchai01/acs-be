@@ -7,6 +7,7 @@ import { ExpertFieldsDtoV1 } from './exprt-fields.dto.v1';
 export class ProfessorDtoV1 {
   id: number;
   profRoom: string;
+  phone: string;
   academicPosition: AcademicPositionDto | null;
   majorPosition: MajorPositionDto | null;
   educations: EducationDtoV1[] | [];

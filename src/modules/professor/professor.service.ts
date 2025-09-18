@@ -60,6 +60,7 @@ export class ProfessorService {
       majorPositionId: data.majorPositionId,
       academicPositionId: data.academicPositionId,
       profRoom: data.profRoom,
+      phone: data.phone,
       createdBy: createBy,
       updatedBy: createBy,
     };
@@ -132,6 +133,7 @@ export class ProfessorService {
       majorPositionId: data.majorPositionId,
       academicPositionId: data.academicPositionId,
       profRoom: data.profRoom,
+      phone: data.phone,
       createdBy: createBy,
       updatedBy: createBy,
     };
