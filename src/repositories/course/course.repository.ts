@@ -195,11 +195,9 @@ export class CourseRepository implements ICourseRepository {
     return this.prisma.course.count({
       where: {
         deletedAt: null,
-        TypeCourse: {
-          name: {
-            contains: query.searchByTypeCourse,
-          },
-        },
+        typeCourseId: query.typecourseId,
+        curriculumId: query.curriculumId,
+        // ...(query.searchByTypeCourse && {
       },
     });
   }
