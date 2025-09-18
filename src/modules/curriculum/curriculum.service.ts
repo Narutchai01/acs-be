@@ -38,7 +38,7 @@ export class CurriculumService {
     ]);
     return {
       page: 1,
-      pageSize: 10,
+      pageSize: 2,
       totalRecords: count,
       rows: rows,
     };

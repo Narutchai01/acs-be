@@ -14,13 +14,7 @@ export class CurriculumFactory {
 
   mapCurriculumModelToCurriculumDto(data: CurriculumModel): CurriculumDto {
     const dto: CurriculumDto = {
-      id: data.id,
-      year: data.year,
-      fileUrl: data.fileUrl,
-      createdBy: data.createdBy,
-      updatedBy: data.updatedBy,
-      createdAt: data.createdAt,
-      updatedAt: data.updatedAt,
+      ...data,
     };
 
     return dto;

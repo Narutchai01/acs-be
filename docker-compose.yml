@@ -22,7 +22,6 @@ services:
       context: .
       dockerfile: Dockerfile
       target: development
-    image: acs-website-server:development
     ports:
       - '${PORT}:${PORT}'
     env_file:
