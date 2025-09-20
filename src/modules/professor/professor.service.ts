@@ -61,6 +61,7 @@ export class ProfessorService {
       academicPositionId: data.academicPositionId,
       phone: data.phone,
       profRoom: data.profRoom,
+      phone: data.phone,
       createdBy: createBy,
       updatedBy: createBy,
     };

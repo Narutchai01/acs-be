@@ -52,6 +52,7 @@ export class ProfessorFactory {
     const result = {
       id: data.id,
       profRoom: data.profRoom,
+      phone: data.phone,
       academicPosition: data.academicPosition
         ? this.masterDataFactory.mapAcademicPositionModelToDto(
             data.academicPosition,

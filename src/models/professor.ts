@@ -10,6 +10,7 @@ export interface ProfessorModel extends BaseModel {
   userId: number;
   academicPositionId: number;
   majorPositionId: number;
+  phone: string;
   profRoom: string;
   createdBy: number;
   updatedBy: number;
@@ -35,6 +36,7 @@ export interface CreateProfessorModel extends BaseModel {
   phone: string;
   majorPositionId: number;
   profRoom: string;
+  phone: string;
   createdBy: number;
   updatedBy: number;
 }

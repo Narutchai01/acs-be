@@ -31,6 +31,10 @@ export class CreateProfessorDtoV1 {
 
   @ApiProperty()
   @IsString()
+  phone: string;
+
+  @ApiProperty()
+  @IsString()
   @IsOptional()
   nickName: string;
 
