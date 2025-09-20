@@ -20,6 +20,37 @@ RUN npx prisma generate
 RUN npm run prebuild || true
 RUN npm run build
 
+#---------dev-deps----------
+FROM base AS dev-deps
+COPY package.json package-lock.json ./
+RUN --mount=type=cache,target=/root/.npm npm ci --ignore-scripts
+RUN npm install -g ts-node typescript @nestjs/cli
+# ---------- development ----------
+FROM base AS development
+ENV NODE_ENV=development
+
+# Copy files first as root to ensure proper setup
+COPY --from=dev-deps /usr/src/app/node_modules ./node_modules
+COPY --from=builder   /usr/src/app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder   /usr/src/app/node_modules/@prisma ./node_modules/@prisma
+COPY --from=builder   /usr/src/app/dist                ./dist
+COPY prisma ./prisma
+COPY package.json ./
+COPY tsconfig*.json nest-cli.json ./
+COPY src ./src
+COPY ./scripts /usr/local/bin/
+
+# Set proper permissions and ownership for the node user
+RUN chown -R node:node /usr/src/app && \
+    chmod +x /usr/local/bin/entrypoint.sh
+
+# Switch to node user after setting up permissions
+USER node
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+CMD ["npm", "run", "start:dev"]
+
 # ---------- prod-deps ----------
 FROM base AS prod-deps
 COPY package.json package-lock.json ./
