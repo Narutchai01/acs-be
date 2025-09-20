@@ -1,70 +1,49 @@
 # syntax=docker/dockerfile:1.7
 FROM node:24.5.0-alpine AS base
-
-# Prisma on Alpine needs these
 RUN apk add --no-cache libc6-compat openssl
-
 WORKDIR /usr/src/app
 
-# ---------- deps: ติดตั้ง dependencies แบบ clean ----------
+# ---------- deps ----------
 FROM base AS deps
-# ใช้ lockfile เพื่อ build ที่ repeatable
 COPY package.json package-lock.json ./
-# ใช้ cache mount เร่งความเร็ว (ต้องใช้ BuildKit)
-RUN --mount=type=cache,target=/root/.npm \
-    npm ci --ignore-scripts
+RUN --mount=type=cache,target=/root/.npm npm ci --ignore-scripts
 
-# ---------- build: สร้าง NestJS dist ----------
+# ---------- build ----------
 FROM base AS builder
 COPY --from=deps /usr/src/app/node_modules ./node_modules
-# ต้องมีโฟลเดอร์ prisma สำหรับ generate และ build
 COPY prisma ./prisma
-COPY tsconfig*.json ./
-COPY nest-cli.json ./
+COPY tsconfig*.json nest-cli.json package.json ./
 COPY src ./src
-COPY package.json ./
 
-# Prisma generate หลังมี node_modules แล้ว
+# generate Prisma Client ตอน build (ใช้ CLI จาก devDeps ใน image นี้ได้ เพราะเรายังไม่ได้ omit)
 RUN npx prisma generate
-
-# build (prebuild ถ้ามี script ก็โอเค)
 RUN npm run prebuild || true
 RUN npm run build
 
-FROM base AS development
-ENV NODE_ENV=development
-COPY --from=deps /usr/src/app/node_modules ./node_modules
-COPY . .
-# ถ้าต้อง generate client เวลา dev
-RUN npx prisma generate
-CMD ["npm", "run", "start:dev"]
-
-# ---------- prod-deps: เอาเฉพาะ dependencies ที่ใช้จริงใน prod ----------
+# ---------- prod-deps ----------
 FROM base AS prod-deps
 COPY package.json package-lock.json ./
-RUN --mount=type=cache,target=/root/.npm \
-    npm ci --omit=dev --ignore-scripts
+RUN --mount=type=cache,target=/root/.npm npm ci --omit=dev --ignore-scripts
 
-# ---------- production: บาง เบา ----------
+# ---------- production ----------
 FROM base AS production
 ENV NODE_ENV=production
 
+# อย่า root
 USER node
 
+# คัดลอก lib/ไบนารี + client ที่ generate แล้วจาก builder
 COPY --chown=node:node --from=prod-deps /usr/src/app/node_modules ./node_modules
-COPY --chown=node:node --from=builder   /usr/src/app/dist        ./dist
+COPY --chown=node:node --from=builder   /usr/src/app/node_modules/.prisma ./node_modules/.prisma
+COPY --chown=node:node --from=builder   /usr/src/app/node_modules/@prisma ./node_modules/@prisma
+COPY --chown=node:node --from=builder   /usr/src/app/dist                ./dist
 COPY --chown=node:node prisma ./prisma
 COPY --chown=node:node package.json ./
 
-# ✅ สร้าง Prisma Client/Binaries สำหรับ linux-musl (Alpine)
-RUN npx prisma generate
+# ❌ ไม่ต้อง run `npx prisma generate` ที่นี่อีกแล้ว
 COPY --chown=node:node ./scripts /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-CMD ["node", "dist/src/main"]
-
-
-
-
-
+# ตรวจว่าทางออก Nest ตรงไหม: ปกติคือ dist/main.js ไม่ใช่ dist/src/main
+CMD ["node", "dist/src/main.js"]
