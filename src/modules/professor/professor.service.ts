@@ -59,6 +59,7 @@ export class ProfessorService {
       userId: user.id,
       majorPositionId: data.majorPositionId,
       academicPositionId: data.academicPositionId,
+      phone: data.phone,
       profRoom: data.profRoom,
       phone: data.phone,
       createdBy: createBy,

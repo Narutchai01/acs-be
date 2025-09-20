@@ -11,6 +11,7 @@ export class ProfessorEntity implements Professor {
   academicPositionId: number;
   majorPositionId: number;
   profRoom: string;
+  phone: string;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;
