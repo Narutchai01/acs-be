@@ -48,6 +48,10 @@ export class CreateProfessorDtoV1 {
   @IsString()
   profRoom: string;
 
+  @ApiProperty()
+  @IsString()
+  phone: string;
+
   @ApiProperty({
     description: 'Indicates if the professor has a password set',
     example: true,
