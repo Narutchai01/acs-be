@@ -5,7 +5,6 @@ import { ExpertFieldEntity } from './expertfields.entity';
 import { AcademicPositionEntity } from './academicposition.entity';
 import { MajorPositionEntity } from './majorposition.entity';
 export class ProfessorEntity implements Professor {
-  phone: string;
   id: number;
   userId: number;
   academicPositionId: number;
