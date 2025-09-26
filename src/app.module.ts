@@ -16,6 +16,7 @@ import { CurriculumModule } from './modules/curriculum/curriculum.module';
 import { MasterdataModule } from './modules/masterdata/masterdata.module';
 import { ProfessorModule } from './modules/professor/professor.module';
 import { MailModule } from './modules/mail/mail.module';
+import { ClassBookModule } from './modules/class-book/class-book.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { MailModule } from './modules/mail/mail.module';
     MasterdataModule,
     ProfessorModule,
     MailModule,
+    ClassBookModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],

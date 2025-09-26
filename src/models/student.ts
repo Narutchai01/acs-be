@@ -1,6 +1,7 @@
 import { BaseModel } from '.';
+import { UserModel } from './user';
 
-export interface Student extends BaseModel {
+export interface StudentModel extends BaseModel {
   id: number;
   userId: number;
   studentId: string;
@@ -8,6 +9,5 @@ export interface Student extends BaseModel {
   facebook?: string | null;
   instagram?: string | null;
   github?: string | null;
-  yearOfFirstAdmission: number;
-  yearOfCompletion?: number | null;
+  user?: UserModel;
 }

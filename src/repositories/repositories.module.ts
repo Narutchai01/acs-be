@@ -45,6 +45,9 @@ import { EducationRepository } from './education/education.repository';
 import { ExpertFieldsFactory } from './expertfields/expertfields.factory';
 import { IExpertFieldsRepository } from './expertfields/expertfields.abstract';
 import { ExpertFieldsRepository } from './expertfields/expertfields.repository';
+import { IClassBookRepository } from './class-book/class-book.abstract';
+import { ClassBookRepository } from './class-book/class-book.repository';
+import { ClassBookFactory } from './class-book/class-book.factory';
 
 @Module({
   imports: [PrismaModule],
@@ -109,6 +112,11 @@ import { ExpertFieldsRepository } from './expertfields/expertfields.repository';
       provide: IExpertFieldsRepository,
       useClass: ExpertFieldsRepository,
     },
+    {
+      provide: IClassBookRepository,
+      useClass: ClassBookRepository,
+    },
+    ClassBookFactory,
     MajorPositionFactory,
     EducationLevelFactory,
     NewsFactory,
@@ -141,6 +149,7 @@ import { ExpertFieldsRepository } from './expertfields/expertfields.repository';
     IMajorPositionRepository,
     IEducationRepository,
     IExpertFieldsRepository,
+    IClassBookRepository,
   ],
 })
 export class RepositoriesModule {}
