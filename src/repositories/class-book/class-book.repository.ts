@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { IClassBookRepository } from './class-book.abstract';
 import { ClassBookModel, RequestClassBookModel } from 'src/models/class-book';
 import { PrismaService } from 'src/provider/database/prisma/prisma.service';
@@ -35,5 +35,16 @@ export class ClassBookRepository implements IClassBookRepository {
       take: 2,
     });
     return this.classBookFactory.mapEntitiesToModels(classBooks);
+  }
+
+  async getClassBookById(id: number): Promise<ClassBookModel> {
+    const classBook = await this.prisma.classBook.findUnique({
+      where: { id, deletedAt: null },
+      include: { Student: false },
+    });
+    if (!classBook) {
+      throw new HttpException(`ClassBook with id ${id} not found`, 404);
+    }
+    return this.classBookFactory.mapEntityToModel(classBook);
   }
 }

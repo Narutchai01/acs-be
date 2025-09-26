@@ -27,4 +27,8 @@ export class ClassBookService {
   async getClassBooks(): Promise<ClassBookModel[]> {
     return this.classBookRepository.getClassBooks();
   }
+
+  async getClassBookById(id: number): Promise<ClassBookModel> {
+    return this.classBookRepository.getClassBookById(id);
+  }
 }

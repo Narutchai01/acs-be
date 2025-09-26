@@ -5,6 +5,7 @@ import {
   Req,
   UseGuards,
   UseInterceptors,
+  Param,
 } from '@nestjs/common';
 import { ClassBookService } from './class-book.service';
 import { Post, Body, UploadedFile } from '@nestjs/common';
@@ -51,5 +52,13 @@ export class ClassBookController {
     const classBookDtos =
       this.classFactory.mapClassBookModelsToClassBookDtos(classBooks);
     return success(classBookDtos, HttpStatus.OK);
+  }
+
+  @Get(':id')
+  async getClassBookById(@Param('id') id: number) {
+    const classBook = await this.classBookService.getClassBookById(+id);
+    const classBookDto =
+      this.classFactory.mapClassBookModelToClassBookDto(classBook);
+    return success(classBookDto, HttpStatus.OK);
   }
 }

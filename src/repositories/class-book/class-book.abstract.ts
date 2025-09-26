@@ -8,4 +8,5 @@ export abstract class IClassBookRepository {
     createdBy: number,
   ): Promise<ClassBookModel>;
   abstract getClassBooks(): Promise<ClassBookModel[]>;
+  abstract getClassBookById(id: number): Promise<ClassBookModel>;
 }
