@@ -63,8 +63,8 @@ model User {
   News        News[]
   NewsMedia   NewsMedia[]
   Professor   Professor?
-  Student     Student?
   UserRole    UserRole[]
+  Student     Student[]
 
   @@map("users")
 }
@@ -178,27 +178,6 @@ model PrevCourse {
   @@map("prev_courses")
 }
 
-model Student {
-  id                   Int       @id @default(autoincrement()) @map("id")
-  userId               Int       @unique
-  studentId            String    @map("student_id")
-  linkedin             String?   @map("linkedin")
-  facebook             String?   @map("facebook")
-  instagram            String?   @map("instagram")
-  github               String?   @map("github")
-  yearOfFirstAdmission Int       @map("year_of_first_admission")
-  yearOfCompletion     Int?      @map("year_of_completion")
-  classOf              String    @map("class_of")
-  createdBy            Int       @map("created_by")
-  updatedBy            Int       @map("updated_by")
-  createdAt            DateTime  @default(now()) @map("created_at")
-  deletedAt            DateTime? @map("deleted_at")
-  updatedAt            DateTime  @updatedAt @map("updated_at")
-  user                 User      @relation(fields: [userId], references: [id])
-
-  @@map("students")
-}
-
 model Curriculum {
   id          Int       @id @default(autoincrement()) @map("id")
   year        String    @map("year")
@@ -295,4 +274,39 @@ model ExpertFields {
   professor   Professor @relation(fields: [professorId], references: [id])
 
   @@map("expert_fields")
+}
+
+model ClassBook {
+  id                Int       @id @default(autoincrement()) @map("id")
+  classof           Int       @map("classof")
+  firstYearAcademic String    @map("first_year_academic")
+  image             String    @map("image")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+  deletedAt         DateTime? @map("deleted_at")
+  createdBy         Int       @map("created_by")
+  updatedBy         Int       @map("updated_by")
+  Student           Student[]
+
+  @@map("class_books")
+}
+
+model Student {
+  id          Int       @id @default(autoincrement()) @map("id")
+  userId      Int       @map("user_id")
+  studentId   String    @map("student_id")
+  linkin      String?   @map("linkin")
+  facebook    String?   @map("facebook")
+  instragram  String?   @map("instragram")
+  github      String?   @map("github")
+  classBookId Int       @map("class_book_id")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+  createdBy   Int       @map("created_by")
+  updatedBy   Int       @map("updated_by")
+  classBook   ClassBook @relation(fields: [classBookId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+
+  @@map("students")
 }
