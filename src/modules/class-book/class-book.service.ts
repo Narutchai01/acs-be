@@ -23,4 +23,8 @@ export class ClassBookService {
     };
     return this.classBookRepository.createClassBook(classBookData, createdBy);
   }
+
+  async getClassBooks(): Promise<ClassBookModel[]> {
+    return this.classBookRepository.getClassBooks();
+  }
 }

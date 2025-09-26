@@ -13,9 +13,9 @@ export class ClassBookFactory {
       id: model.id,
       firstYearAcademic: model.firstYearAcademic,
       image: model.image,
+      classof: model.classof,
       createdAt: model.createdAt,
       updatedAt: model.updatedAt,
-      deletedAt: model.deletedAt,
       createdBy: model.createdBy,
       updatedBy: model.updatedBy,
     };

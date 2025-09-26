@@ -8,7 +8,7 @@ export interface ClassBookModel extends BaseModel {
   image: string;
   createdAt: Date;
   updatedAt: Date;
-  deletedAt?: Date;
+  deletedAt?: Date | null;
   createdBy: number;
   updatedBy: number;
   student?: StudentModel[];

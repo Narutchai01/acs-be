@@ -14,7 +14,7 @@ export class ClassBookFactory {
       firstYearAcademic: entity.firstYearAcademic,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
-      deletedAt: entity.deletedAt,
+      deletedAt: entity.deletedAt ? entity.deletedAt : null,
       createdBy: entity.createdBy,
       updatedBy: entity.updatedBy,
       student: [],

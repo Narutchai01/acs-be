@@ -7,4 +7,5 @@ export abstract class IClassBookRepository {
     data: RequestClassBookModel,
     createdBy: number,
   ): Promise<ClassBookModel>;
+  abstract getClassBooks(): Promise<ClassBookModel[]>;
 }

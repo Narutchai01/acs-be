@@ -1,5 +1,6 @@
 import {
   Controller,
+  Get,
   HttpStatus,
   Req,
   UseGuards,
@@ -42,5 +43,13 @@ export class ClassBookController {
       this.classFactory.mapClassBookModelToClassBookDto(classBook);
 
     return success(classBookDto, HttpStatus.CREATED);
+  }
+
+  @Get()
+  async getClassBooks() {
+    const classBooks = await this.classBookService.getClassBooks();
+    const classBookDtos =
+      this.classFactory.mapClassBookModelsToClassBookDtos(classBooks);
+    return success(classBookDtos, HttpStatus.OK);
   }
 }

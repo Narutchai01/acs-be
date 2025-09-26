@@ -26,4 +26,14 @@ export class ClassBookRepository implements IClassBookRepository {
     });
     return this.classBookFactory.mapEntityToModel(classBook);
   }
+
+  async getClassBooks(): Promise<ClassBookModel[]> {
+    const classBooks = await this.prisma.classBook.findMany({
+      where: { deletedAt: null },
+      include: { Student: true },
+      orderBy: { classof: 'asc' },
+      take: 2,
+    });
+    return this.classBookFactory.mapEntitiesToModels(classBooks);
+  }
 }
