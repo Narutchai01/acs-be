@@ -1,0 +1,43 @@
+import { Injectable } from '@nestjs/common';
+import { IStudentRepository } from './student.abstract';
+import { RequestStudentModel, StudentModel } from 'src/models/student';
+import { StudentFactory } from './student.factory';
+import { PrismaService } from 'src/provider/database/prisma/prisma.service';
+import { QueryStudentsDto } from 'src/modules/students/dto/v1/get-student.dto';
+import calculatePagination from 'src/core/utils/calculatePagination';
+
+@Injectable()
+export class StudentRepository implements IStudentRepository {
+  constructor(
+    private studentFactory: StudentFactory,
+    private prisma: PrismaService,
+  ) {}
+
+  async create(student: RequestStudentModel): Promise<StudentModel> {
+    const entity = await this.prisma.student.create({
+      data: student,
+      include: { user: true, classBook: true },
+    });
+    return this.studentFactory.mapStudentEntityToStudentModel(entity);
+  }
+
+  async getList(query: QueryStudentsDto): Promise<StudentModel[]> {
+    const { page, pageSize, classBookId } = query;
+
+    const entities = await this.prisma.student.findMany({
+      skip: calculatePagination(page, pageSize),
+      take: pageSize,
+      where: { deletedAt: null, classBookId },
+      include: { user: true, classBook: true },
+      orderBy: { studentId: 'desc' },
+    });
+    return this.studentFactory.mapStudentEntityToStudentModels(entities);
+  }
+
+  async count(query: QueryStudentsDto): Promise<number> {
+    const { classBookId } = query;
+    return this.prisma.student.count({
+      where: { deletedAt: null, classBookId },
+    });
+  }
+}

@@ -31,7 +31,7 @@ export class ClassBookRepository implements IClassBookRepository {
     const classBooks = await this.prisma.classBook.findMany({
       where: { deletedAt: null },
       include: { Student: true },
-      orderBy: { classof: 'asc' },
+      orderBy: { classof: 'desc' },
       take: 2,
     });
     return this.classBookFactory.mapEntitiesToModels(classBooks);

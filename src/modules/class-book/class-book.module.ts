@@ -9,5 +9,6 @@ import { ClassBookFactory } from './class-book.factory';
   imports: [RepositoriesModule, SupabaseModule],
   controllers: [ClassBookController],
   providers: [ClassBookService, ClassBookFactory],
+  exports: [ClassBookFactory],
 })
 export class ClassBookModule {}
