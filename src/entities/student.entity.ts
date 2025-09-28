@@ -16,6 +16,6 @@ export class StudentEntity implements Student {
   deletedAt: Date | null;
   createdBy: number;
   updatedBy: number;
-  classBook: ClassBookEntity;
-  user: UserEntity;
+  classBook?: ClassBookEntity;
+  user?: UserEntity;
 }

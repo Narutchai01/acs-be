@@ -278,7 +278,7 @@ model ExpertFields {
 
 model ClassBook {
   id                Int       @id @default(autoincrement()) @map("id")
-  classof           Int       @map("classof")
+  classof           Int       @unique @map("classof")
   firstYearAcademic String    @map("first_year_academic")
   image             String    @map("image")
   createdAt         DateTime  @default(now()) @map("created_at")
