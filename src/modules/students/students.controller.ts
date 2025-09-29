@@ -50,4 +50,11 @@ export class StudentsController {
     const response = { ...studentsModel, rows: dto };
     return success(response, HttpStatus.OK);
   }
+
+  @Get('by-user')
+  async getStudentByUserId(@Query('userId') userId: number) {
+    const studentModel = await this.studentsService.getStudentByUserId(userId);
+    const dto = this.studentFactory.mapStudentModelToStudentDto(studentModel);
+    return success(dto, HttpStatus.OK);
+  }
 }

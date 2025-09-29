@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { IStudentRepository } from './student.abstract';
 import { RequestStudentModel, StudentModel } from 'src/models/student';
 import { StudentFactory } from './student.factory';
@@ -39,5 +39,18 @@ export class StudentRepository implements IStudentRepository {
     return this.prisma.student.count({
       where: { deletedAt: null, classBookId },
     });
+  }
+
+  async getByUserId(userId: number): Promise<StudentModel> {
+    const entity = await this.prisma.student.findFirst({
+      where: { userId, deletedAt: null },
+      include: { user: true, classBook: true },
+    });
+
+    if (!entity) {
+      throw new HttpException('Student not found', HttpStatus.NOT_FOUND);
+    }
+
+    return this.studentFactory.mapStudentEntityToStudentModel(entity);
   }
 }

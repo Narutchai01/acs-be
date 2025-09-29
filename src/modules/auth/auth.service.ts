@@ -63,4 +63,15 @@ export class AuthService {
       accessToken: this.jwtService.sign(payload),
     };
   }
+
+  async getUserData(userId: number): Promise<UserModel> {
+    const user = await this.userRepository.getUserById(userId);
+    if (user instanceof Error) {
+      throw new HttpException(
+        `user ID ${userId} not found`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return user;
+  }
 }

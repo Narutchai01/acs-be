@@ -97,4 +97,8 @@ export class StudentsService {
       pageSize: query.pageSize,
     };
   }
+
+  async getStudentByUserId(userId: number): Promise<StudentModel> {
+    return this.studentRepository.getByUserId(userId);
+  }
 }
