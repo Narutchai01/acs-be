@@ -1,6 +1,7 @@
 import { User } from '@prisma/client';
 import { UserRoleEntity } from './role.entity';
 export class UserEntity implements User {
+  refreshTokenId: number | null;
   createdBy: number | null;
   updatedBy: number | null;
   createdAt: Date;

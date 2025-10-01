@@ -75,4 +75,8 @@ export class UsersService {
     const user = await this.userRepository.createUser(newData);
     return { user, password };
   }
+
+  async getUserByEmail(email: string): Promise<UserModel> {
+    return this.userRepository.getUserEmail(email);
+  }
 }

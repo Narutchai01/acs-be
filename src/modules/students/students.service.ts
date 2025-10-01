@@ -5,12 +5,13 @@ import { CreateStudentDto } from './dto/v1/create-student.dto';
 import { UsersService } from '../users/users.service';
 import { QueryStudentsDto } from './dto/v1/get-student.dto';
 import { Pageable } from 'src/models';
-
+import { IRoleRepository } from 'src/repositories/role/role.abtract';
 @Injectable()
 export class StudentsService {
   constructor(
     private studentRepository: IStudentRepository,
     private userService: UsersService,
+    private roleRepository: IRoleRepository,
   ) {}
 
   async createStudent(
@@ -50,6 +51,28 @@ export class StudentsService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+
+    const role = await this.roleRepository.getByName('student');
+    if (role instanceof Error) {
+      throw new HttpException(
+        `Role not found: ${role.message}`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    const userRole = await this.roleRepository.createUserRole({
+      userId: user.id,
+      roleId: role.id,
+      createdBy,
+    });
+
+    if (!userRole) {
+      throw new HttpException(
+        'Failed to assign role to user',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
     const studentData: RequestStudentModel = {
       userId: user.id,
       studentId: data.studentId,

@@ -4,6 +4,11 @@ import { IUserRepository } from 'src/repositories/user/user.abstract';
 import { UserModel } from 'src/models/user';
 import { JwtService } from '@nestjs/jwt';
 import { PasswordService } from 'src/core/utils/password/password.service';
+import { UsersService } from '../users/users.service';
+import { LoginRequest } from 'src/models/auth';
+import { v4 as uuidv4 } from 'uuid';
+import { randomBytes } from 'node:crypto';
+import { IRefresherTokenRepository } from 'src/repositories/refreshertoken/refresher.abstract';
 
 @Injectable()
 export class AuthService {
@@ -12,6 +17,8 @@ export class AuthService {
     private RoleRepository: IRoleRepository,
     private jwtService: JwtService,
     private passwordService: PasswordService,
+    private usersService: UsersService,
+    private refresherTokenRepository: IRefresherTokenRepository,
   ) {}
 
   async validateUser(
@@ -73,5 +80,66 @@ export class AuthService {
       );
     }
     return user;
+  }
+
+  async validateUserV2(data: LoginRequest): Promise<UserModel> {
+    const { email, password } = data;
+    const user = await this.usersService.getUserByEmail(email);
+    if (!user) {
+      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+    }
+    if (!user.password) {
+      throw new HttpException('Password not set', HttpStatus.UNAUTHORIZED);
+    }
+    const isPasswordValid = await this.passwordService.comparePassword(
+      password,
+      user.password,
+    );
+    if (!isPasswordValid) {
+      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+    }
+    return user;
+  }
+
+  async signRefreshToken(userId: number): Promise<string> {
+    const uuid = uuidv4();
+    const secret = randomBytes(64).toString('base64url');
+    const token = `${uuid}.${secret}`;
+    const hashToken = await this.passwordService.hashPassword(token);
+    const expiryDate = new Date();
+    expiryDate.setDate(expiryDate.getDate() + 7); // 7 days
+
+    const refresher = await this.refresherTokenRepository.upsert({
+      id: uuid,
+      userId: userId,
+      token: hashToken,
+      expiry: expiryDate,
+    });
+
+    if (!refresher) {
+      throw new HttpException(
+        'Could not create refresh token',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    return this.jwtService.sign(
+      { tokenId: uuid, tokenSecret: secret },
+      { expiresIn: '7d' },
+    );
+  }
+
+  signAccessToken(user: UserModel): string {
+    const payload = { userId: user.id, roles: user.userRole };
+    return this.jwtService.sign(payload, { expiresIn: '15m' });
+  }
+
+  async loginV2(
+    user: UserModel,
+  ): Promise<{ accessToken: string; refreshToken: string }> {
+    return {
+      refreshToken: await this.signRefreshToken(user.id),
+      accessToken: this.signAccessToken(user),
+    };
   }
 }
