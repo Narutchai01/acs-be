@@ -1,11 +1,16 @@
+// TODO: Implement refresh token logic
+
 import { Injectable, ExecutionContext, CanActivate } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { Request } from 'express';
 
-const readTokenFromCookie = (
-  req: Request,
-): { access: string | null; refresh: string | null } => {
+interface TokenCookies {
+  access: string | null;
+  refresh: string | null;
+}
+
+const readTokenFromCookie = (req: Request): TokenCookies => {
   const access: string | null = req.cookies?.access_token ?? null;
   const refresh: string | null = req.cookies?.refresh_token ?? null;
   return { access, refresh };
