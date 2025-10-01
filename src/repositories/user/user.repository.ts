@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
 import { IUserRepository } from 'src/repositories/user/user.abstract';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/provider/database/prisma/prisma.service';
@@ -19,18 +19,24 @@ export class UserRepository implements IUserRepository {
     return this.userFactory.mapUserEntityToUserModel(newUser);
   }
 
-  async getUserEmail(email: string): Promise<UserModel | Error> {
+  async getUserEmail(email: string): Promise<UserModel> {
     const user = await this.prisma.user.findFirst({ where: { email } });
     if (!user) {
-      return new Error(`User with email ${email} not found`);
+      throw new HttpException(
+        `User with email ${email} not found`,
+        HttpStatus.NOT_FOUND,
+      );
     }
     return this.userFactory.mapUserEntityToUserModel(user);
   }
 
-  async getUserById(id: number): Promise<UserModel | Error> {
+  async getUserById(id: number): Promise<UserModel> {
     const user = await this.prisma.user.findFirst({ where: { id } });
     if (!user) {
-      return new Error(`User with id ${id} not found`);
+      throw new HttpException(
+        `User with id ${id} not found`,
+        HttpStatus.NOT_FOUND,
+      );
     }
     return this.userFactory.mapUserEntityToUserModel(user);
   }

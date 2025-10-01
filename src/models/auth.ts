@@ -6,3 +6,8 @@ export interface AuthenticatedRequest extends ExpressRequest {
     roleId: number;
   };
 }
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
