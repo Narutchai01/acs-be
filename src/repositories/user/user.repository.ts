@@ -1,9 +1,8 @@
 import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
 import { IUserRepository } from 'src/repositories/user/user.abstract';
-import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/provider/database/prisma/prisma.service';
 import { UserFactory } from 'src/repositories/user/user.factory';
-import { UserModel } from 'src/models/user';
+import { UserModel, CreateUserModel, UpdateUserModel } from 'src/models/user';
 
 @Injectable()
 export class UserRepository implements IUserRepository {
@@ -12,7 +11,7 @@ export class UserRepository implements IUserRepository {
     private userFactory: UserFactory,
   ) {}
 
-  async createUser(data: Prisma.UserCreateInput): Promise<UserModel> {
+  async createUser(data: CreateUserModel): Promise<UserModel> {
     const newUser = await this.prisma.user.create({
       data,
     });
@@ -32,6 +31,20 @@ export class UserRepository implements IUserRepository {
 
   async getUserById(id: number): Promise<UserModel> {
     const user = await this.prisma.user.findFirst({ where: { id } });
+    if (!user) {
+      throw new HttpException(
+        `User with id ${id} not found`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return this.userFactory.mapUserEntityToUserModel(user);
+  }
+
+  async update(id: number, data: UpdateUserModel): Promise<UserModel> {
+    const user = await this.prisma.user.update({
+      where: { id },
+      data,
+    });
     if (!user) {
       throw new HttpException(
         `User with id ${id} not found`,
