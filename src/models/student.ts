@@ -25,3 +25,13 @@ export interface RequestStudentModel {
   createdBy: number;
   updatedBy: number;
 }
+
+export interface UpdateStudentModel {
+  studentId?: string;
+  linkedin?: string | null;
+  facebook?: string | null;
+  instagram?: string | null;
+  github?: string | null;
+  classBookId?: number;
+  updatedBy: number;
+}

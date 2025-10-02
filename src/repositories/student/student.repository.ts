@@ -1,6 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { IStudentRepository } from './student.abstract';
-import { RequestStudentModel, StudentModel } from 'src/models/student';
+import {
+  RequestStudentModel,
+  StudentModel,
+  UpdateStudentModel,
+} from 'src/models/student';
 import { StudentFactory } from './student.factory';
 import { PrismaService } from 'src/provider/database/prisma/prisma.service';
 import { QueryStudentsDto } from 'src/modules/students/dto/v1/get-student.dto';
@@ -51,6 +55,34 @@ export class StudentRepository implements IStudentRepository {
       throw new HttpException('Student not found', HttpStatus.NOT_FOUND);
     }
 
+    return this.studentFactory.mapStudentEntityToStudentModel(entity);
+  }
+
+  async getById(id: number): Promise<StudentModel> {
+    const student = await this.prisma.student.findUnique({
+      where: {
+        id: id,
+        deletedAt: null,
+      },
+      include: {
+        user: true,
+        classBook: true,
+      },
+    });
+
+    if (!student) {
+      throw new HttpException(`Student ${id} not found`, HttpStatus.NOT_FOUND);
+    }
+
+    return this.studentFactory.mapStudentEntityToStudentModel(student);
+  }
+
+  async update(id: number, student: UpdateStudentModel): Promise<StudentModel> {
+    const entity = await this.prisma.student.update({
+      where: { id },
+      data: student,
+      include: { user: true, classBook: true },
+    });
     return this.studentFactory.mapStudentEntityToStudentModel(entity);
   }
 }

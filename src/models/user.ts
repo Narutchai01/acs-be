@@ -29,3 +29,12 @@ export interface CreateUserModel extends BaseModel {
   createdBy: number;
   updatedBy: number;
 }
+
+export interface UpdateUserModel extends BaseModel {
+  firstNameTh: string;
+  lastNameTh: string;
+  firstNameEn?: string | null;
+  lastNameEn?: string | null;
+  email: string;
+  nickName: string | null;
+}

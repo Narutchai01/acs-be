@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UserModel } from 'src/models/user';
+import { UpdateUserModel, UserModel } from 'src/models/user';
 import { IUserRepository } from 'src/repositories/user/user.abstract';
 import { CreateUserDto } from './dto/create-user';
 import { IRoleRepository } from 'src/repositories/role/role.abtract';
@@ -78,5 +78,13 @@ export class UsersService {
 
   async getUserByEmail(email: string): Promise<UserModel> {
     return this.userRepository.getUserEmail(email);
+  }
+
+  async getUserById(id: number): Promise<UserModel> {
+    return this.userRepository.getUserById(id);
+  }
+
+  async updateUser(id: number, data: UpdateUserModel): Promise<UserModel> {
+    return this.userRepository.update(id, data);
   }
 }

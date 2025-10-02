@@ -7,6 +7,8 @@ import {
   Req,
   Get,
   HttpStatus,
+  Param,
+  Put,
 } from '@nestjs/common';
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/v1/create-student.dto';
@@ -15,6 +17,7 @@ import { AuthenticatedRequest } from 'src/models/auth';
 import { QueryStudentsDto } from './dto/v1/get-student.dto';
 import { StudentFactory } from './students.factory';
 import { success } from 'src/core/interceptors/response.helper';
+import { UpdateStudentDto } from './dto/v1/update-student.dto';
 
 @Controller({
   path: 'students',
@@ -56,5 +59,26 @@ export class StudentsController {
     const studentModel = await this.studentsService.getStudentByUserId(userId);
     const dto = this.studentFactory.mapStudentModelToStudentDto(studentModel);
     return success(dto, HttpStatus.OK);
+  }
+
+  @Get(':id')
+  async getStudentById(@Param('id') id: number) {
+    const studentModel = await this.studentsService.getStudentById(id);
+    const dto = this.studentFactory.mapStudentModelToStudentDto(studentModel);
+    return success(dto, HttpStatus.OK);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put(':id')
+  async updateStudent(
+    @Param('id') id: number,
+    @Body() updateStudentDto: UpdateStudentDto,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    return this.studentsService.updateStudent(
+      id,
+      updateStudentDto,
+      req.user.userId,
+    );
   }
 }

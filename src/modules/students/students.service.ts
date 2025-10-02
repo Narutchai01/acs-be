@@ -1,11 +1,17 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { IStudentRepository } from 'src/repositories/student/student.abstract';
-import { RequestStudentModel, StudentModel } from 'src/models/student';
+import {
+  RequestStudentModel,
+  StudentModel,
+  UpdateStudentModel,
+} from 'src/models/student';
 import { CreateStudentDto } from './dto/v1/create-student.dto';
 import { UsersService } from '../users/users.service';
 import { QueryStudentsDto } from './dto/v1/get-student.dto';
 import { Pageable } from 'src/models';
 import { IRoleRepository } from 'src/repositories/role/role.abtract';
+import { UpdateStudentDto } from './dto/v1/update-student.dto';
+import { UpdateUserModel } from 'src/models/user';
 @Injectable()
 export class StudentsService {
   constructor(
@@ -123,5 +129,49 @@ export class StudentsService {
 
   async getStudentByUserId(userId: number): Promise<StudentModel> {
     return this.studentRepository.getByUserId(userId);
+  }
+
+  async getStudentById(id: number): Promise<StudentModel> {
+    return this.studentRepository.getById(id);
+  }
+
+  async updateStudent(
+    id: number,
+    data: UpdateStudentDto,
+    updatedBy: number,
+  ): Promise<StudentModel> {
+    const existingStudent = await this.studentRepository.getById(id);
+    if (!existingStudent) {
+      throw new HttpException('Student not found', HttpStatus.NOT_FOUND);
+    }
+    const existingUser = await this.userService.getUserById(
+      existingStudent.userId,
+    );
+    if (!existingUser) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    const updateUserData: UpdateUserModel = {
+      firstNameTh: data.firstNameTh ?? existingUser.firstNameTh,
+      lastNameTh: data.lastNameTh ?? existingUser.lastNameTh,
+      firstNameEn: data.firstNameEn ?? existingUser.firstNameEn,
+      lastNameEn: data.lastNameEn ?? existingUser.lastNameEn,
+      nickName: data.nickName ?? existingUser.nickName,
+      email: data.email ?? existingUser.email,
+      updatedBy,
+    };
+
+    await this.userService.updateUser(existingUser.id, updateUserData);
+
+    const updateStudentData: UpdateStudentModel = {
+      studentId: data.studentId ?? existingStudent.studentId,
+      linkedin: data.linkedin ?? existingStudent.linkedin,
+      facebook: data.facebook ?? existingStudent.facebook,
+      instagram: data.instagram ?? existingStudent.instagram,
+      github: data.github ?? existingStudent.github,
+      classBookId: data.classBookId ?? existingStudent.classBook?.id,
+      updatedBy,
+    };
+    return this.studentRepository.update(id, updateStudentData);
   }
 }
