@@ -7,6 +7,7 @@ import {
   Req,
   Get,
   HttpStatus,
+  Param,
 } from '@nestjs/common';
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/v1/create-student.dto';
@@ -54,6 +55,13 @@ export class StudentsController {
   @Get('by-user')
   async getStudentByUserId(@Query('userId') userId: number) {
     const studentModel = await this.studentsService.getStudentByUserId(userId);
+    const dto = this.studentFactory.mapStudentModelToStudentDto(studentModel);
+    return success(dto, HttpStatus.OK);
+  }
+
+  @Get(':id')
+  async getStudentById(@Param('id') id: number) {
+    const studentModel = await this.studentsService.getStudentById(id);
     const dto = this.studentFactory.mapStudentModelToStudentDto(studentModel);
     return success(dto, HttpStatus.OK);
   }

@@ -53,4 +53,23 @@ export class StudentRepository implements IStudentRepository {
 
     return this.studentFactory.mapStudentEntityToStudentModel(entity);
   }
+
+  async getById(id: number): Promise<StudentModel> {
+    const student = await this.prisma.student.findUnique({
+      where: {
+        id: id,
+        deletedAt: null,
+      },
+      include: {
+        user: true,
+        classBook: true,
+      },
+    });
+
+    if (!student) {
+      throw new HttpException(`Student ${id} not found`, HttpStatus.NOT_FOUND);
+    }
+
+    return this.studentFactory.mapStudentEntityToStudentModel(student);
+  }
 }

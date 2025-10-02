@@ -124,4 +124,8 @@ export class StudentsService {
   async getStudentByUserId(userId: number): Promise<StudentModel> {
     return this.studentRepository.getByUserId(userId);
   }
+
+  async getStudentById(id: number): Promise<StudentModel> {
+    return this.studentRepository.getById(id);
+  }
 }
