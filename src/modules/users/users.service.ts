@@ -16,37 +16,29 @@ export class UsersService {
     private passwordService: PasswordService,
     private supabaseService: SupabaseService,
   ) {}
-  async createUser(
-    data: CreateUserDto,
-    role: string,
-  ): Promise<UserModel | Error> {
-    const roleResult = await this.roleRepository.getByName(role);
-    if (roleResult instanceof Error) {
-      throw new Error(`Failed to get role: ${roleResult.message}`);
-    }
-
-    if (!roleResult) {
-      throw new Error(`Role '${role}' not found`);
-    }
-    const newData = {
-      ...data,
-      password: await this.passwordService.hashPassword(data.password),
+  async createUser(data: CreateUserDto, role: string): Promise<UserModel> {
+    const hashPassword = await this.passwordService.hashPassword(data.password);
+    const newUser = {
+      firstNameTh: data.firstNameTh,
+      lastNameTh: data.lastNameTh,
+      firstNameEn: data.firstNameEn ?? null,
+      lastNameEn: data.lastNameEn ?? null,
+      email: data.email,
+      nickName: data.nickName ?? null,
+      password: hashPassword,
     };
-    const user = await this.userRepository.createUser(newData);
+    const user = await this.userRepository.createUser(newUser);
 
-    const UserRoles = await this.roleRepository.createUserRole({
+    const existingRole = await this.roleRepository.getByName(role);
+    if (existingRole instanceof Error) {
+      throw existingRole;
+    }
+    await this.roleRepository.createUserRole({
       userId: user.id,
-      roleId: roleResult.id,
+      roleId: existingRole.id,
+      createdBy: user.id,
+      updatedBy: user.id,
     });
-
-    if (UserRoles instanceof Error) {
-      throw new Error(`Failed to assign role to user: ${UserRoles.message}`);
-    }
-
-    if (UserRoles instanceof Error) {
-      throw new Error(`Failed to assign role to user: ${UserRoles.message}`);
-    }
-
     return user;
   }
 
