@@ -26,8 +26,8 @@ export interface CreateUserModel extends BaseModel {
   email: string;
   nickName: string | null;
   password?: string | null;
-  createdBy: number;
-  updatedBy: number;
+  createdBy?: number;
+  updatedBy?: number;
 }
 
 export interface UpdateUserModel extends BaseModel {

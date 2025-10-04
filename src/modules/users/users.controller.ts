@@ -13,7 +13,16 @@ export class UsersController {
     @Query('role') role: string,
   ) {
     try {
-      return this.usersService.createUser(createUserDto, role);
+      const newUser = {
+        firstNameTh: createUserDto.firstNameTh,
+        lastNameTh: createUserDto.lastNameTh,
+        firstNameEn: createUserDto.firstNameEn ?? null,
+        lastNameEn: createUserDto.lastNameEn ?? null,
+        email: createUserDto.email,
+        nickName: createUserDto.nickName ?? null,
+        password: createUserDto.password,
+      };
+      return this.usersService.createUserV2(newUser, null, role);
     } catch (error) {
       return {
         statusCode: 500,
