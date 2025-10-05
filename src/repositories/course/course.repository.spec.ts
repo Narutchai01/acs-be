@@ -228,14 +228,14 @@ describe('CreateCourse', () => {
     const result = await repo.getCourse({
       page: 1,
       pageSize: 10,
-      curriculumId: 1,
+      curriculumId: [1, 2],
       typecourseId: 1,
     });
     expect(result).toEqual(courseData);
     expect(MockRepo.getCourse).toHaveBeenCalledWith({
       page: 1,
       pageSize: 10,
-      curriculumId: 1,
+      curriculumId: { in: [1, 2] },
       typecourseId: 1,
 
       // searchByTypeCourse: 'กลุ่มวิชาเฉพาะประเภทวิชาแกน',
@@ -249,7 +249,7 @@ describe('CreateCourse', () => {
       repo.getCourse({
         page: 1,
         pageSize: 10,
-        curriculumId: 1,
+        curriculumId: [1, 2],
         typecourseId: 1,
       }),
     ).rejects.toThrow('Database error');
@@ -511,7 +511,7 @@ describe('CreateCourse', () => {
     const query = {
       page: 1,
       pageSize: 10,
-      curriculumId: 1,
+      curriculumId: [1, 2],
       typecourseId: 1,
     };
 
@@ -720,7 +720,7 @@ describe('CreateCourse', () => {
     const query = {
       page: 1,
       pageSize: 10,
-      curriculumId: 1,
+      curriculumId: [1, 2],
       typecourseId: 1,
     };
     MockRepo.count.mockRejectedValue(new Error('Database error'));
