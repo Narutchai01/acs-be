@@ -4,31 +4,34 @@ import { IsBoolean, IsNumber, IsOptional } from 'class-validator';
 
 export class QueryCourseDto {
   @ApiProperty()
-  @Transform(({ value }) => parseInt(value))
+  @Transform(({ value }: { value: string }) => parseInt(value))
+  @IsOptional()
   page: number;
 
   @ApiProperty()
-  @Transform(({ value }) => parseInt(value))
+  @Transform(({ value }: { value: string }) => parseInt(value))
+  @IsOptional()
   pageSize: number;
-
-  // @ApiProperty({ required: false })
-  // @IsString()
-  // @IsOptional()
-  // searchByTypeCourse?: string;
 
   @ApiProperty({ required: false, default: true })
   @IsBoolean()
-  @Transform(({ value }) => value === 'true')
+  @Transform(({ value }: { value: string }) => value === 'true')
   @IsOptional()
   prerequisite?: boolean = true;
 
   @ApiProperty({ required: true })
   @IsNumber()
-  @Transform(({ value }) => parseInt(value))
+  @Transform(({ value }: { value: string }) => parseInt(value))
+  @IsOptional()
   typecourseId: number;
 
-  @ApiProperty({ required: true })
-  @IsNumber()
-  @Transform(({ value }) => parseInt(value))
-  curriculumId: number;
+  @ApiProperty({ required: false, type: [Number] })
+  @IsNumber({}, { each: true })
+  @Transform(({ value }: { value: string | string[] }) => {
+    if (Array.isArray(value)) {
+      return value.map((v) => parseInt(v));
+    }
+    return [parseInt(value)];
+  })
+  curriculumId: number[];
 }

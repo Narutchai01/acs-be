@@ -48,6 +48,7 @@ export class CourseController {
 
     const data = { page, totalRecords, pageSize, rows: dto };
     return success<Pageable<CourseDto>>(data, HttpStatus.OK);
+    // return success(query, HttpStatus.OK);
   }
 
   @Get(':id')

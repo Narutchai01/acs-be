@@ -89,16 +89,10 @@ export class CourseRepository implements ICourseRepository {
         where: {
           deletedAt: null,
           typeCourseId: query.typecourseId,
-          curriculumId: query.curriculumId,
-          // ...(query.searchByTypeCourse && {
-          // TypeCourse: {
-          //   name: {
-          //     contains: searchByTypeCourse,
-          //   },
-          // },
+          curriculumId: { in: query.curriculumId },
         },
-        take: pageSize,
-        skip: calculatePagination(page, pageSize),
+        ...(pageSize && { take: pageSize }),
+        ...(page && pageSize && { skip: calculatePagination(page, pageSize) }),
         include: {
           curriculum: true,
           PrevCourse: {
@@ -196,7 +190,7 @@ export class CourseRepository implements ICourseRepository {
       where: {
         deletedAt: null,
         typeCourseId: query.typecourseId,
-        curriculumId: query.curriculumId,
+        curriculumId: { in: query.curriculumId },
         // ...(query.searchByTypeCourse && {
       },
     });
