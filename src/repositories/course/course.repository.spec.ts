@@ -235,7 +235,7 @@ describe('CreateCourse', () => {
     expect(MockRepo.getCourse).toHaveBeenCalledWith({
       page: 1,
       pageSize: 10,
-      curriculumId: { in: [1, 2] },
+      curriculumId: [1, 2],
       typecourseId: 1,
 
       // searchByTypeCourse: 'กลุ่มวิชาเฉพาะประเภทวิชาแกน',
