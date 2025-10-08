@@ -18,6 +18,7 @@ import { ProfessorModule } from './modules/professor/professor.module';
 import { MailModule } from './modules/mail/mail.module';
 import { ClassBookModule } from './modules/class-book/class-book.module';
 import { StudentsModule } from './modules/students/students.module';
+import { ProjectModule } from './modules/project/project.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { StudentsModule } from './modules/students/students.module';
     MailModule,
     ClassBookModule,
     StudentsModule,
+    ProjectModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],

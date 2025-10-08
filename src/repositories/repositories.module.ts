@@ -54,6 +54,9 @@ import { StudentFactory } from './student/student.factory';
 import { IRefresherTokenRepository } from 'src/repositories/refreshertoken/refresher.abstract';
 import { RefresherTokenRepository } from './refreshertoken/refresher.repository';
 import { RefresherTokenFactory } from './refreshertoken/refresher.factory';
+import { IProjectRepository } from './project/project.abstract';
+import { ProjectFactory } from './project/project.factory';
+import { ProjectRepository } from './project/project.repository';
 
 @Module({
   imports: [PrismaModule],
@@ -130,6 +133,11 @@ import { RefresherTokenFactory } from './refreshertoken/refresher.factory';
       provide: IRefresherTokenRepository,
       useClass: RefresherTokenRepository,
     },
+    {
+      provide: IProjectRepository,
+      useClass: ProjectRepository,
+    },
+    ProjectFactory,
     RefresherTokenFactory,
     StudentFactory,
     ClassBookFactory,
@@ -168,6 +176,7 @@ import { RefresherTokenFactory } from './refreshertoken/refresher.factory';
     IClassBookRepository,
     IStudentRepository,
     IRefresherTokenRepository,
+    IProjectRepository,
   ],
 })
 export class RepositoriesModule {}

@@ -12,7 +12,6 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express/multer/interceptors/file.interceptor';
 import { CreateProfessorDtoV1 } from './dto/create-professor.dto.v1';
 import { AuthenticatedRequest } from 'src/models/auth';
-import type { File as MulterFile } from 'multer';
 import { ProfessorFactory } from './professor.factory';
 import { success } from 'src/core/interceptors/response.helper';
 import { ProfessorDtoV1 } from './dto/professor.dto.v1';
@@ -31,7 +30,7 @@ export class ProfessorControllerV2 {
   @Post()
   @UseInterceptors(FileInterceptor('image'))
   async create(
-    @UploadedFile() file: MulterFile,
+    @UploadedFile() file: Express.Multer.File,
     @Body() body: CreateProfessorDtoV1,
     @Req() req: AuthenticatedRequest,
   ) {

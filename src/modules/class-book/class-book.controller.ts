@@ -10,7 +10,6 @@ import {
 import { ClassBookService } from './class-book.service';
 import { Post, Body, UploadedFile } from '@nestjs/common';
 import { RequestClassBookDtoV1 } from './dto/create-class-book.dto.v1';
-import type { File as MulterFile } from 'multer';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AuthenticatedRequest } from 'src/models/auth';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -31,7 +30,7 @@ export class ClassBookController {
   @UseInterceptors(FileInterceptor('image'))
   async createClassBook(
     @Body() data: RequestClassBookDtoV1,
-    @UploadedFile() file: MulterFile,
+    @UploadedFile() file: Express.Multer.File,
     @Req() req: AuthenticatedRequest,
   ) {
     const classBook = await this.classBookService.createClassBook(

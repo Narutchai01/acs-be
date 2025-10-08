@@ -47,7 +47,7 @@ export class StudentsService {
     };
     const { user } = await this.userService.createUserV2(
       userData,
-      null,
+      undefined,
       'student',
       false,
     );

@@ -8,7 +8,6 @@ import { UpdateNewsDto } from './dto/update-news.dto';
 import { Pageable } from 'src/models';
 import { ITypeRepository } from 'src/repositories/type/type.abstact';
 import { QueryNewsMediaDto } from './dto/get-newsmedia.dto';
-import type { File as MulterFile } from 'multer';
 
 @Injectable()
 export class NewsService {
@@ -20,7 +19,7 @@ export class NewsService {
 
   async createNews(
     createNews: CreateNewsDto,
-    file: MulterFile,
+    file: Express.Multer.File,
     userId: number,
   ): Promise<NewsModel> {
     const image_url = await this.storage.uploadFile(file, 'news');
@@ -59,7 +58,7 @@ export class NewsService {
   async updateNews(
     id: number,
     data: UpdateNewsDto,
-    file: MulterFile,
+    file: Express.Multer.File,
     userId: number,
   ): Promise<NewsModel> {
     const existingNews = await this.newsRepository.getNewsById(id);
@@ -88,7 +87,7 @@ export class NewsService {
 
   async createNewsMedia(
     createNewsMedia: CreateNewsMediaDto,
-    file: MulterFile,
+    file: Express.Multer.File,
     userId: number,
     type: string,
   ): Promise<NewsMediaModel> {

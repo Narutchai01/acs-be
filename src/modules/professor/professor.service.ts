@@ -7,7 +7,6 @@ import { PasswordService } from 'src/core/utils/password/password.service';
 import { SupabaseService } from 'src/provider/store/supabase/supabase.service';
 import { MailService } from '../mail/mail.service';
 import { UsersService } from 'src/modules/users/users.service';
-import type { File as MulterFile } from 'multer';
 import { Pageable } from 'src/models';
 import { QueryProfessorDto } from './dto/get-professors.dto';
 
@@ -25,7 +24,7 @@ export class ProfessorService {
   //TODO: clean after demo
   async createProfessor(
     data: CreateProfessorDtoV1,
-    image: MulterFile,
+    image: Express.Multer.File,
     createBy: number,
   ): Promise<ProfessorModel> {
     let password: string = '';
@@ -100,7 +99,7 @@ export class ProfessorService {
   async createProfessorV2(
     data: CreateProfessorDtoV1,
     createBy: number,
-    file?: MulterFile,
+    file?: Express.Multer.File,
   ) {
     const {
       firstNameTh,

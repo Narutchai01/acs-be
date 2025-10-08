@@ -19,7 +19,6 @@ import { AuthenticatedRequest } from 'src/models/auth';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ProfessorFactory } from './professor.factory';
 import { ProfessorDtoV1 } from './dto/professor.dto.v1';
-import type { File as MulterFile } from 'multer';
 import { QueryProfessorDto } from './dto/get-professors.dto';
 import { Pageable } from 'src/models';
 
@@ -38,7 +37,7 @@ export class ProfessorController {
   @UseInterceptors(FileInterceptor('image'))
   async createProfessor(
     @Body() body: CreateProfessorDtoV1,
-    @UploadedFile() image: MulterFile,
+    @UploadedFile() image: Express.Multer.File,
     @Req() req: AuthenticatedRequest,
   ) {
     const professor = await this.professorService.createProfessorV2(
