@@ -7,11 +7,14 @@ import {
   HttpStatus,
   Get,
   Param,
+  Query,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { ProjectService } from './project.service';
 import { CreateProjectDto } from './dto/v1/create-project.dto';
 import { success } from 'src/core/interceptors/response.helper';
+import { QueryProjectDto } from './dto/v1/get-project.dto';
+import { query } from 'express';
 
 @Controller({
   path: 'projects',
@@ -50,8 +53,8 @@ export class ProjectController {
   }
 
   @Get()
-  async getProjects() {
-    const project = await this.projectService.getProjects();
+  async getProjects(@Query() query: QueryProjectDto) {
+    const project = await this.projectService.getProjects(query);
 
     return success(project, HttpStatus.OK);
   }

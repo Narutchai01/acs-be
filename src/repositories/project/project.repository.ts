@@ -7,6 +7,8 @@ import {
   ProjectModel,
   CreateProjectAssetModel,
 } from 'src/models/project';
+import { QueryProjectDto } from 'src/modules/project/dto/v1/get-project.dto';
+import calculatePagination from 'src/core/utils/calculatePagination';
 
 @Injectable()
 export class ProjectRepository implements IProjectRepository {
@@ -29,8 +31,13 @@ export class ProjectRepository implements IProjectRepository {
     await this.prisma.projectAsset.createMany({ data });
   }
 
-  async getProjects(): Promise<ProjectModel[]> {
+  async getProjects(query: QueryProjectDto): Promise<ProjectModel[]> {
+    const { page, pageSize } = query;
     const projectEntities = await this.prisma.project.findMany({
+      where: { deletedAt: null },
+      take: pageSize,
+      ...(pageSize && { take: pageSize }),
+      ...(page && pageSize && { skip: calculatePagination(page, pageSize) }),
       include: {
         ProjectAsset: true,
       },

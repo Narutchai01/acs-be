@@ -8,7 +8,7 @@ import { IProjectRepository } from 'src/repositories/project/project.abstract';
 import { CreateProjectDto } from './dto/v1/create-project.dto';
 import { SupabaseService } from 'src/provider/store/supabase/supabase.service';
 import { Pageable } from 'src/models';
-
+import { QueryProjectDto } from './dto/v1/get-project.dto';
 @Injectable()
 export class ProjectService {
   constructor(
@@ -87,13 +87,13 @@ export class ProjectService {
     }
     return projectModel;
   }
-  async getProjects(): Promise<Pageable<ProjectModel>> {
-    const projectModels = await this.projectRepository.getProjects();
+  async getProjects(query: QueryProjectDto): Promise<Pageable<ProjectModel>> {
+    const projectModels = await this.projectRepository.getProjects(query);
     return {
       rows: projectModels,
       totalRecords: projectModels.length,
-      page: 1,
-      pageSize: 10,
+      page: query.page,
+      pageSize: query.pageSize,
     };
   }
 }
