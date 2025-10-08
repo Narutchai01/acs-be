@@ -6,7 +6,6 @@ import { IRoleRepository } from 'src/repositories/role/role.abtract';
 import { PasswordService } from 'src/core/utils/password/password.service';
 import { CreateUserModel } from 'src/models/user';
 import { SupabaseService } from 'src/provider/store/supabase/supabase.service';
-import type { File as MulterFile } from 'multer';
 
 @Injectable()
 export class UsersService {
@@ -44,7 +43,7 @@ export class UsersService {
 
   async createUserV2(
     data: CreateUserModel,
-    file?: MulterFile,
+    file?: Express.Multer.File,
     role: string = 'user',
     isPassword: boolean = false,
   ): Promise<{ user: UserModel; password?: string }> {

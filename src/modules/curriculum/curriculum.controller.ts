@@ -23,7 +23,6 @@ import { CurriculumFactory } from './curriculum.factory';
 import { success } from 'src/core/interceptors/response.helper';
 import { CurriculumDto } from './dto/curriculum.dto';
 import { Pageable } from 'src/models';
-import type { File as MulterFile } from 'multer';
 
 @Controller('curriculum')
 export class CurriculumController {
@@ -38,7 +37,7 @@ export class CurriculumController {
   async createCurriculum(
     @Body() createCurriculumDto: CreateCurriculumDto,
     @Req() req: AuthenticatedRequest,
-    @UploadedFile() file: MulterFile,
+    @UploadedFile() file: Express.Multer.File,
   ) {
     if (!file) {
       throw new HttpException('Image file is required', HttpStatus.BAD_REQUEST);
@@ -90,7 +89,7 @@ export class CurriculumController {
   async updateCurriculum(
     @Param('id') id: string,
     @Body() updateCurriculumDto: UpdateCurriculumDto,
-    @UploadedFile() file: MulterFile,
+    @UploadedFile() file: Express.Multer.File,
     @Req() req: AuthenticatedRequest,
   ) {
     const curriculumId = parseInt(id, 10);

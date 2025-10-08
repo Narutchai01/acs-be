@@ -27,7 +27,6 @@ import { NewsMediaDto } from './dto/newsmedia.dto';
 import { NewsDto } from './dto/news.dto';
 import { Pageable } from 'src/models';
 import { AuthenticatedRequest } from 'src/models/auth';
-import type { File as MulterFile } from 'multer';
 
 @Controller({
   path: 'news',
@@ -43,7 +42,7 @@ export class NewsController {
   @Post()
   @UseInterceptors(FileInterceptor('image'))
   async createNews(
-    @UploadedFile() file: MulterFile,
+    @UploadedFile() file: Express.Multer.File,
     @Body() body: CreateNewsDto,
     @Request() req: AuthenticatedRequest,
   ) {
@@ -78,7 +77,7 @@ export class NewsController {
   @Post('news-media/:type')
   @UseInterceptors(FileInterceptor('image'))
   async createNewsMedia(
-    @UploadedFile() file: MulterFile,
+    @UploadedFile() file: Express.Multer.File,
     @Body() body: CreateNewsMediaDto,
     @Request() req: AuthenticatedRequest,
     @Param('type') type: string,
@@ -116,7 +115,7 @@ export class NewsController {
   @UseInterceptors(FileInterceptor('image'))
   async updateNews(
     @Param('id') id: string,
-    @UploadedFile() file: MulterFile,
+    @UploadedFile() file: Express.Multer.File,
     @Body() body: UpdateNewsDto,
     @Request() req: AuthenticatedRequest,
   ) {
