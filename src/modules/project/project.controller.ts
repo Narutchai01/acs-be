@@ -14,7 +14,6 @@ import { ProjectService } from './project.service';
 import { CreateProjectDto } from './dto/v1/create-project.dto';
 import { success } from 'src/core/interceptors/response.helper';
 import { QueryProjectDto } from './dto/v1/get-project.dto';
-import { query } from 'express';
 
 @Controller({
   path: 'projects',
