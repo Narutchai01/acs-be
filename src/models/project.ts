@@ -15,6 +15,7 @@ export interface ProjectModel extends BaseModel {
   deletedAt: Date | null;
   createdBy: number;
   updatedBy: number;
+  projectAssets?: ProjectAssetModel[];
 }
 
 export interface CreateProjectModel {
@@ -28,6 +29,19 @@ export interface CreateProjectModel {
   youtube: string | null;
   createdBy: number;
   updatedBy: number;
+}
+
+export interface CreateProjectAssetModel {
+  projectId: number;
+  asset: string;
+  createdBy: number;
+  updatedBy: number;
+}
+
+export interface ProjectAssetModel extends BaseModel {
+  id: number;
+  projectId: number;
+  asset: string;
 }
 
 // Additional interfaces for related entities (currently commented out in entity file)

@@ -5,6 +5,8 @@ import {
   UseInterceptors,
   UploadedFiles,
   HttpStatus,
+  Get,
+  Param,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { ProjectService } from './project.service';
@@ -34,6 +36,7 @@ export class ProjectController {
     },
   ) {
     const thumbnail = files.thumbnail?.[0];
+    const assets = files.assets;
     if (!thumbnail) {
       return;
     }
@@ -41,7 +44,21 @@ export class ProjectController {
     const projectData = await this.projectService.createProject(
       body,
       thumbnail,
+      assets || [],
     );
     return success(projectData, HttpStatus.CREATED);
+  }
+
+  @Get()
+  async getProjects() {
+    const project = await this.projectService.getProjects();
+
+    return success(project, HttpStatus.OK);
+  }
+
+  @Get(':id')
+  async getProjectById(@Param('id') id: number) {
+    const project = await this.projectService.getProjectById(id);
+    return success(project, HttpStatus.OK);
   }
 }

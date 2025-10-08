@@ -1,5 +1,6 @@
 import {
   Project,
+  ProjectAsset,
   // ProjectMember,
   // ProjectCategory,
   // ProjectFields,
@@ -15,6 +16,18 @@ export class ProjectEntity implements Project {
   document: string | null;
   figma: string | null;
   youtube: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
+  createdBy: number;
+  updatedBy: number;
+  ProjectAsset?: ProjectAsset[];
+}
+
+export class ProjectAssetEntity implements ProjectAsset {
+  id: number;
+  projectId: number;
+  asset: string;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;
