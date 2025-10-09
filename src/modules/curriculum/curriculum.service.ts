@@ -5,6 +5,7 @@ import { CurriculumModel } from 'src/models/curriculum';
 import { Pageable } from 'src/models';
 import { UpdateCurriculumDto } from './dto/update-curriculum.dto';
 import { SupabaseService } from 'src/provider/store/supabase/supabase.service';
+import { QueryCurriculumDto } from './dto/v1/get-curriculum.dto';
 
 @Injectable()
 export class CurriculumService {
@@ -30,14 +31,16 @@ export class CurriculumService {
     return this.curriculumRepository.create(newsData);
   }
 
-  async getCurriculums(): Promise<Pageable<CurriculumModel>> {
+  async getCurriculums(
+    query: QueryCurriculumDto,
+  ): Promise<Pageable<CurriculumModel>> {
     const [rows, count] = await Promise.all([
-      this.curriculumRepository.getList(),
+      this.curriculumRepository.getList(query),
       this.curriculumRepository.count(),
     ]);
     return {
-      page: 1,
-      pageSize: 2,
+      page: query.page || 1,
+      pageSize: query.pageSize || 10,
       totalRecords: count,
       rows: rows,
     };

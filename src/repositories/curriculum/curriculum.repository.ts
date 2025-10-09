@@ -7,6 +7,8 @@ import {
 import { CurriculumFactory } from './curriculum.factory';
 import { ICurriculumRepository } from './curriculum.abstract';
 import { PrismaService } from 'src/provider/database/prisma/prisma.service';
+import { QueryCurriculumDto } from 'src/modules/curriculum/dto/v1/get-curriculum.dto';
+import calculatePagination from 'src/core/utils/calculatePagination';
 
 @Injectable()
 export class CurriculumRepository implements ICurriculumRepository {
@@ -28,12 +30,29 @@ export class CurriculumRepository implements ICurriculumRepository {
     );
   }
 
-  async getList(): Promise<CurriculumModel[]> {
+  async getList(query: QueryCurriculumDto): Promise<CurriculumModel[]> {
+    const {
+      page = 1,
+      pageSize = 10,
+      sortBy = 'createdAt',
+      sortOrder = 'desc',
+    } = query;
+
+    const skip = calculatePagination(page, pageSize);
+
+    // Build orderBy object dynamically
+    const orderBy = sortBy
+      ? { [sortBy]: sortOrder }
+      : { createdAt: 'desc' as const };
+
     const curriculums = await this.prisma.curriculum.findMany({
       where: { deletedAt: null },
       include: {
         courses: false,
       },
+      orderBy,
+      skip,
+      take: pageSize,
     });
 
     return this.curriculumFactory.mapCurriculumEntitiesToCurriculumModels(

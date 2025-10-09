@@ -137,6 +137,8 @@ export class AuthService {
   async loginV2(
     user: UserModel,
   ): Promise<{ accessToken: string; refreshToken: string }> {
+    console.log(Date.now(), 'AuthService loginV2', user);
+
     return {
       refreshToken: await this.signRefreshToken(user.id),
       accessToken: this.signAccessToken(user),

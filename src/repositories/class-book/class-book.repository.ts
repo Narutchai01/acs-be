@@ -3,6 +3,8 @@ import { IClassBookRepository } from './class-book.abstract';
 import { ClassBookModel, RequestClassBookModel } from 'src/models/class-book';
 import { PrismaService } from 'src/provider/database/prisma/prisma.service';
 import { ClassBookFactory } from './class-book.factory';
+import { QueryClassBookDto } from 'src/modules/class-book/dto/v1/get-class-book.dto';
+import calculatePagination from 'src/core/utils/calculatePagination';
 
 @Injectable()
 export class ClassBookRepository implements IClassBookRepository {
@@ -27,12 +29,27 @@ export class ClassBookRepository implements IClassBookRepository {
     return this.classBookFactory.mapEntityToModel(classBook);
   }
 
-  async getClassBooks(): Promise<ClassBookModel[]> {
+  async getClassBooks(query: QueryClassBookDto): Promise<ClassBookModel[]> {
+    const {
+      page = 1,
+      pageSize = 10,
+      sortBy = 'classof',
+      sortOrder = 'desc',
+    } = query;
+
+    const skip = calculatePagination(page, pageSize);
+
+    // Build orderBy object dynamically with proper typing
+    const orderBy = sortBy
+      ? { [sortBy]: sortOrder }
+      : { classof: 'desc' as const };
+
     const classBooks = await this.prisma.classBook.findMany({
       where: { deletedAt: null },
       include: { Student: true },
-      orderBy: { classof: 'desc' },
-      take: 2,
+      orderBy,
+      skip,
+      take: pageSize,
     });
     return this.classBookFactory.mapEntitiesToModels(classBooks);
   }
@@ -46,5 +63,11 @@ export class ClassBookRepository implements IClassBookRepository {
       throw new HttpException(`ClassBook with id ${id} not found`, 404);
     }
     return this.classBookFactory.mapEntityToModel(classBook);
+  }
+
+  async count(): Promise<number> {
+    return this.prisma.classBook.count({
+      where: { deletedAt: null },
+    });
   }
 }
