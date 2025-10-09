@@ -6,7 +6,7 @@ export class StudentEntity implements Student {
   id: number;
   userId: number;
   studentId: string;
-  linkin: string | null;
+  linkedin: string | null;
   facebook: string | null;
   instragram: string | null;
   github: string | null;

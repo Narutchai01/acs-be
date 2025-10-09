@@ -22,7 +22,7 @@ export class StudentFactory {
       id: entity.id,
       userId: entity.userId,
       studentId: entity.studentId,
-      linkedin: entity.linkin ?? undefined,
+      linkedin: entity.linkedin ?? undefined,
       facebook: entity.facebook ?? undefined,
       instagram: entity.instragram ?? undefined,
       github: entity.github ?? undefined,

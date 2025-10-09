@@ -36,5 +36,6 @@ export interface UpdateUserModel extends BaseModel {
   firstNameEn?: string | null;
   lastNameEn?: string | null;
   email: string;
+  imageUrl: string | null;
   nickName: string | null;
 }

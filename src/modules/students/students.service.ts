@@ -12,12 +12,14 @@ import { Pageable } from 'src/models';
 import { IRoleRepository } from 'src/repositories/role/role.abtract';
 import { UpdateStudentDto } from './dto/v1/update-student.dto';
 import { UpdateUserModel } from 'src/models/user';
+import { SupabaseService } from 'src/provider/store/supabase/supabase.service';
 @Injectable()
 export class StudentsService {
   constructor(
     private studentRepository: IStudentRepository,
     private userService: UsersService,
     private roleRepository: IRoleRepository,
+    private supabase: SupabaseService,
   ) {}
 
   async createStudent(
@@ -138,6 +140,7 @@ export class StudentsService {
   async updateStudent(
     id: number,
     data: UpdateStudentDto,
+    file: Express.Multer.File | null,
     updatedBy: number,
   ): Promise<StudentModel> {
     const existingStudent = await this.studentRepository.getById(id);
@@ -151,6 +154,11 @@ export class StudentsService {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
+    let imageUrl: string | null = null;
+    if (file) {
+      imageUrl = await this.supabase.uploadFile(file, 'avatars');
+    }
+
     const updateUserData: UpdateUserModel = {
       firstNameTh: data.firstNameTh ?? existingUser.firstNameTh,
       lastNameTh: data.lastNameTh ?? existingUser.lastNameTh,
@@ -158,6 +166,7 @@ export class StudentsService {
       lastNameEn: data.lastNameEn ?? existingUser.lastNameEn,
       nickName: data.nickName ?? existingUser.nickName,
       email: data.email ?? existingUser.email,
+      imageUrl: imageUrl ?? existingUser.imageUrl ?? null,
       updatedBy,
     };
 

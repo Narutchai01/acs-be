@@ -299,7 +299,7 @@ model Student {
   id          Int       @id @default(autoincrement()) @map("id")
   userId      Int       @unique @map("user_id")
   studentId   String    @map("student_id")
-  linkin      String?   @map("linkin")
+  linkedin    String?   @map("linkedin")
   facebook    String?   @map("facebook")
   instragram  String?   @map("instragram")
   github      String?   @map("github")

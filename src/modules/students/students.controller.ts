@@ -9,6 +9,8 @@ import {
   HttpStatus,
   Param,
   Put,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/v1/create-student.dto';
@@ -18,6 +20,7 @@ import { QueryStudentsDto } from './dto/v1/get-student.dto';
 import { StudentFactory } from './students.factory';
 import { success } from 'src/core/interceptors/response.helper';
 import { UpdateStudentDto } from './dto/v1/update-student.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller({
   path: 'students',
@@ -69,16 +72,21 @@ export class StudentsController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FileInterceptor('image'))
   @Put(':id')
   async updateStudent(
     @Param('id') id: number,
     @Body() updateStudentDto: UpdateStudentDto,
+    @UploadedFile() file: Express.Multer.File,
     @Req() req: AuthenticatedRequest,
   ) {
-    return this.studentsService.updateStudent(
+    const student = await this.studentsService.updateStudent(
       id,
       updateStudentDto,
+      file,
       req.user.userId,
     );
+    const dto = this.studentFactory.mapStudentModelToStudentDto(student);
+    return success(dto, HttpStatus.OK);
   }
 }
