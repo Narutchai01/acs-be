@@ -296,22 +296,23 @@ model ClassBook {
 }
 
 model Student {
-  id          Int       @id @default(autoincrement()) @map("id")
-  userId      Int       @unique @map("user_id")
-  studentId   String    @map("student_id")
-  linkedin    String?   @map("linkedin")
-  facebook    String?   @map("facebook")
-  instragram  String?   @map("instragram")
-  github      String?   @map("github")
-  classBookId Int       @map("class_book_id")
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt @map("updated_at")
-  deletedAt   DateTime? @map("deleted_at")
-  createdBy   Int       @map("created_by")
-  updatedBy   Int       @map("updated_by")
-  classBook   ClassBook @relation(fields: [classBookId], references: [id])
-  user        User      @relation(fields: [userId], references: [id])
+  id            Int             @id @default(autoincrement()) @map("id")
+  userId        Int             @unique @map("user_id")
+  studentId     String          @map("student_id")
+  linkedin      String?         @map("linkedin")
+  facebook      String?         @map("facebook")
+  instragram    String?         @map("instragram")
+  github        String?         @map("github")
+  classBookId   Int             @map("class_book_id")
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @updatedAt @map("updated_at")
+  deletedAt     DateTime?       @map("deleted_at")
+  createdBy     Int             @map("created_by")
+  updatedBy     Int             @map("updated_by")
+  classBook     ClassBook       @relation(fields: [classBookId], references: [id])
+  user          User            @relation(fields: [userId], references: [id])
   // ProjectMember ProjectMember[]
+  ProjectMember ProjectMember[]
 
   @@map("students")
 }
@@ -328,24 +329,25 @@ model RefreshToken {
 }
 
 model Project {
-  id           Int            @id @default(autoincrement()) @map("id")
-  title        String         @map("title")
-  thumbnail    String         @map("thumbnail")
-  detail       String         @map("detail")
-  github       String?        @map("github")
-  presentation String?        @map("presentation")
-  document     String?        @map("document")
-  figma        String?        @map("figma")
-  youtube      String?        @map("youtube")
-  createdAt    DateTime       @default(now()) @map("created_at")
-  updatedAt    DateTime       @updatedAt @map("updated_at")
-  deletedAt    DateTime?      @map("deleted_at")
-  createdBy    Int            @map("created_by")
-  updatedBy    Int            @map("updated_by")
+  id            Int             @id @default(autoincrement()) @map("id")
+  title         String          @map("title")
+  thumbnail     String          @map("thumbnail")
+  detail        String          @map("detail")
+  github        String?         @map("github")
+  presentation  String?         @map("presentation")
+  document      String?         @map("document")
+  figma         String?         @map("figma")
+  youtube       String?         @map("youtube")
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @updatedAt @map("updated_at")
+  deletedAt     DateTime?       @map("deleted_at")
+  createdBy     Int             @map("created_by")
+  updatedBy     Int             @map("updated_by")
   // projectMember   ProjectMember[]
   // ProjectFields   ProjectFields[]
   // ProjectCategory ProjectCategory[]
-  ProjectAsset ProjectAsset[]
+  ProjectAsset  ProjectAsset[]
+  ProjectMember ProjectMember[]
 
   @@map("projects")
 }
@@ -364,22 +366,20 @@ model ProjectAsset {
   @@map("project_assets")
 }
 
-// model ProjectMember {
-//   id        Int       @id @default(autoincrement()) @map("id")
-//   projectId Int       @map("project_id")
-//   userId    Int       @map("user_id")
-//   createdAt DateTime  @default(now()) @map("created_at")
-//   updatedAt DateTime  @updatedAt @map("updated_at")
-//   deletedAt DateTime? @map("deleted_at")
-//   createdBy Int       @map("created_by")
-//   updatedBy Int       @map("updated_by")
-//   project   Project   @relation(fields: [projectId], references: [id])
-//   Student   Student?  @relation(fields: [studentId], references: [id])
-//   studentId Int?
-//   User      User      @relation(fields: [userId], references: [id])
+model ProjectMember {
+  id        Int       @id @default(autoincrement()) @map("id")
+  projectId Int       @map("project_id")
+  studentId Int       @map("student_id")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  createdBy Int       @map("created_by")
+  updatedBy Int       @map("updated_by")
+  project   Project   @relation(fields: [projectId], references: [id])
+  student   Student   @relation(fields: [studentId], references: [id])
 
-//   @@map("project_members")
-// }
+  @@map("project_members")
+}
 
 // model ProjectFields {
 //   id         Int       @id @default(autoincrement()) @map("id")

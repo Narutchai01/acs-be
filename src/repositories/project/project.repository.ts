@@ -6,6 +6,7 @@ import {
   CreateProjectModel,
   ProjectModel,
   CreateProjectAssetModel,
+  CreateProjectMemberModel,
 } from 'src/models/project';
 import { QueryProjectDto } from 'src/modules/project/dto/v1/get-project.dto';
 import calculatePagination from 'src/core/utils/calculatePagination';
@@ -32,12 +33,13 @@ export class ProjectRepository implements IProjectRepository {
   }
 
   async getProjects(query: QueryProjectDto): Promise<ProjectModel[]> {
-    const { page, pageSize } = query;
+    const { page, pageSize, sortBy = 'createdAt', sortOrder } = query;
     const projectEntities = await this.prisma.project.findMany({
       where: { deletedAt: null },
       take: pageSize,
       ...(pageSize && { take: pageSize }),
       ...(page && pageSize && { skip: calculatePagination(page, pageSize) }),
+      ...(sortBy && { orderBy: { [sortBy]: sortOrder || 'desc' } }),
       include: {
         ProjectAsset: true,
       },
@@ -67,5 +69,9 @@ export class ProjectRepository implements IProjectRepository {
     }
 
     return this.projectFactory.mapProjectEntityToProjectModel(projectEntity);
+  }
+
+  async createProjectMember(data: CreateProjectMemberModel[]): Promise<void> {
+    await this.prisma.projectMember.createMany({ data });
   }
 }

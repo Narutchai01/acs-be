@@ -43,13 +43,16 @@ export class ProfessorFactory {
       user: data.user
         ? this.userFactory.mapUserEntityToUserModel(data.user)
         : null,
-      education: this.educationFactory.mapEducationEntitiesToEducationModels(
-        data.education,
-      ),
-      expertFields:
-        this.expertFieldFactory.mapExpertFieldEntitiesToExpertFieldModels(
-          data.expertFields,
-        ),
+      education: data.education
+        ? this.educationFactory.mapEducationEntitiesToEducationModels(
+            data.education,
+          )
+        : [],
+      expertFields: data.expertFields
+        ? this.expertFieldFactory.mapExpertFieldEntitiesToExpertFieldModels(
+            data.expertFields,
+          )
+        : [],
       academicPosition: data.academicPosition
         ? this.academicPositionFactory.mapAcademicPositionEntityToAcademicPositionModel(
             data.academicPosition,

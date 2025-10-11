@@ -3,6 +3,7 @@ import {
   CreateProjectModel,
   ProjectModel,
   CreateProjectAssetModel,
+  CreateProjectMemberModel,
 } from 'src/models/project';
 import { IProjectRepository } from 'src/repositories/project/project.abstract';
 import { CreateProjectDto } from './dto/v1/create-project.dto';
@@ -95,5 +96,21 @@ export class ProjectService {
       page: query.page,
       pageSize: query.pageSize,
     };
+  }
+
+  async createProjectMember(
+    members: string[],
+    projectId: number,
+    createdBy: number,
+  ): Promise<void> {
+    const data: CreateProjectMemberModel[] = members.map((member) => {
+      return {
+        projectId,
+        studentId: parseInt(member, 10),
+        createdBy,
+        updatedBy: createdBy,
+      };
+    });
+    await this.projectRepository.createProjectMember(data);
   }
 }

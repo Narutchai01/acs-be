@@ -1,4 +1,5 @@
 import { BaseModel } from '.';
+import { StudentModel } from './student';
 
 export interface ProjectModel extends BaseModel {
   id: number;
@@ -44,6 +45,21 @@ export interface ProjectAssetModel extends BaseModel {
   asset: string;
 }
 
+export interface ProjectMemberModel extends BaseModel {
+  id: number;
+  projectId: number;
+  userId: number;
+  studentId: number;
+  student?: StudentModel | null;
+  project?: ProjectModel | null;
+}
+
+export interface CreateProjectMemberModel {
+  projectId: number;
+  studentId: number;
+  createdBy: number;
+  updatedBy: number;
+}
 // Additional interfaces for related entities (currently commented out in entity file)
 // export interface IProjectMember {
 //   id: number;

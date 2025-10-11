@@ -1,10 +1,11 @@
 import {
   Project,
   ProjectAsset,
-  // ProjectMember,
+  ProjectMember,
   // ProjectCategory,
   // ProjectFields,
 } from '@prisma/client';
+import { StudentEntity } from './student.entity';
 
 export class ProjectEntity implements Project {
   id: number;
@@ -35,15 +36,19 @@ export class ProjectAssetEntity implements ProjectAsset {
   updatedBy: number;
 }
 
-// export class ProjectMemberEntity implements ProjectMember {
-//   id: number;
-//   createdAt: Date;
-//   updatedAt: Date;
-//   deletedAt: Date | null;
-//   createdBy: number;
-//   updatedBy: number;
-//   projectId: number;
-//   userId: number;
+export class ProjectMemberEntity implements ProjectMember {
+  studentId: number;
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
+  createdBy: number;
+  updatedBy: number;
+  projectId: number;
+  userId: number;
+  student: StudentEntity | null;
+  project: ProjectEntity | null;
+}
 //   studentId: number | null;
 //   student: StudentEntity | null;
 // }

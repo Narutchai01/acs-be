@@ -3,6 +3,7 @@ import {
   ProjectModel,
   CreateProjectModel,
   CreateProjectAssetModel,
+  CreateProjectMemberModel,
 } from 'src/models/project';
 import { QueryProjectDto } from 'src/modules/project/dto/v1/get-project.dto';
 
@@ -12,4 +13,5 @@ export abstract class IProjectRepository {
   abstract createProjectAsset(data: CreateProjectAssetModel[]): Promise<void>;
   abstract getProjects(query: QueryProjectDto): Promise<ProjectModel[]>;
   abstract getProjectById(id: number): Promise<ProjectModel>;
+  abstract createProjectMember(data: CreateProjectMemberModel[]): Promise<void>;
 }
