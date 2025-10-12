@@ -55,6 +55,8 @@ export class ProjectService {
 
     await this.createProjectAssets(project.id, uploadAssets, createdBy);
 
+    await this.createProjectMember(data.members, project.id, createdBy);
+
     project = await this.getProjectById(project.id);
 
     if (!project) {
@@ -77,7 +79,6 @@ export class ProjectService {
         updatedBy: createdBy,
       };
     });
-
     await this.projectRepository.createProjectAsset(data);
   }
 
@@ -86,10 +87,12 @@ export class ProjectService {
     if (!projectModel) {
       throw new HttpException('Project not found', HttpStatus.NOT_FOUND);
     }
+
     return projectModel;
   }
   async getProjects(query: QueryProjectDto): Promise<Pageable<ProjectModel>> {
     const projectModels = await this.projectRepository.getProjects(query);
+
     return {
       rows: projectModels,
       totalRecords: projectModels.length,
@@ -99,14 +102,14 @@ export class ProjectService {
   }
 
   async createProjectMember(
-    members: string[],
+    members: number[],
     projectId: number,
     createdBy: number,
   ): Promise<void> {
     const data: CreateProjectMemberModel[] = members.map((member) => {
       return {
         projectId,
-        studentId: parseInt(member, 10),
+        studentId: member,
         createdBy,
         updatedBy: createdBy,
       };

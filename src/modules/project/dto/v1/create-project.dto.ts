@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsString, IsNumber } from 'class-validator';
 
 export class CreateProjectDto {
   @ApiProperty()
@@ -29,4 +30,31 @@ export class CreateProjectDto {
   @ApiProperty()
   @IsString()
   detail: string;
+
+  @ApiProperty({
+    description: 'List of project members',
+    example: ['member1', 'member2', 'member3'],
+  })
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      // Handle JSON string format like "[1,2,3]"
+      if (value.startsWith('[') && value.endsWith(']')) {
+        try {
+          const parsed = JSON.parse(value) as unknown;
+          return Array.isArray(parsed)
+            ? parsed.map((item: unknown) => parseInt(String(item), 10))
+            : [];
+        } catch {
+          return [];
+        }
+      }
+      // Handle comma-separated string format like "1,2,3"
+      return value.split(',').map((item: string) => parseInt(item.trim(), 10));
+    } else if (Array.isArray(value)) {
+      return value.map((item: unknown) => parseInt(String(item), 10));
+    }
+    return [];
+  })
+  @IsNumber({}, { each: true })
+  members: number[];
 }

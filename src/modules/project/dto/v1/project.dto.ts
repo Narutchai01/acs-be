@@ -1,0 +1,16 @@
+import { BaseDto } from 'src/models/dto/base.dto';
+import { StudentDto } from 'src/modules/students/dto/v1/student.dto';
+
+export class ProjectDto extends BaseDto {
+  id: number;
+  title: string;
+  thumbnail: string;
+  detail: string;
+  github?: string | null;
+  presentation?: string | null;
+  document?: string | null;
+  youtube?: string | null;
+  figma?: string | null;
+  projectAssets: { id: number; asset: string | null }[];
+  projectMembers: StudentDto[];
+}

@@ -10,6 +10,7 @@ import {
 } from 'src/models/project';
 import { QueryProjectDto } from 'src/modules/project/dto/v1/get-project.dto';
 import calculatePagination from 'src/core/utils/calculatePagination';
+import { ProjectEntity } from 'src/entities/project.entity';
 
 @Injectable()
 export class ProjectRepository implements IProjectRepository {
@@ -21,9 +22,6 @@ export class ProjectRepository implements IProjectRepository {
   async createProject(data: CreateProjectModel): Promise<ProjectModel> {
     const project = await this.prisma.project.create({
       data,
-      include: {
-        ProjectAsset: true,
-      },
     });
     return this.projectFactory.mapProjectEntityToProjectModel(project);
   }
@@ -42,11 +40,12 @@ export class ProjectRepository implements IProjectRepository {
       ...(sortBy && { orderBy: { [sortBy]: sortOrder || 'desc' } }),
       include: {
         ProjectAsset: true,
+        ProjectMember: { include: { student: true } },
       },
     });
 
     return this.projectFactory.mapProjectEntitiesToProjectModels(
-      projectEntities,
+      projectEntities as ProjectEntity[],
     );
   }
 
@@ -58,6 +57,7 @@ export class ProjectRepository implements IProjectRepository {
       },
       include: {
         ProjectAsset: true,
+        ProjectMember: { include: { student: { include: { user: true } } } },
       },
     });
 
@@ -68,7 +68,9 @@ export class ProjectRepository implements IProjectRepository {
       );
     }
 
-    return this.projectFactory.mapProjectEntityToProjectModel(projectEntity);
+    return this.projectFactory.mapProjectEntityToProjectModel(
+      projectEntity as ProjectEntity,
+    );
   }
 
   async createProjectMember(data: CreateProjectMemberModel[]): Promise<void> {

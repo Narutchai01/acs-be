@@ -12,5 +12,6 @@ import { SupabaseModule } from 'src/provider/store/supabase/supabase.module';
   imports: [RepositoriesModule, UsersModule, ClassBookModule, SupabaseModule],
   controllers: [StudentsController, StudentsControllerV2],
   providers: [StudentsService, StudentFactory],
+  exports: [StudentsService, StudentFactory],
 })
 export class StudentsModule {}

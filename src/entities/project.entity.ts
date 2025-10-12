@@ -23,6 +23,7 @@ export class ProjectEntity implements Project {
   createdBy: number;
   updatedBy: number;
   ProjectAsset?: ProjectAsset[];
+  ProjectMember?: ProjectMemberEntity[];
 }
 
 export class ProjectAssetEntity implements ProjectAsset {

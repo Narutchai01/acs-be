@@ -17,6 +17,7 @@ export interface ProjectModel extends BaseModel {
   createdBy: number;
   updatedBy: number;
   projectAssets?: ProjectAssetModel[];
+  projectMembers?: StudentModel[];
 }
 
 export interface CreateProjectModel {

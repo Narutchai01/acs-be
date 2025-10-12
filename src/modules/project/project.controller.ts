@@ -14,13 +14,17 @@ import { ProjectService } from './project.service';
 import { CreateProjectDto } from './dto/v1/create-project.dto';
 import { success } from 'src/core/interceptors/response.helper';
 import { QueryProjectDto } from './dto/v1/get-project.dto';
+import { ProjectFactory } from './project.factory';
 
 @Controller({
   path: 'projects',
   version: '1',
 })
 export class ProjectController {
-  constructor(private readonly projectService: ProjectService) {}
+  constructor(
+    private readonly projectService: ProjectService,
+    private readonly projectFactory: ProjectFactory,
+  ) {}
 
   @Post()
   @UseInterceptors(
@@ -42,7 +46,6 @@ export class ProjectController {
     if (!thumbnail) {
       return;
     }
-
     const projectData = await this.projectService.createProject(
       body,
       thumbnail,
@@ -61,6 +64,7 @@ export class ProjectController {
   @Get(':id')
   async getProjectById(@Param('id') id: number) {
     const project = await this.projectService.getProjectById(id);
-    return success(project, HttpStatus.OK);
+    const dto = this.projectFactory.mapProjectModelToProjectDto(project);
+    return success(dto, HttpStatus.OK);
   }
 }
