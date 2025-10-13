@@ -1,5 +1,6 @@
 import { BaseDto } from 'src/models/dto/base.dto';
 import { StudentDto } from 'src/modules/students/dto/v1/student.dto';
+import { ListTypeDto } from 'src/modules/masterdata/dto/typelist.v1.dto';
 
 export class ProjectDto extends BaseDto {
   id: number;
@@ -13,4 +14,6 @@ export class ProjectDto extends BaseDto {
   figma?: string | null;
   projectAssets: { id: number; asset: string | null }[];
   projectMembers: StudentDto[];
+  projectCategories: ListTypeDto[];
+  projectFields: ListTypeDto[];
 }

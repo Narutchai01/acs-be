@@ -4,6 +4,8 @@ import {
   ProjectModel,
   CreateProjectAssetModel,
   CreateProjectMemberModel,
+  CreateProjectCategoryModel,
+  CreateProjectFieldModel,
 } from 'src/models/project';
 import { IProjectRepository } from 'src/repositories/project/project.abstract';
 import { CreateProjectDto } from './dto/v1/create-project.dto';
@@ -56,6 +58,10 @@ export class ProjectService {
     await this.createProjectAssets(project.id, uploadAssets, createdBy);
 
     await this.createProjectMember(data.members, project.id, createdBy);
+
+    await this.createProjectCategory(data.categories, project.id, createdBy);
+
+    await this.createProjectFields(data.fields, project.id, createdBy);
 
     project = await this.getProjectById(project.id);
 
@@ -115,5 +121,37 @@ export class ProjectService {
       };
     });
     await this.projectRepository.createProjectMember(data);
+  }
+
+  async createProjectCategory(
+    categories: number[],
+    projectId: number,
+    createdBy: number,
+  ): Promise<void> {
+    const data: CreateProjectCategoryModel[] = categories.map((category) => {
+      return {
+        projectId,
+        listTypeId: category,
+        createdBy,
+        updatedBy: createdBy,
+      };
+    });
+    await this.projectRepository.createProjectCategory(data);
+  }
+
+  async createProjectFields(
+    fields: number[],
+    projectId: number,
+    createdBy: number,
+  ): Promise<void> {
+    const data: CreateProjectFieldModel[] = fields.map((field) => {
+      return {
+        projectId,
+        listTypeId: field,
+        createdBy,
+        updatedBy: createdBy,
+      };
+    });
+    await this.projectRepository.createProjectField(data);
   }
 }

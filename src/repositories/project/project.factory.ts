@@ -1,6 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { ProjectAssetEntity, ProjectEntity } from 'src/entities/project.entity';
-import { ProjectAssetModel, ProjectModel } from 'src/models/project';
+import {
+  ProjectAssetEntity,
+  ProjectEntity,
+  ProjectCategoryEntity,
+  ProjectFieldEntity,
+} from 'src/entities/project.entity';
+import {
+  ProjectAssetModel,
+  ProjectModel,
+  ProjectCategoryModel,
+  ProjectFieldModel,
+} from 'src/models/project';
 import { StudentFactory } from '../student/student.factory';
 
 @Injectable()
@@ -21,6 +31,21 @@ export class ProjectFactory {
           )
         : [];
 
+    const categoriesEntity =
+      entity.ProjectCategories?.map((pc) => pc.listType) || [];
+
+    const categoryModels =
+      categoriesEntity.length > 0
+        ? categoriesEntity.filter((entity) => entity !== null)
+        : [];
+
+    const fieldEntities = entity.ProjectFields?.map((pf) => pf.listType) || [];
+
+    const fieldModels =
+      fieldEntities.length > 0
+        ? fieldEntities.filter((entity) => entity !== null)
+        : [];
+
     return {
       id: entity.id,
       title: entity.title,
@@ -35,6 +60,8 @@ export class ProjectFactory {
         entity.ProjectAsset ?? [],
       ),
       projectMembers: studentModels,
+      projectCategories: categoryModels,
+      projectFields: fieldModels,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
       deletedAt: entity.deletedAt,
@@ -65,5 +92,53 @@ export class ProjectFactory {
       createdBy: data.createdBy,
       updatedBy: data.updatedBy,
     };
+  }
+
+  mapProjectCategoryEntityToProjectCategoryModel(
+    data: ProjectCategoryEntity,
+  ): ProjectCategoryModel {
+    return {
+      id: data.id,
+      projectId: data.projectId,
+      listTypeId: data.listTypeId,
+      listType: data.listType,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+      deletedAt: data.deletedAt,
+      createdBy: data.createdBy,
+      updatedBy: data.updatedBy,
+    };
+  }
+
+  mapProjectCategoryEntitiesToProjectCategoryModels(
+    entities: ProjectCategoryEntity[],
+  ): ProjectCategoryModel[] {
+    return entities.map((entity) =>
+      this.mapProjectCategoryEntityToProjectCategoryModel(entity),
+    );
+  }
+
+  mapProjectFieldEntityToProjectFieldModel(
+    data: ProjectFieldEntity,
+  ): ProjectFieldModel {
+    return {
+      id: data.id,
+      projectId: data.projectId,
+      listTypeId: data.listTypeId,
+      listType: data.listType,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+      deletedAt: data.deletedAt,
+      createdBy: data.createdBy,
+      updatedBy: data.updatedBy,
+    };
+  }
+
+  mapProjectFieldEntitiesToProjectFieldModels(
+    entities: ProjectFieldEntity[],
+  ): ProjectFieldModel[] {
+    return entities.map((entity) =>
+      this.mapProjectFieldEntityToProjectFieldModel(entity),
+    );
   }
 }

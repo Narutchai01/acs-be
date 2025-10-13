@@ -82,16 +82,18 @@ model Type {
 }
 
 model ListType {
-  id        Int         @id @default(autoincrement()) @map("id")
-  name      String      @unique @map("name")
-  createdAt DateTime    @default(now()) @map("created_at")
-  typeId    Int         @map("type_id")
-  updatedAt DateTime    @updatedAt @map("updated_at")
-  type      Type        @relation(fields: [typeId], references: [id])
-  News      News[]
-  NewsMedia NewsMedia[]
+  id              Int               @id @default(autoincrement()) @map("id")
+  name            String            @unique @map("name")
+  createdAt       DateTime          @default(now()) @map("created_at")
+  typeId          Int               @map("type_id")
+  updatedAt       DateTime          @updatedAt @map("updated_at")
+  type            Type              @relation(fields: [typeId], references: [id])
+  News            News[]
+  NewsMedia       NewsMedia[]
   // ProjectFields   ProjectFields[]
   // ProjectCategory ProjectCategory[]
+  ProjectCategory ProjectCategory[]
+  ProjectFields   ProjectFields[]
 
   @@map("list_types")
 }
@@ -329,22 +331,24 @@ model RefreshToken {
 }
 
 model Project {
-  id            Int             @id @default(autoincrement()) @map("id")
-  title         String          @map("title")
-  thumbnail     String          @map("thumbnail")
-  detail        String          @map("detail")
-  github        String?         @map("github")
-  presentation  String?         @map("presentation")
-  document      String?         @map("document")
-  figma         String?         @map("figma")
-  youtube       String?         @map("youtube")
-  createdAt     DateTime        @default(now()) @map("created_at")
-  updatedAt     DateTime        @updatedAt @map("updated_at")
-  deletedAt     DateTime?       @map("deleted_at")
-  createdBy     Int             @map("created_by")
-  updatedBy     Int             @map("updated_by")
-  ProjectAsset  ProjectAsset[]
-  ProjectMember ProjectMember[]
+  id                Int               @id @default(autoincrement()) @map("id")
+  title             String            @map("title")
+  thumbnail         String            @map("thumbnail")
+  detail            String            @map("detail")
+  github            String?           @map("github")
+  presentation      String?           @map("presentation")
+  document          String?           @map("document")
+  figma             String?           @map("figma")
+  youtube           String?           @map("youtube")
+  createdAt         DateTime          @default(now()) @map("created_at")
+  updatedAt         DateTime          @updatedAt @map("updated_at")
+  deletedAt         DateTime?         @map("deleted_at")
+  createdBy         Int               @map("created_by")
+  updatedBy         Int               @map("updated_by")
+  ProjectAsset      ProjectAsset[]
+  ProjectMember     ProjectMember[]
+  ProjectCategories ProjectCategory[]
+  ProjectFields     ProjectFields[]
 
   @@map("projects")
 }
@@ -378,32 +382,32 @@ model ProjectMember {
   @@map("project_members")
 }
 
-// model ProjectFields {
-//   id         Int       @id @default(autoincrement()) @map("id")
-//   projectId  Int       @map("project_id")
-//   listTypeId Int       @map("list_type_id")
-//   createdAt  DateTime  @default(now()) @map("created_at")
-//   updatedAt  DateTime  @updatedAt @map("updated_at")
-//   deletedAt  DateTime? @map("deleted_at")
-//   createdBy  Int       @map("created_by")
-//   updatedBy  Int       @map("updated_by")
-//   project    Project   @relation(fields: [projectId], references: [id])
-//   listType   ListType  @relation(fields: [listTypeId], references: [id])
+model ProjectFields {
+  id         Int       @id @default(autoincrement()) @map("id")
+  projectId  Int       @map("project_id")
+  listTypeId Int       @map("list_type_id")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  deletedAt  DateTime? @map("deleted_at")
+  createdBy  Int       @map("created_by")
+  updatedBy  Int       @map("updated_by")
+  project    Project   @relation(fields: [projectId], references: [id])
+  listType   ListType  @relation(fields: [listTypeId], references: [id])
 
-//   @@map("project_fields")
-// }
+  @@map("project_fields")
+}
 
-// model ProjectCategory {
-//   id         Int       @id @default(autoincrement()) @map("id")
-//   projectId  Int       @map("project_id")
-//   listTypeId Int       @map("list_type_id")
-//   createdAt  DateTime  @default(now()) @map("created_at")
-//   updatedAt  DateTime  @updatedAt @map("updated_at")
-//   deletedAt  DateTime? @map("deleted_at")
-//   createdBy  Int       @map("created_by")
-//   updatedBy  Int       @map("updated_by")
-//   project    Project   @relation(fields: [projectId], references: [id])
-//   listType   ListType  @relation(fields: [listTypeId], references: [id])
+model ProjectCategory {
+  id         Int       @id @default(autoincrement()) @map("id")
+  projectId  Int       @map("project_id")
+  listTypeId Int       @map("list_type_id")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  deletedAt  DateTime? @map("deleted_at")
+  createdBy  Int       @map("created_by")
+  updatedBy  Int       @map("updated_by")
+  project    Project   @relation(fields: [projectId], references: [id])
+  listType   ListType  @relation(fields: [listTypeId], references: [id])
 
-//   @@map("project_categories")
-// }
+  @@map("project_categories")
+}

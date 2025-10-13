@@ -28,6 +28,16 @@ export class ProjectFactory {
         model.projectMembers?.map((member) =>
           this.studentFactory.mapStudentModelToStudentDto(member),
         ) || [],
+      projectCategories:
+        model.projectCategories?.map((category) => ({
+          id: category.id,
+          name: category.name,
+        })) || [],
+      projectFields:
+        model.projectFields?.map((field) => ({
+          id: field.id,
+          name: field.name,
+        })) || [],
     };
   }
 }

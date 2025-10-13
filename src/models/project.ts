@@ -1,6 +1,6 @@
 import { BaseModel } from '.';
 import { StudentModel } from './student';
-
+import { ListTypeModel } from './type';
 export interface ProjectModel extends BaseModel {
   id: number;
   title: string;
@@ -18,6 +18,8 @@ export interface ProjectModel extends BaseModel {
   updatedBy: number;
   projectAssets?: ProjectAssetModel[];
   projectMembers?: StudentModel[];
+  projectCategories?: ListTypeModel[];
+  projectFields?: ListTypeModel[];
 }
 
 export interface CreateProjectModel {
@@ -75,17 +77,24 @@ export interface CreateProjectMemberModel {
 //   student: IStudent | null;
 // }
 
-// export interface IProjectCategory {
-//   id: number;
-//   createdAt: Date;
-//   updatedAt: Date;
-//   deletedAt: Date | null;
-//   createdBy: number;
-//   updatedBy: number;
-//   projectId: number;
-//   listTypeId: number;
-//   listType: IListType;
-// }
+export interface ProjectCategoryModel {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
+  createdBy: number;
+  updatedBy: number;
+  projectId: number;
+  listTypeId: number;
+  listType: ListTypeModel;
+}
+
+export interface CreateProjectCategoryModel {
+  projectId: number;
+  listTypeId: number;
+  createdBy: number;
+  updatedBy: number;
+}
 
 // export interface IProjectFields {
 //   id: number;
@@ -98,3 +107,20 @@ export interface CreateProjectMemberModel {
 //   listTypeId: number;
 //   listType: IListType;
 // }
+export interface ProjectFieldModel {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
+  createdBy: number;
+  updatedBy: number;
+  projectId: number;
+  listTypeId: number;
+  listType: ListTypeModel;
+}
+export interface CreateProjectFieldModel {
+  projectId: number;
+  listTypeId: number;
+  createdBy: number;
+  updatedBy: number;
+}

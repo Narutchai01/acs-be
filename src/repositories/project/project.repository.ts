@@ -7,6 +7,8 @@ import {
   ProjectModel,
   CreateProjectAssetModel,
   CreateProjectMemberModel,
+  CreateProjectCategoryModel,
+  CreateProjectFieldModel,
 } from 'src/models/project';
 import { QueryProjectDto } from 'src/modules/project/dto/v1/get-project.dto';
 import calculatePagination from 'src/core/utils/calculatePagination';
@@ -23,7 +25,9 @@ export class ProjectRepository implements IProjectRepository {
     const project = await this.prisma.project.create({
       data,
     });
-    return this.projectFactory.mapProjectEntityToProjectModel(project);
+    return this.projectFactory.mapProjectEntityToProjectModel(
+      project as ProjectEntity,
+    );
   }
 
   async createProjectAsset(data: CreateProjectAssetModel[]): Promise<void> {
@@ -58,6 +62,8 @@ export class ProjectRepository implements IProjectRepository {
       include: {
         ProjectAsset: true,
         ProjectMember: { include: { student: { include: { user: true } } } },
+        ProjectCategories: { include: { listType: true } },
+        ProjectFields: { include: { listType: true } },
       },
     });
 
@@ -75,5 +81,15 @@ export class ProjectRepository implements IProjectRepository {
 
   async createProjectMember(data: CreateProjectMemberModel[]): Promise<void> {
     await this.prisma.projectMember.createMany({ data });
+  }
+
+  async createProjectCategory(
+    data: CreateProjectCategoryModel[],
+  ): Promise<void> {
+    await this.prisma.projectCategory.createMany({ data });
+  }
+
+  async createProjectField(data: CreateProjectFieldModel[]): Promise<void> {
+    await this.prisma.projectFields.createMany({ data });
   }
 }
