@@ -47,6 +47,11 @@ USER node
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["npm", "run", "start:dev"]
 
+# --------- prod-deps ----------
+FROM base AS prod-deps
+COPY package.json package-lock.json ./
+RUN --mount=type=cache,target=/root/.npm npm ci --omit=dev --ignore-scripts
+
 # ---------- production ----------
 FROM base AS production
 ENV NODE_ENV=production
