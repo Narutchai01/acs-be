@@ -6,10 +6,12 @@ import { StudentFactory } from './students.factory';
 import { UsersModule } from '../users/users.module';
 import { ClassBookModule } from '../class-book/class-book.module';
 import { StudentsControllerV2 } from './students.controller.v2';
+import { SupabaseModule } from 'src/provider/store/supabase/supabase.module';
 
 @Module({
-  imports: [RepositoriesModule, UsersModule, ClassBookModule],
+  imports: [RepositoriesModule, UsersModule, ClassBookModule, SupabaseModule],
   controllers: [StudentsController, StudentsControllerV2],
   providers: [StudentsService, StudentFactory],
+  exports: [StudentsService, StudentFactory],
 })
 export class StudentsModule {}

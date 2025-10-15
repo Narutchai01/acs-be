@@ -3,6 +3,10 @@ import {
   CreateProjectModel,
   ProjectModel,
   CreateProjectAssetModel,
+  CreateProjectMemberModel,
+  CreateProjectCategoryModel,
+  CreateProjectFieldModel,
+  CreateProjectCourseModel,
 } from 'src/models/project';
 import { IProjectRepository } from 'src/repositories/project/project.abstract';
 import { CreateProjectDto } from './dto/v1/create-project.dto';
@@ -15,7 +19,6 @@ export class ProjectService {
     private projectRepository: IProjectRepository,
     private supabase: SupabaseService,
   ) {}
-
   async createProject(
     data: CreateProjectDto,
     thumbnail: Express.Multer.File,
@@ -47,12 +50,20 @@ export class ProjectService {
     let project = await this.projectRepository.createProject(projectData);
     if (!project) {
       throw new HttpException(
-        'create failed ',
+        'Create failed',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
     await this.createProjectAssets(project.id, uploadAssets, createdBy);
+
+    await this.createProjectMember(data.members, project.id, createdBy);
+
+    await this.createProjectCategory(data.categories, project.id, createdBy);
+
+    await this.createProjectFields(data.fields, project.id, createdBy);
+
+    await this.createProjectCourses(data.courses, project.id, createdBy);
 
     project = await this.getProjectById(project.id);
 
@@ -68,6 +79,9 @@ export class ProjectService {
     assets: string[],
     createdBy: number,
   ) {
+    if (!assets || !Array.isArray(assets) || assets.length === 0) {
+      return;
+    }
     const data: CreateProjectAssetModel[] = assets.map((asset) => {
       return {
         projectId,
@@ -76,7 +90,6 @@ export class ProjectService {
         updatedBy: createdBy,
       };
     });
-
     await this.projectRepository.createProjectAsset(data);
   }
 
@@ -85,15 +98,93 @@ export class ProjectService {
     if (!projectModel) {
       throw new HttpException('Project not found', HttpStatus.NOT_FOUND);
     }
+
     return projectModel;
   }
   async getProjects(query: QueryProjectDto): Promise<Pageable<ProjectModel>> {
     const projectModels = await this.projectRepository.getProjects(query);
+
     return {
       rows: projectModels,
       totalRecords: projectModels.length,
       page: query.page,
       pageSize: query.pageSize,
     };
+  }
+
+  async createProjectMember(
+    members: number[],
+    projectId: number,
+    createdBy: number,
+  ): Promise<void> {
+    if (!members || !Array.isArray(members) || members.length === 0) {
+      return;
+    }
+    const data: CreateProjectMemberModel[] = members.map((member) => {
+      return {
+        projectId,
+        studentId: member,
+        createdBy,
+        updatedBy: createdBy,
+      };
+    });
+    await this.projectRepository.createProjectMember(data);
+  }
+
+  async createProjectCategory(
+    categories: number[],
+    projectId: number,
+    createdBy: number,
+  ): Promise<void> {
+    if (!categories || !Array.isArray(categories) || categories.length === 0) {
+      return;
+    }
+    const data: CreateProjectCategoryModel[] = categories.map((category) => {
+      return {
+        projectId,
+        listTypeId: category,
+        createdBy,
+        updatedBy: createdBy,
+      };
+    });
+    await this.projectRepository.createProjectCategory(data);
+  }
+
+  async createProjectFields(
+    fields: number[],
+    projectId: number,
+    createdBy: number,
+  ): Promise<void> {
+    if (!fields || !Array.isArray(fields) || fields.length === 0) {
+      return;
+    }
+    const data: CreateProjectFieldModel[] = fields.map((field) => {
+      return {
+        projectId,
+        listTypeId: field,
+        createdBy,
+        updatedBy: createdBy,
+      };
+    });
+    await this.projectRepository.createProjectField(data);
+  }
+
+  async createProjectCourses(
+    courses: number[],
+    projectId: number,
+    createdBy: number,
+  ): Promise<void> {
+    if (!courses || !Array.isArray(courses) || courses.length === 0) {
+      return;
+    }
+    const data: CreateProjectCourseModel[] = courses.map((course) => {
+      return {
+        projectId,
+        courseId: course,
+        createdBy,
+        updatedBy: createdBy,
+      };
+    });
+    await this.projectRepository.createProjectCourse(data);
   }
 }

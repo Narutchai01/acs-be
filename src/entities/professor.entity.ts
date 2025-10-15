@@ -17,8 +17,8 @@ export class ProfessorEntity implements Professor {
   createdBy: number;
   updatedBy: number;
   user?: UserEntity | null;
-  education: EducationEntity[];
-  expertFields: ExpertFieldEntity[];
+  education?: EducationEntity[] | null;
+  expertFields?: ExpertFieldEntity[] | null;
   academicPosition?: AcademicPositionEntity | null;
   majorPosition?: MajorPositionEntity | null;
 }

@@ -8,5 +8,6 @@ import { CurriculumFactory } from '../curriculum/curriculum.factory';
   imports: [RepositoriesModule],
   controllers: [CourseController],
   providers: [CourseService, CourseFactory, CurriculumFactory],
+  exports: [CourseService, CourseFactory],
 })
 export class CourseModule {}

@@ -6,9 +6,14 @@ import {
   CreateProjectModel,
   ProjectModel,
   CreateProjectAssetModel,
+  CreateProjectMemberModel,
+  CreateProjectCategoryModel,
+  CreateProjectFieldModel,
+  CreateProjectCourseModel,
 } from 'src/models/project';
 import { QueryProjectDto } from 'src/modules/project/dto/v1/get-project.dto';
 import calculatePagination from 'src/core/utils/calculatePagination';
+import { ProjectEntity } from 'src/entities/project.entity';
 
 @Injectable()
 export class ProjectRepository implements IProjectRepository {
@@ -20,11 +25,10 @@ export class ProjectRepository implements IProjectRepository {
   async createProject(data: CreateProjectModel): Promise<ProjectModel> {
     const project = await this.prisma.project.create({
       data,
-      include: {
-        ProjectAsset: true,
-      },
     });
-    return this.projectFactory.mapProjectEntityToProjectModel(project);
+    return this.projectFactory.mapProjectEntityToProjectModel(
+      project as ProjectEntity,
+    );
   }
 
   async createProjectAsset(data: CreateProjectAssetModel[]): Promise<void> {
@@ -32,19 +36,44 @@ export class ProjectRepository implements IProjectRepository {
   }
 
   async getProjects(query: QueryProjectDto): Promise<ProjectModel[]> {
-    const { page, pageSize } = query;
+    const {
+      page,
+      pageSize,
+      sortBy = 'createdAt',
+      sortOrder,
+      categories,
+      fields,
+      courses,
+    } = query;
+
     const projectEntities = await this.prisma.project.findMany({
-      where: { deletedAt: null },
+      where: {
+        deletedAt: null,
+        ...(categories && {
+          ProjectCategories: { every: { listTypeId: { in: categories } } },
+        }),
+        ...(fields && {
+          ProjectFields: { every: { listTypeId: { in: fields } } },
+        }),
+        ...(courses && {
+          ProjectCourse: { every: { courseId: { in: courses } } },
+        }),
+      },
       take: pageSize,
       ...(pageSize && { take: pageSize }),
       ...(page && pageSize && { skip: calculatePagination(page, pageSize) }),
+      ...(sortBy && { orderBy: { [sortBy]: sortOrder || 'desc' } }),
       include: {
         ProjectAsset: true,
+        ProjectMember: { include: { student: { include: { user: true } } } },
+        ProjectCategories: { include: { listType: true } },
+        ProjectFields: { include: { listType: true } },
+        ProjectCourse: { include: { course: true } },
       },
     });
 
     return this.projectFactory.mapProjectEntitiesToProjectModels(
-      projectEntities,
+      projectEntities as ProjectEntity[],
     );
   }
 
@@ -56,6 +85,10 @@ export class ProjectRepository implements IProjectRepository {
       },
       include: {
         ProjectAsset: true,
+        ProjectMember: { include: { student: { include: { user: true } } } },
+        ProjectCategories: { include: { listType: true } },
+        ProjectFields: { include: { listType: true } },
+        ProjectCourse: { include: { course: true } },
       },
     });
 
@@ -66,6 +99,26 @@ export class ProjectRepository implements IProjectRepository {
       );
     }
 
-    return this.projectFactory.mapProjectEntityToProjectModel(projectEntity);
+    return this.projectFactory.mapProjectEntityToProjectModel(
+      projectEntity as ProjectEntity,
+    );
+  }
+
+  async createProjectMember(data: CreateProjectMemberModel[]): Promise<void> {
+    await this.prisma.projectMember.createMany({ data });
+  }
+
+  async createProjectCategory(
+    data: CreateProjectCategoryModel[],
+  ): Promise<void> {
+    await this.prisma.projectCategory.createMany({ data });
+  }
+
+  async createProjectField(data: CreateProjectFieldModel[]): Promise<void> {
+    await this.prisma.projectFields.createMany({ data });
+  }
+
+  async createProjectCourse(data: CreateProjectCourseModel[]): Promise<void> {
+    await this.prisma.projectCourse.createMany({ data });
   }
 }

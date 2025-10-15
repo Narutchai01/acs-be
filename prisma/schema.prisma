@@ -82,16 +82,18 @@ model Type {
 }
 
 model ListType {
-  id        Int         @id @default(autoincrement()) @map("id")
-  name      String      @unique @map("name")
-  createdAt DateTime    @default(now()) @map("created_at")
-  typeId    Int         @map("type_id")
-  updatedAt DateTime    @updatedAt @map("updated_at")
-  type      Type        @relation(fields: [typeId], references: [id])
-  News      News[]
-  NewsMedia NewsMedia[]
+  id              Int               @id @default(autoincrement()) @map("id")
+  name            String            @unique @map("name")
+  createdAt       DateTime          @default(now()) @map("created_at")
+  typeId          Int               @map("type_id")
+  updatedAt       DateTime          @updatedAt @map("updated_at")
+  type            Type              @relation(fields: [typeId], references: [id])
+  News            News[]
+  NewsMedia       NewsMedia[]
   // ProjectFields   ProjectFields[]
   // ProjectCategory ProjectCategory[]
+  ProjectCategory ProjectCategory[]
+  ProjectFields   ProjectFields[]
 
   @@map("list_types")
 }
@@ -145,24 +147,25 @@ model TypeCourse {
 }
 
 model Course {
-  id              Int          @id @default(autoincrement()) @map("id")
-  courseId        String       @map("course_id")
-  courseDetail    String       @map("course_detail")
-  createdBy       Int          @map("created_by")
-  updatedBy       Int          @map("updated_by")
-  courseNameEn    String       @map("course_name_en")
-  courseNameTh    String       @map("course_name_th")
-  credits         String       @map("credits")
-  typeCourseId    Int?         @map("type_course_id")
-  curriculumId    Int?         @map("curriculum_id")
-  createdAt       DateTime     @default(now()) @map("created_at")
-  deletedAt       DateTime?    @map("deleted_at")
-  updatedAt       DateTime     @updatedAt @map("updated_at")
-  curriculum      Curriculum?  @relation(fields: [curriculumId], references: [id])
-  TypeCourse      TypeCourse?  @relation(fields: [typeCourseId], references: [id])
-  user            User         @relation(fields: [updatedBy], references: [id])
+  id              Int             @id @default(autoincrement()) @map("id")
+  courseId        String          @map("course_id")
+  courseDetail    String          @map("course_detail")
+  createdBy       Int             @map("created_by")
+  updatedBy       Int             @map("updated_by")
+  courseNameEn    String          @map("course_name_en")
+  courseNameTh    String          @map("course_name_th")
+  credits         String          @map("credits")
+  typeCourseId    Int?            @map("type_course_id")
+  curriculumId    Int?            @map("curriculum_id")
+  createdAt       DateTime        @default(now()) @map("created_at")
+  deletedAt       DateTime?       @map("deleted_at")
+  updatedAt       DateTime        @updatedAt @map("updated_at")
+  curriculum      Curriculum?     @relation(fields: [curriculumId], references: [id])
+  TypeCourse      TypeCourse?     @relation(fields: [typeCourseId], references: [id])
+  user            User            @relation(fields: [updatedBy], references: [id])
   PrevCourse      PrevCourse[]
-  PrerequisiteFor PrevCourse[] @relation("PrevCourseRelation")
+  PrerequisiteFor PrevCourse[]    @relation("PrevCourseRelation")
+  ProjectCourse   ProjectCourse[]
 
   @@map("courses")
 }
@@ -296,22 +299,23 @@ model ClassBook {
 }
 
 model Student {
-  id          Int       @id @default(autoincrement()) @map("id")
-  userId      Int       @unique @map("user_id")
-  studentId   String    @map("student_id")
-  linkin      String?   @map("linkin")
-  facebook    String?   @map("facebook")
-  instragram  String?   @map("instragram")
-  github      String?   @map("github")
-  classBookId Int       @map("class_book_id")
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt @map("updated_at")
-  deletedAt   DateTime? @map("deleted_at")
-  createdBy   Int       @map("created_by")
-  updatedBy   Int       @map("updated_by")
-  classBook   ClassBook @relation(fields: [classBookId], references: [id])
-  user        User      @relation(fields: [userId], references: [id])
+  id            Int             @id @default(autoincrement()) @map("id")
+  userId        Int             @unique @map("user_id")
+  studentId     String          @map("student_id")
+  linkedin      String?         @map("linkedin")
+  facebook      String?         @map("facebook")
+  instragram    String?         @map("instragram")
+  github        String?         @map("github")
+  classBookId   Int             @map("class_book_id")
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @updatedAt @map("updated_at")
+  deletedAt     DateTime?       @map("deleted_at")
+  createdBy     Int             @map("created_by")
+  updatedBy     Int             @map("updated_by")
+  classBook     ClassBook       @relation(fields: [classBookId], references: [id])
+  user          User            @relation(fields: [userId], references: [id])
   // ProjectMember ProjectMember[]
+  ProjectMember ProjectMember[]
 
   @@map("students")
 }
@@ -328,24 +332,25 @@ model RefreshToken {
 }
 
 model Project {
-  id           Int            @id @default(autoincrement()) @map("id")
-  title        String         @map("title")
-  thumbnail    String         @map("thumbnail")
-  detail       String         @map("detail")
-  github       String?        @map("github")
-  presentation String?        @map("presentation")
-  document     String?        @map("document")
-  figma        String?        @map("figma")
-  youtube      String?        @map("youtube")
-  createdAt    DateTime       @default(now()) @map("created_at")
-  updatedAt    DateTime       @updatedAt @map("updated_at")
-  deletedAt    DateTime?      @map("deleted_at")
-  createdBy    Int            @map("created_by")
-  updatedBy    Int            @map("updated_by")
-  // projectMember   ProjectMember[]
-  // ProjectFields   ProjectFields[]
-  // ProjectCategory ProjectCategory[]
-  ProjectAsset ProjectAsset[]
+  id                Int               @id @default(autoincrement()) @map("id")
+  title             String            @map("title")
+  thumbnail         String            @map("thumbnail")
+  detail            String            @map("detail")
+  github            String?           @map("github")
+  presentation      String?           @map("presentation")
+  document          String?           @map("document")
+  figma             String?           @map("figma")
+  youtube           String?           @map("youtube")
+  createdAt         DateTime          @default(now()) @map("created_at")
+  updatedAt         DateTime          @updatedAt @map("updated_at")
+  deletedAt         DateTime?         @map("deleted_at")
+  createdBy         Int               @map("created_by")
+  updatedBy         Int               @map("updated_by")
+  ProjectAsset      ProjectAsset[]
+  ProjectMember     ProjectMember[]
+  ProjectCategories ProjectCategory[]
+  ProjectFields     ProjectFields[]
+  ProjectCourse     ProjectCourse[]
 
   @@map("projects")
 }
@@ -364,49 +369,62 @@ model ProjectAsset {
   @@map("project_assets")
 }
 
-// model ProjectMember {
-//   id        Int       @id @default(autoincrement()) @map("id")
-//   projectId Int       @map("project_id")
-//   userId    Int       @map("user_id")
-//   createdAt DateTime  @default(now()) @map("created_at")
-//   updatedAt DateTime  @updatedAt @map("updated_at")
-//   deletedAt DateTime? @map("deleted_at")
-//   createdBy Int       @map("created_by")
-//   updatedBy Int       @map("updated_by")
-//   project   Project   @relation(fields: [projectId], references: [id])
-//   Student   Student?  @relation(fields: [studentId], references: [id])
-//   studentId Int?
-//   User      User      @relation(fields: [userId], references: [id])
+model ProjectMember {
+  id        Int       @id @default(autoincrement()) @map("id")
+  projectId Int       @map("project_id")
+  studentId Int       @map("student_id")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  createdBy Int       @map("created_by")
+  updatedBy Int       @map("updated_by")
+  project   Project   @relation(fields: [projectId], references: [id])
+  student   Student   @relation(fields: [studentId], references: [id])
 
-//   @@map("project_members")
-// }
+  @@map("project_members")
+}
 
-// model ProjectFields {
-//   id         Int       @id @default(autoincrement()) @map("id")
-//   projectId  Int       @map("project_id")
-//   listTypeId Int       @map("list_type_id")
-//   createdAt  DateTime  @default(now()) @map("created_at")
-//   updatedAt  DateTime  @updatedAt @map("updated_at")
-//   deletedAt  DateTime? @map("deleted_at")
-//   createdBy  Int       @map("created_by")
-//   updatedBy  Int       @map("updated_by")
-//   project    Project   @relation(fields: [projectId], references: [id])
-//   listType   ListType  @relation(fields: [listTypeId], references: [id])
+model ProjectFields {
+  id         Int       @id @default(autoincrement()) @map("id")
+  projectId  Int       @map("project_id")
+  listTypeId Int       @map("list_type_id")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  deletedAt  DateTime? @map("deleted_at")
+  createdBy  Int       @map("created_by")
+  updatedBy  Int       @map("updated_by")
+  project    Project   @relation(fields: [projectId], references: [id])
+  listType   ListType  @relation(fields: [listTypeId], references: [id])
 
-//   @@map("project_fields")
-// }
+  @@map("project_fields")
+}
 
-// model ProjectCategory {
-//   id         Int       @id @default(autoincrement()) @map("id")
-//   projectId  Int       @map("project_id")
-//   listTypeId Int       @map("list_type_id")
-//   createdAt  DateTime  @default(now()) @map("created_at")
-//   updatedAt  DateTime  @updatedAt @map("updated_at")
-//   deletedAt  DateTime? @map("deleted_at")
-//   createdBy  Int       @map("created_by")
-//   updatedBy  Int       @map("updated_by")
-//   project    Project   @relation(fields: [projectId], references: [id])
-//   listType   ListType  @relation(fields: [listTypeId], references: [id])
+model ProjectCategory {
+  id         Int       @id @default(autoincrement()) @map("id")
+  projectId  Int       @map("project_id")
+  listTypeId Int       @map("list_type_id")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  deletedAt  DateTime? @map("deleted_at")
+  createdBy  Int       @map("created_by")
+  updatedBy  Int       @map("updated_by")
+  project    Project   @relation(fields: [projectId], references: [id])
+  listType   ListType  @relation(fields: [listTypeId], references: [id])
 
-//   @@map("project_categories")
-// }
+  @@map("project_categories")
+}
+
+model ProjectCourse {
+  id        Int       @id @default(autoincrement()) @map("id")
+  projectId Int       @map("project_id")
+  courseId  Int       @map("course_id")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  createdBy Int       @map("created_by")
+  updatedBy Int       @map("updated_by")
+  project   Project   @relation(fields: [projectId], references: [id])
+  course    Course    @relation(fields: [courseId], references: [id])
+
+  @@map("project_courses")
+}

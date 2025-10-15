@@ -4,6 +4,7 @@ import {
   HttpStatus,
   Req,
   UseGuards,
+  Query,
   UseInterceptors,
   Param,
 } from '@nestjs/common';
@@ -15,6 +16,7 @@ import { AuthenticatedRequest } from 'src/models/auth';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { success } from 'src/core/interceptors/response.helper';
 import { ClassBookFactory } from './class-book.factory';
+import { QueryClassBookDto } from './dto/v1/get-class-book.dto';
 
 @Controller({
   path: 'class-book',
@@ -46,11 +48,16 @@ export class ClassBookController {
   }
 
   @Get()
-  async getClassBooks() {
-    const classBooks = await this.classBookService.getClassBooks();
+  async getClassBooks(@Query() query: QueryClassBookDto) {
+    const { rows, totalRecords, page, pageSize } =
+      await this.classBookService.getClassBooks(query);
     const classBookDtos =
-      this.classFactory.mapClassBookModelsToClassBookDtos(classBooks);
-    return success(classBookDtos, HttpStatus.OK);
+      this.classFactory.mapClassBookModelsToClassBookDtos(rows);
+
+    return success(
+      { rows: classBookDtos, totalRecords, page, pageSize },
+      HttpStatus.OK,
+    );
   }
 
   @Get(':id')

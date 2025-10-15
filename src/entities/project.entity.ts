@@ -1,10 +1,14 @@
 import {
   Project,
   ProjectAsset,
-  // ProjectMember,
-  // ProjectCategory,
-  // ProjectFields,
+  ProjectMember,
+  ProjectCategory,
+  ProjectFields,
+  ProjectCourse,
 } from '@prisma/client';
+import { StudentEntity } from './student.entity';
+import { ListTypeEntity } from './type.entity';
+import { CourseEntity } from './course.entity';
 
 export class ProjectEntity implements Project {
   id: number;
@@ -21,7 +25,11 @@ export class ProjectEntity implements Project {
   deletedAt: Date | null;
   createdBy: number;
   updatedBy: number;
-  ProjectAsset?: ProjectAsset[];
+  ProjectAsset: ProjectAssetEntity[];
+  ProjectMember: ProjectMemberEntity[];
+  ProjectCategories: ProjectCategoryEntity[];
+  ProjectFields: ProjectFieldEntity[];
+  ProjectCourse: ProjectCourseEntity[];
 }
 
 export class ProjectAssetEntity implements ProjectAsset {
@@ -33,41 +41,57 @@ export class ProjectAssetEntity implements ProjectAsset {
   deletedAt: Date | null;
   createdBy: number;
   updatedBy: number;
+  project: ProjectEntity;
 }
 
-// export class ProjectMemberEntity implements ProjectMember {
-//   id: number;
-//   createdAt: Date;
-//   updatedAt: Date;
-//   deletedAt: Date | null;
-//   createdBy: number;
-//   updatedBy: number;
-//   projectId: number;
-//   userId: number;
-//   studentId: number | null;
-//   student: StudentEntity | null;
-// }
+export class ProjectMemberEntity implements ProjectMember {
+  id: number;
+  projectId: number;
+  studentId: number;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
+  createdBy: number;
+  updatedBy: number;
+  project: ProjectEntity;
+  student: StudentEntity;
+}
 
-// export class ProjectCategoryEntity implements ProjectCategory {
-//   id: number;
-//   createdAt: Date;
-//   updatedAt: Date;
-//   deletedAt: Date | null;
-//   createdBy: number;
-//   updatedBy: number;
-//   projectId: number;
-//   listTypeId: number;
-//   listType: ListTypeEntity;
-// }
+export class ProjectCategoryEntity implements ProjectCategory {
+  id: number;
+  projectId: number;
+  listTypeId: number;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
+  createdBy: number;
+  updatedBy: number;
+  project: ProjectEntity;
+  listType: ListTypeEntity;
+}
 
-// export class ProjectFieldsEntity implements ProjectFields {
-//   id: number;
-//   createdAt: Date;
-//   updatedAt: Date;
-//   deletedAt: Date | null;
-//   createdBy: number;
-//   updatedBy: number;
-//   projectId: number;
-//   listTypeId: number;
-//   listType: ListTypeEntity;
-// }
+export class ProjectFieldEntity implements ProjectFields {
+  id: number;
+  projectId: number;
+  listTypeId: number;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
+  createdBy: number;
+  updatedBy: number;
+  project: ProjectEntity;
+  listType: ListTypeEntity;
+}
+
+export class ProjectCourseEntity implements ProjectCourse {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
+  createdBy: number;
+  updatedBy: number;
+  projectId: number;
+  courseId: number;
+  project: ProjectEntity;
+  course: CourseEntity;
+}

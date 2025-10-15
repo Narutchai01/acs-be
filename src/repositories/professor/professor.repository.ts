@@ -77,7 +77,14 @@ export class ProfessorRepository implements IProfessorRepository {
 
   async getProfessors(query: QueryProfessorDto): Promise<ProfessorModel[]> {
     try {
-      const { page, pageSize, searchByName } = query;
+      const {
+        page,
+        pageSize,
+        searchByName,
+        expertFields,
+        majorPosition,
+        academicPosition,
+      } = query;
 
       const whereClause = {
         searchByName: searchByName
@@ -110,12 +117,17 @@ export class ProfessorRepository implements IProfessorRepository {
               educationLevel: true,
             },
           },
-          expertFields: true,
-          academicPosition: true,
-          majorPosition: true,
+          expertFields: expertFields
+            ? {
+                where: { deletedAt: null },
+              }
+            : false,
+          academicPosition: academicPosition,
+          majorPosition: majorPosition,
         },
-        take: Number(pageSize),
-        skip: calculatePagination(page, Number(pageSize)),
+        ...(pageSize && { take: Number(pageSize) }),
+        ...(page &&
+          pageSize && { skip: calculatePagination(page, Number(pageSize)) }),
       });
 
       return this.professorFactory.mapProfessorEntitiesToProfessorModels(

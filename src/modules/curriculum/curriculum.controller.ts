@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   UploadedFile,
   UseGuards,
@@ -23,6 +24,7 @@ import { CurriculumFactory } from './curriculum.factory';
 import { success } from 'src/core/interceptors/response.helper';
 import { CurriculumDto } from './dto/curriculum.dto';
 import { Pageable } from 'src/models';
+import { QueryCurriculumDto } from './dto/v1/get-curriculum.dto';
 
 @Controller('curriculum')
 export class CurriculumController {
@@ -54,8 +56,9 @@ export class CurriculumController {
   }
 
   @Get()
-  async getCurriculums() {
-    const { rows, ...data } = await this.curriculumService.getCurriculums();
+  async getCurriculums(@Query() query: QueryCurriculumDto) {
+    const { rows, ...data } =
+      await this.curriculumService.getCurriculums(query);
     const dtos =
       this.curriculumFactory.mapCurriculumModelsToCurriculumDtos(rows);
 
