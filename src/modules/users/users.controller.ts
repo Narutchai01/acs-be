@@ -12,7 +12,10 @@ import { CreateUserDto } from './dto/create-user';
 import { success } from 'src/core/interceptors/response.helper';
 import { UsersFactory } from './users.factory';
 
-@Controller('users')
+@Controller({
+  path: 'users',
+  version: '1',
+})
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
@@ -36,5 +39,11 @@ export class UsersController {
     const user = await this.usersService.createUser(newUser, role);
     const dto = this.userFactory.mapUserModelToUserDto(user);
     return success(dto, HttpStatus.CREATED);
+  }
+
+  @Post('super-user')
+  async createSuperUser(@Body() createUserDto: CreateUserDto) {
+    const user = await this.usersService.createSuperUser(createUserDto);
+    return success(user, HttpStatus.CREATED);
   }
 }

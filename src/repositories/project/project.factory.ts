@@ -4,18 +4,24 @@ import {
   ProjectEntity,
   ProjectCategoryEntity,
   ProjectFieldEntity,
+  ProjectCourseEntity,
 } from 'src/entities/project.entity';
 import {
   ProjectAssetModel,
   ProjectModel,
   ProjectCategoryModel,
   ProjectFieldModel,
+  ProjectCourseModel,
 } from 'src/models/project';
 import { StudentFactory } from '../student/student.factory';
+import { CourseFactory } from '../course/course.factory';
 
 @Injectable()
 export class ProjectFactory {
-  constructor(private studentFactory: StudentFactory) {}
+  constructor(
+    private studentFactory: StudentFactory,
+    private courseFactory: CourseFactory,
+  ) {}
   mapProjectEntitiesToProjectModels(entities: ProjectEntity[]): ProjectModel[] {
     return entities.map((entity) =>
       this.mapProjectEntityToProjectModel(entity),
@@ -46,6 +52,15 @@ export class ProjectFactory {
         ? fieldEntities.filter((entity) => entity !== null)
         : [];
 
+    const courseEntities = entity.ProjectCourse?.map((pc) => pc.course) || [];
+
+    const courseModels =
+      courseEntities.length > 0
+        ? this.courseFactory.mapCourseEntitiesToCourseModels(
+            courseEntities.filter((entity) => entity !== null),
+          )
+        : [];
+
     return {
       id: entity.id,
       title: entity.title,
@@ -62,6 +77,7 @@ export class ProjectFactory {
       projectMembers: studentModels,
       projectCategories: categoryModels,
       projectFields: fieldModels,
+      projectCourses: courseModels,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
       deletedAt: entity.deletedAt,
@@ -139,6 +155,30 @@ export class ProjectFactory {
   ): ProjectFieldModel[] {
     return entities.map((entity) =>
       this.mapProjectFieldEntityToProjectFieldModel(entity),
+    );
+  }
+
+  mapProjectCourseEntityToProjectCourseModel(
+    entity: ProjectCourseEntity,
+  ): ProjectCourseModel {
+    return {
+      id: entity.id,
+      projectId: entity.projectId,
+      courseId: entity.courseId,
+      course: this.courseFactory.mapCourseEntityToCourseModel(entity.course),
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+      deletedAt: entity.deletedAt,
+      createdBy: entity.createdBy,
+      updatedBy: entity.updatedBy,
+    };
+  }
+
+  mapProjectCourseEntitiesToProjectCourseModels(
+    entities: ProjectCourseEntity[],
+  ): ProjectCourseModel[] {
+    return entities.map((entity) =>
+      this.mapProjectCourseEntityToProjectCourseModel(entity),
     );
   }
 }

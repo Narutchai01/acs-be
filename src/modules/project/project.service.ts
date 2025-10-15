@@ -6,6 +6,7 @@ import {
   CreateProjectMemberModel,
   CreateProjectCategoryModel,
   CreateProjectFieldModel,
+  CreateProjectCourseModel,
 } from 'src/models/project';
 import { IProjectRepository } from 'src/repositories/project/project.abstract';
 import { CreateProjectDto } from './dto/v1/create-project.dto';
@@ -18,7 +19,6 @@ export class ProjectService {
     private projectRepository: IProjectRepository,
     private supabase: SupabaseService,
   ) {}
-
   async createProject(
     data: CreateProjectDto,
     thumbnail: Express.Multer.File,
@@ -50,7 +50,7 @@ export class ProjectService {
     let project = await this.projectRepository.createProject(projectData);
     if (!project) {
       throw new HttpException(
-        'create failed ',
+        'Create failed',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
@@ -62,6 +62,8 @@ export class ProjectService {
     await this.createProjectCategory(data.categories, project.id, createdBy);
 
     await this.createProjectFields(data.fields, project.id, createdBy);
+
+    await this.createProjectCourses(data.courses, project.id, createdBy);
 
     project = await this.getProjectById(project.id);
 
@@ -77,6 +79,9 @@ export class ProjectService {
     assets: string[],
     createdBy: number,
   ) {
+    if (!assets || !Array.isArray(assets) || assets.length === 0) {
+      return;
+    }
     const data: CreateProjectAssetModel[] = assets.map((asset) => {
       return {
         projectId,
@@ -112,6 +117,9 @@ export class ProjectService {
     projectId: number,
     createdBy: number,
   ): Promise<void> {
+    if (!members || !Array.isArray(members) || members.length === 0) {
+      return;
+    }
     const data: CreateProjectMemberModel[] = members.map((member) => {
       return {
         projectId,
@@ -128,6 +136,9 @@ export class ProjectService {
     projectId: number,
     createdBy: number,
   ): Promise<void> {
+    if (!categories || !Array.isArray(categories) || categories.length === 0) {
+      return;
+    }
     const data: CreateProjectCategoryModel[] = categories.map((category) => {
       return {
         projectId,
@@ -144,6 +155,9 @@ export class ProjectService {
     projectId: number,
     createdBy: number,
   ): Promise<void> {
+    if (!fields || !Array.isArray(fields) || fields.length === 0) {
+      return;
+    }
     const data: CreateProjectFieldModel[] = fields.map((field) => {
       return {
         projectId,
@@ -153,5 +167,24 @@ export class ProjectService {
       };
     });
     await this.projectRepository.createProjectField(data);
+  }
+
+  async createProjectCourses(
+    courses: number[],
+    projectId: number,
+    createdBy: number,
+  ): Promise<void> {
+    if (!courses || !Array.isArray(courses) || courses.length === 0) {
+      return;
+    }
+    const data: CreateProjectCourseModel[] = courses.map((course) => {
+      return {
+        projectId,
+        courseId: course,
+        createdBy,
+        updatedBy: createdBy,
+      };
+    });
+    await this.projectRepository.createProjectCourse(data);
   }
 }

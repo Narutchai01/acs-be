@@ -78,4 +78,19 @@ export class UsersService {
   async updateUser(id: number, data: UpdateUserModel): Promise<UserModel> {
     return this.userRepository.update(id, data);
   }
+
+  async createSuperUser(data: CreateUserDto): Promise<UserModel> {
+    const hashPassword = await this.passwordService.hashPassword(data.password);
+    const newUser = {
+      firstNameTh: data.firstNameTh,
+      lastNameTh: data.lastNameTh,
+      firstNameEn: data.firstNameEn ?? null,
+      lastNameEn: data.lastNameEn ?? null,
+      email: data.email,
+      nickName: data.nickName ?? null,
+      password: hashPassword,
+    };
+    const user = await this.userRepository.createUser(newUser);
+    return user;
+  }
 }

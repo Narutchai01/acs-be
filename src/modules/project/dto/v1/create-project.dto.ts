@@ -34,8 +34,12 @@ export class CreateProjectDto {
   @ApiProperty({
     description: 'List of project members',
     example: ['member1', 'member2', 'member3'],
+    required: false,
   })
   @Transform(({ value }) => {
+    if (value === undefined || value === null || value === '') {
+      return [];
+    }
     if (typeof value === 'string') {
       // Handle JSON string format like "[1,2,3]"
       if (value.startsWith('[') && value.endsWith(']')) {
@@ -61,8 +65,12 @@ export class CreateProjectDto {
   @ApiProperty({
     description: 'List of project categories',
     example: "['category1', 'category2', 'category3']",
+    required: false,
   })
   @Transform(({ value }) => {
+    if (value === undefined || value === null || value === '') {
+      return [];
+    }
     if (typeof value === 'string') {
       // Handle JSON string format like "[1,2,3]"
       if (value.startsWith('[') && value.endsWith(']')) {
@@ -88,8 +96,12 @@ export class CreateProjectDto {
   @ApiProperty({
     description: 'List of project fields',
     example: "['field1', 'field2', 'field3']",
+    required: false,
   })
   @Transform(({ value }) => {
+    if (value === undefined || value === null || value === '') {
+      return [];
+    }
     if (typeof value === 'string') {
       // Handle JSON string format like "[1,2,3]"
       if (value.startsWith('[') && value.endsWith(']')) {
@@ -111,4 +123,35 @@ export class CreateProjectDto {
   })
   @IsNumber({}, { each: true })
   fields: number[];
+
+  @ApiProperty({
+    description: 'List of project courses',
+    example: "['course1', 'course2', 'course3']",
+    required: false,
+  })
+  @Transform(({ value }) => {
+    if (value === undefined || value === null || value === '') {
+      return [];
+    }
+    if (typeof value === 'string') {
+      // Handle JSON string format like "[1,2,3]"
+      if (value.startsWith('[') && value.endsWith(']')) {
+        try {
+          const parsed = JSON.parse(value) as unknown;
+          return Array.isArray(parsed)
+            ? parsed.map((item: unknown) => parseInt(String(item), 10))
+            : [];
+        } catch {
+          return [];
+        }
+      }
+      // Handle comma-separated string format like "1,2,3"
+      return value.split(',').map((item: string) => parseInt(item.trim(), 10));
+    } else if (Array.isArray(value)) {
+      return value.map((item: unknown) => parseInt(String(item), 10));
+    }
+    return [];
+  })
+  @IsNumber({}, { each: true })
+  courses: number[];
 }

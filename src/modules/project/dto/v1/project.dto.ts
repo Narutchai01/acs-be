@@ -1,6 +1,7 @@
 import { BaseDto } from 'src/models/dto/base.dto';
 import { StudentDto } from 'src/modules/students/dto/v1/student.dto';
 import { ListTypeDto } from 'src/modules/masterdata/dto/typelist.v1.dto';
+import { CourseDto } from 'src/modules/course/dto/course.dto';
 
 export class ProjectDto extends BaseDto {
   id: number;
@@ -16,4 +17,5 @@ export class ProjectDto extends BaseDto {
   projectMembers: StudentDto[];
   projectCategories: ListTypeDto[];
   projectFields: ListTypeDto[];
+  courses: CourseDto[];
 }

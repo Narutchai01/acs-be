@@ -2,10 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { StudentFactory } from '../students/students.factory';
 import { ProjectDto } from 'src/modules/project/dto/v1/project.dto';
 import { ProjectModel } from 'src/models/project';
+import { CourseFactory } from '../course/course.factory';
 
 @Injectable()
 export class ProjectFactory {
-  constructor(private studentFactory: StudentFactory) {}
+  constructor(
+    private studentFactory: StudentFactory,
+    private courseFactory: CourseFactory,
+  ) {}
   mapProjectModelToProjectDto(model: ProjectModel): ProjectDto {
     return {
       id: model.id,
@@ -38,6 +42,9 @@ export class ProjectFactory {
           id: field.id,
           name: field.name,
         })) || [],
+      courses: model.projectCourses
+        ? this.courseFactory.mapCourseModelsToCourseDtos(model.projectCourses)
+        : [],
     };
   }
 }

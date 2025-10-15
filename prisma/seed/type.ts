@@ -78,6 +78,7 @@ export const listTypes: Array<
     name: 'Internet Of Things',
     typeId: 1,
   },
+
   {
     name: 'ข่าวและกิจกรรม',
     typeId: 4,
@@ -98,6 +99,30 @@ export const listTypes: Array<
     name: 'newshigtlight',
     typeId: 4,
   },
+  {
+    name: 'Education',
+    typeId: 3,
+  },
+  {
+    name: 'Medical',
+    typeId: 3,
+  },
+  {
+    name: 'Research Category', // Changed to avoid duplicate
+    typeId: 3,
+  },
+  {
+    name: 'Business',
+    typeId: 3,
+  },
+  {
+    name: 'Game',
+    typeId: 3,
+  },
+  {
+    name: 'Agricultural',
+    typeId: 3,
+  },
 ];
 
 export const executeType = async (prisma: PrismaClient): Promise<void> => {
@@ -114,14 +139,21 @@ export const executeType = async (prisma: PrismaClient): Promise<void> => {
 
 export const executeListType = async (prisma: PrismaClient): Promise<void> => {
   for (const listType of listTypes) {
-    const exists = await prisma.listType.findFirst({
-      where: { name: listType.name, typeId: listType.typeId },
-    });
-    if (!exists) {
-      await prisma.listType.create({ data: listType });
-      console.log(`Created listType: ${listType.name}`);
-    } else {
-      console.log(`ListType already exists: ${listType.name}`);
+    try {
+      const exists = await prisma.listType.findFirst({
+        where: {
+          AND: [{ name: listType.name }, { typeId: listType.typeId }],
+        },
+      });
+
+      if (!exists) {
+        await prisma.listType.create({ data: listType });
+        console.log(`✅ Created listType: ${listType.name}`);
+      } else {
+        console.log(`⚠️  ListType already exists: ${listType.name}`);
+      }
+    } catch (error) {
+      console.error(`❌ Failed to process listType: ${listType.name}`, error);
     }
   }
 };

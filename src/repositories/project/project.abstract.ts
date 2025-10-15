@@ -6,6 +6,7 @@ import {
   CreateProjectMemberModel,
   CreateProjectCategoryModel,
   CreateProjectFieldModel,
+  CreateProjectCourseModel,
 } from 'src/models/project';
 import { QueryProjectDto } from 'src/modules/project/dto/v1/get-project.dto';
 
@@ -20,4 +21,5 @@ export abstract class IProjectRepository {
     data: CreateProjectCategoryModel[],
   ): Promise<void>;
   abstract createProjectField(data: CreateProjectFieldModel[]): Promise<void>;
+  abstract createProjectCourse(data: CreateProjectCourseModel[]): Promise<void>;
 }

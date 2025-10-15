@@ -147,24 +147,25 @@ model TypeCourse {
 }
 
 model Course {
-  id              Int          @id @default(autoincrement()) @map("id")
-  courseId        String       @map("course_id")
-  courseDetail    String       @map("course_detail")
-  createdBy       Int          @map("created_by")
-  updatedBy       Int          @map("updated_by")
-  courseNameEn    String       @map("course_name_en")
-  courseNameTh    String       @map("course_name_th")
-  credits         String       @map("credits")
-  typeCourseId    Int?         @map("type_course_id")
-  curriculumId    Int?         @map("curriculum_id")
-  createdAt       DateTime     @default(now()) @map("created_at")
-  deletedAt       DateTime?    @map("deleted_at")
-  updatedAt       DateTime     @updatedAt @map("updated_at")
-  curriculum      Curriculum?  @relation(fields: [curriculumId], references: [id])
-  TypeCourse      TypeCourse?  @relation(fields: [typeCourseId], references: [id])
-  user            User         @relation(fields: [updatedBy], references: [id])
+  id              Int             @id @default(autoincrement()) @map("id")
+  courseId        String          @map("course_id")
+  courseDetail    String          @map("course_detail")
+  createdBy       Int             @map("created_by")
+  updatedBy       Int             @map("updated_by")
+  courseNameEn    String          @map("course_name_en")
+  courseNameTh    String          @map("course_name_th")
+  credits         String          @map("credits")
+  typeCourseId    Int?            @map("type_course_id")
+  curriculumId    Int?            @map("curriculum_id")
+  createdAt       DateTime        @default(now()) @map("created_at")
+  deletedAt       DateTime?       @map("deleted_at")
+  updatedAt       DateTime        @updatedAt @map("updated_at")
+  curriculum      Curriculum?     @relation(fields: [curriculumId], references: [id])
+  TypeCourse      TypeCourse?     @relation(fields: [typeCourseId], references: [id])
+  user            User            @relation(fields: [updatedBy], references: [id])
   PrevCourse      PrevCourse[]
-  PrerequisiteFor PrevCourse[] @relation("PrevCourseRelation")
+  PrerequisiteFor PrevCourse[]    @relation("PrevCourseRelation")
+  ProjectCourse   ProjectCourse[]
 
   @@map("courses")
 }
@@ -349,6 +350,7 @@ model Project {
   ProjectMember     ProjectMember[]
   ProjectCategories ProjectCategory[]
   ProjectFields     ProjectFields[]
+  ProjectCourse     ProjectCourse[]
 
   @@map("projects")
 }
@@ -410,4 +412,19 @@ model ProjectCategory {
   listType   ListType  @relation(fields: [listTypeId], references: [id])
 
   @@map("project_categories")
+}
+
+model ProjectCourse {
+  id        Int       @id @default(autoincrement()) @map("id")
+  projectId Int       @map("project_id")
+  courseId  Int       @map("course_id")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  createdBy Int       @map("created_by")
+  updatedBy Int       @map("updated_by")
+  project   Project   @relation(fields: [projectId], references: [id])
+  course    Course    @relation(fields: [courseId], references: [id])
+
+  @@map("project_courses")
 }

@@ -1,6 +1,7 @@
 import { BaseModel } from '.';
 import { StudentModel } from './student';
 import { ListTypeModel } from './type';
+import { CourseModel } from './course';
 export interface ProjectModel extends BaseModel {
   id: number;
   title: string;
@@ -20,6 +21,7 @@ export interface ProjectModel extends BaseModel {
   projectMembers?: StudentModel[];
   projectCategories?: ListTypeModel[];
   projectFields?: ListTypeModel[];
+  projectCourses?: CourseModel[];
 }
 
 export interface CreateProjectModel {
@@ -121,6 +123,24 @@ export interface ProjectFieldModel {
 export interface CreateProjectFieldModel {
   projectId: number;
   listTypeId: number;
+  createdBy: number;
+  updatedBy: number;
+}
+
+export interface ProjectCourseModel {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
+  createdBy: number;
+  updatedBy: number;
+  projectId: number;
+  courseId: number;
+  course: CourseModel;
+}
+export interface CreateProjectCourseModel {
+  projectId: number;
+  courseId: number;
   createdBy: number;
   updatedBy: number;
 }

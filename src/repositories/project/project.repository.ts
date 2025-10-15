@@ -9,6 +9,7 @@ import {
   CreateProjectMemberModel,
   CreateProjectCategoryModel,
   CreateProjectFieldModel,
+  CreateProjectCourseModel,
 } from 'src/models/project';
 import { QueryProjectDto } from 'src/modules/project/dto/v1/get-project.dto';
 import calculatePagination from 'src/core/utils/calculatePagination';
@@ -35,16 +36,39 @@ export class ProjectRepository implements IProjectRepository {
   }
 
   async getProjects(query: QueryProjectDto): Promise<ProjectModel[]> {
-    const { page, pageSize, sortBy = 'createdAt', sortOrder } = query;
+    const {
+      page,
+      pageSize,
+      sortBy = 'createdAt',
+      sortOrder,
+      categories,
+      fields,
+      courses,
+    } = query;
+
     const projectEntities = await this.prisma.project.findMany({
-      where: { deletedAt: null },
+      where: {
+        deletedAt: null,
+        ...(categories && {
+          ProjectCategories: { every: { listTypeId: { in: categories } } },
+        }),
+        ...(fields && {
+          ProjectFields: { every: { listTypeId: { in: fields } } },
+        }),
+        ...(courses && {
+          ProjectCourse: { every: { courseId: { in: courses } } },
+        }),
+      },
       take: pageSize,
       ...(pageSize && { take: pageSize }),
       ...(page && pageSize && { skip: calculatePagination(page, pageSize) }),
       ...(sortBy && { orderBy: { [sortBy]: sortOrder || 'desc' } }),
       include: {
         ProjectAsset: true,
-        ProjectMember: { include: { student: true } },
+        ProjectMember: { include: { student: { include: { user: true } } } },
+        ProjectCategories: { include: { listType: true } },
+        ProjectFields: { include: { listType: true } },
+        ProjectCourse: { include: { course: true } },
       },
     });
 
@@ -64,6 +88,7 @@ export class ProjectRepository implements IProjectRepository {
         ProjectMember: { include: { student: { include: { user: true } } } },
         ProjectCategories: { include: { listType: true } },
         ProjectFields: { include: { listType: true } },
+        ProjectCourse: { include: { course: true } },
       },
     });
 
@@ -91,5 +116,9 @@ export class ProjectRepository implements IProjectRepository {
 
   async createProjectField(data: CreateProjectFieldModel[]): Promise<void> {
     await this.prisma.projectFields.createMany({ data });
+  }
+
+  async createProjectCourse(data: CreateProjectCourseModel[]): Promise<void> {
+    await this.prisma.projectCourse.createMany({ data });
   }
 }
