@@ -9,6 +9,10 @@ import { LoginRequest } from 'src/models/auth';
 import { v4 as uuidv4 } from 'uuid';
 import { randomBytes } from 'node:crypto';
 import { IRefresherTokenRepository } from 'src/repositories/refreshertoken/refresher.abstract';
+import { IAuthRepository } from 'src/repositories/auth/auth.abstract';
+import { ForgetPasswordCredentialsModel } from 'src/models/auth';
+import { MailService } from '../mail/mail.service';
+import { appDominain } from 'src/config/config';
 
 @Injectable()
 export class AuthService {
@@ -19,6 +23,8 @@ export class AuthService {
     private passwordService: PasswordService,
     private usersService: UsersService,
     private refresherTokenRepository: IRefresherTokenRepository,
+    private authRepository: IAuthRepository,
+    private emailService: MailService,
   ) {}
 
   async validateUser(
@@ -143,5 +149,69 @@ export class AuthService {
       refreshToken: await this.signRefreshToken(user.id),
       accessToken: this.signAccessToken(user),
     };
+  }
+
+  async createForgetPasswordCredential(data: {
+    email: string;
+  }): Promise<ForgetPasswordCredentialsModel> {
+    const user = await this.usersService.getUserByEmail(data.email);
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    const credential = await this.authRepository.createForgetPasswordCredential(
+      {
+        userId: user.id,
+        refferenceCode: uuidv4(),
+        createdBy: user.id,
+        updatedBy: user.id,
+      },
+    );
+
+    if (!appDominain) {
+      throw new HttpException(
+        'APP_DOMAIN is not set',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    // Send forget password email
+    await this.emailService.sendForgetPasswordCredential(
+      user.email,
+      credential.refferenceCode,
+      appDominain,
+    );
+
+    return credential;
+  }
+
+  async getForgetPasswordCredentialByRefCode(
+    refferenceCode: string,
+  ): Promise<ForgetPasswordCredentialsModel | null> {
+    return this.authRepository.getForgetPasswordCredentialByRefCode(
+      refferenceCode,
+    );
+  }
+
+  async resetPassword(data: {
+    refferenceCode: string;
+    newPassword: string;
+  }): Promise<void> {
+    const credential = await this.getForgetPasswordCredentialByRefCode(
+      data.refferenceCode,
+    );
+    if (!credential) {
+      throw new HttpException(
+        'Invalid or expired reference code',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const user = await this.usersService.getUserById(credential.userId);
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    await this.usersService.updatePassword(user.id, data.newPassword);
   }
 }

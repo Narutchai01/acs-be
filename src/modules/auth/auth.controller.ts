@@ -5,6 +5,7 @@ import {
   UseGuards,
   Get,
   HttpStatus,
+  Body,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -39,5 +40,32 @@ export class AuthController {
     const user = await this.authService.getUserData(req.user.userId);
     const dto = this.userFactory.mapUserModelToUserDto(user);
     return success(dto, HttpStatus.OK);
+  }
+
+  @Post('forget-password')
+  async createForgetPasswordCredential(@Body() body: { email: string }) {
+    const { email } = body;
+    return success(
+      await this.authService.createForgetPasswordCredential({ email }),
+      HttpStatus.OK,
+    );
+  }
+
+  @Post('reset-password')
+  async resetPassword(
+    @Body() body: { refferenceCode: string; password: string },
+  ) {
+    const { refferenceCode, password } = body;
+    await this.authService.resetPassword({
+      refferenceCode,
+      newPassword: password,
+    });
+
+    return success(
+      {
+        message: 'Password reset successfully',
+      },
+      HttpStatus.OK,
+    );
   }
 }

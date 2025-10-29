@@ -8,4 +8,5 @@ export abstract class IUserRepository {
   abstract getUserEmail(email: string): Promise<UserModel>;
   abstract getUserById(id: number): Promise<UserModel>;
   abstract update(id: number, data: UpdateUserModel): Promise<UserModel>;
+  abstract updatePassword(id: number, password: string): Promise<UserModel>;
 }

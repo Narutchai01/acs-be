@@ -76,7 +76,21 @@ export class UsersService {
   }
 
   async updateUser(id: number, data: UpdateUserModel): Promise<UserModel> {
-    return this.userRepository.update(id, data);
+    const user = await this.getUserById(id);
+    if (!user) {
+      throw new Error(`User with id ${id} not found`);
+    }
+
+    const updateData: UpdateUserModel = {
+      firstNameTh: data.firstNameTh ? data.firstNameTh : user.firstNameTh,
+      lastNameTh: data.lastNameTh ? data.lastNameTh : user.lastNameTh,
+      firstNameEn: data.firstNameEn ? data.firstNameEn : user.firstNameEn,
+      lastNameEn: data.lastNameEn ? data.lastNameEn : user.lastNameEn,
+      email: data.email ? data.email : user.email,
+      imageUrl: user.imageUrl ?? null,
+      nickName: data.nickName ? data.nickName : user.nickName,
+    };
+    return this.userRepository.update(id, updateData);
   }
 
   async createSuperUser(data: CreateUserDto): Promise<UserModel> {
@@ -92,5 +106,10 @@ export class UsersService {
     };
     const user = await this.userRepository.createUser(newUser);
     return user;
+  }
+
+  async updatePassword(id: number, password: string): Promise<UserModel> {
+    const hashPassword = await this.passwordService.hashPassword(password);
+    return this.userRepository.updatePassword(id, hashPassword);
   }
 }

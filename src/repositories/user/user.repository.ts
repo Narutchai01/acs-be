@@ -53,4 +53,18 @@ export class UserRepository implements IUserRepository {
     }
     return this.userFactory.mapUserEntityToUserModel(user);
   }
+
+  async updatePassword(id: number, password: string): Promise<UserModel> {
+    const user = await this.prisma.user.update({
+      where: { id },
+      data: { password },
+    });
+    if (!user) {
+      throw new HttpException(
+        `User with id ${id} not found`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return this.userFactory.mapUserEntityToUserModel(user);
+  }
 }

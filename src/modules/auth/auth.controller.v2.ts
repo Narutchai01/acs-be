@@ -14,6 +14,7 @@ import { UserModel } from 'src/models/user';
 import { Response } from 'express';
 import { JwtCommonAuthGuard } from './jwt-common.guard';
 import { UserRoleModel } from 'src/models/role';
+import { UsersFactory } from '../users/users.factory';
 
 interface CommonRequest {
   user: UserModel;
@@ -31,7 +32,10 @@ interface CommonJwtRequest {
   version: '2',
 })
 export class AuthControllerV2 {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private userFactory: UsersFactory,
+  ) {}
 
   @UseGuards(CommonAuthGuard)
   @Post('login')
@@ -56,7 +60,8 @@ export class AuthControllerV2 {
       maxAge: 24 * 60 * 60 * 1000,
     });
 
-    return success(user, HttpStatus.OK);
+    const dto = this.userFactory.mapUserModelToUserDto(user);
+    return success(dto, HttpStatus.OK);
   }
 
   @UseGuards(JwtCommonAuthGuard)

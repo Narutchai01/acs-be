@@ -12,6 +12,7 @@ import { UsersModule } from '../users/users.module';
 import { AuthControllerV2 } from './auth.controller.v2';
 import { CommonAuthStrategy } from './strategies/common-auth.strategy';
 import { JwtCommonStrategy } from './strategies/jwt-common.strategy';
+import { MailModule } from '../mail/mail.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { JwtCommonStrategy } from './strategies/jwt-common.strategy';
     ConfigModule,
     PasswordModule,
     UsersModule,
+    MailModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: process.env.JWT_EXPIRATION },

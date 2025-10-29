@@ -57,6 +57,9 @@ import { RefresherTokenFactory } from './refreshertoken/refresher.factory';
 import { IProjectRepository } from './project/project.abstract';
 import { ProjectFactory } from './project/project.factory';
 import { ProjectRepository } from './project/project.repository';
+import { AuthRepository } from './auth/auth.repository';
+import { IAuthRepository } from './auth/auth.abstract';
+import { AuthFactory } from './auth/auth.factory';
 
 @Module({
   imports: [PrismaModule],
@@ -137,6 +140,11 @@ import { ProjectRepository } from './project/project.repository';
       provide: IProjectRepository,
       useClass: ProjectRepository,
     },
+    {
+      provide: IAuthRepository,
+      useClass: AuthRepository,
+    },
+    AuthFactory,
     ProjectFactory,
     RefresherTokenFactory,
     StudentFactory,
@@ -177,6 +185,7 @@ import { ProjectRepository } from './project/project.repository';
     IStudentRepository,
     IRefresherTokenRepository,
     IProjectRepository,
+    IAuthRepository,
   ],
 })
 export class RepositoriesModule {}
