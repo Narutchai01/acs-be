@@ -304,7 +304,7 @@ model Student {
   studentId     String          @map("student_id")
   linkedin      String?         @map("linkedin")
   facebook      String?         @map("facebook")
-  instragram    String?         @map("instragram")
+  instagram     String?         @map("instagram")
   github        String?         @map("github")
   classBookId   Int             @map("class_book_id")
   createdAt     DateTime        @default(now()) @map("created_at")

@@ -75,10 +75,20 @@ export class UsersService {
     return this.userRepository.getUserById(id);
   }
 
-  async updateUser(id: number, data: UpdateUserModel): Promise<UserModel> {
+  async updateUser(
+    id: number,
+    data: UpdateUserModel,
+    file: Express.Multer.File | null,
+    role: string,
+  ): Promise<UserModel> {
+    let imageUrl: string | undefined;
     const user = await this.getUserById(id);
     if (!user) {
       throw new Error(`User with id ${id} not found`);
+    }
+
+    if (file) {
+      imageUrl = await this.supabaseService.uploadFile(file, role);
     }
 
     const updateData: UpdateUserModel = {
@@ -87,7 +97,7 @@ export class UsersService {
       firstNameEn: data.firstNameEn ? data.firstNameEn : user.firstNameEn,
       lastNameEn: data.lastNameEn ? data.lastNameEn : user.lastNameEn,
       email: data.email ? data.email : user.email,
-      imageUrl: user.imageUrl ?? null,
+      imageUrl: imageUrl ?? (user.imageUrl || null),
       nickName: data.nickName ? data.nickName : user.nickName,
     };
     return this.userRepository.update(id, updateData);

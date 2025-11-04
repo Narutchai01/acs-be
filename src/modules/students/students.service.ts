@@ -154,11 +154,6 @@ export class StudentsService {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
-    let imageUrl: string | null = null;
-    if (file) {
-      imageUrl = await this.supabase.uploadFile(file, 'avatars');
-    }
-
     const updateUserData: UpdateUserModel = {
       firstNameTh: data.firstNameTh ?? existingUser.firstNameTh,
       lastNameTh: data.lastNameTh ?? existingUser.lastNameTh,
@@ -166,11 +161,15 @@ export class StudentsService {
       lastNameEn: data.lastNameEn ?? existingUser.lastNameEn,
       nickName: data.nickName ?? existingUser.nickName,
       email: data.email ?? existingUser.email,
-      imageUrl: imageUrl ?? existingUser.imageUrl ?? null,
       updatedBy,
     };
 
-    await this.userService.updateUser(existingUser.id, updateUserData);
+    await this.userService.updateUser(
+      existingUser.id,
+      updateUserData,
+      file,
+      'student',
+    );
 
     const updateStudentData: UpdateStudentModel = {
       studentId: data.studentId ?? existingStudent.studentId,

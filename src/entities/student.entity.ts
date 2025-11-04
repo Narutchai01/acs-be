@@ -8,7 +8,7 @@ export class StudentEntity implements Student {
   studentId: string;
   linkedin: string | null;
   facebook: string | null;
-  instragram: string | null;
+  instagram: string | null;
   github: string | null;
   classBookId: number;
   createdAt: Date;
