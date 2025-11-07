@@ -26,15 +26,30 @@ export class StudentRepository implements IStudentRepository {
   }
 
   async getList(query: QueryStudentsDto): Promise<StudentModel[]> {
-    const { page, pageSize, classBookId } = query;
+    const { page, pageSize, classBookId, search, sortBy, sortOrder } = query;
 
     const entities = await this.prisma.student.findMany({
       skip: calculatePagination(page, pageSize),
       take: pageSize,
-      where: { deletedAt: null, classBookId },
+      where: {
+        deletedAt: null,
+        classBookId,
+        ...(search && {
+          OR: [
+            { studentId: { contains: search, mode: 'insensitive' } },
+            {
+              user: { firstNameTh: { contains: search, mode: 'insensitive' } },
+            },
+            { user: { lastNameTh: { contains: search, mode: 'insensitive' } } },
+          ],
+        }),
+      },
       include: { user: true, classBook: true },
-      orderBy: { studentId: 'desc' },
+      orderBy: {
+        [sortBy || 'studentId']: sortOrder || 'asc',
+      },
     });
+
     return this.studentFactory.mapStudentEntityToStudentModels(entities);
   }
 
