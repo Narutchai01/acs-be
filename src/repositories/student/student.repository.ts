@@ -46,7 +46,9 @@ export class StudentRepository implements IStudentRepository {
       },
       include: { user: true, classBook: true },
       orderBy: {
-        [sortBy || 'studentId']: sortOrder || 'asc',
+        ...(sortBy === 'firstNameTh'
+          ? { user: { firstNameTh: sortOrder || 'asc' } }
+          : { [sortBy || 'studentId']: sortOrder || 'asc' }),
       },
     });
 

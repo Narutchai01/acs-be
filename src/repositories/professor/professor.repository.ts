@@ -84,6 +84,8 @@ export class ProfessorRepository implements IProfessorRepository {
         expertFields,
         majorPosition,
         academicPosition,
+        sortBy,
+        sortOrder,
       } = query;
 
       const whereClause = {
@@ -128,6 +130,18 @@ export class ProfessorRepository implements IProfessorRepository {
         ...(pageSize && { take: Number(pageSize) }),
         ...(page &&
           pageSize && { skip: calculatePagination(page, Number(pageSize)) }),
+
+        orderBy: sortBy
+          ? sortBy === 'firstNameTh'
+            ? {
+                user: {
+                  firstNameTh: sortOrder || 'asc',
+                },
+              }
+            : {
+                [sortBy]: sortOrder || 'asc',
+              }
+          : { id: 'asc' },
       });
 
       return this.professorFactory.mapProfessorEntitiesToProfessorModels(

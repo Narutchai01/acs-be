@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsBoolean, IsNumber } from 'class-validator';
+import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
 export class QueryProfessorDto {
   @ApiProperty({ example: 1, description: 'Page number', required: false })
@@ -22,6 +22,7 @@ export class QueryProfessorDto {
     description: 'Sort by field',
     required: false,
   })
+  @IsString()
   sortBy?: string;
 
   @ApiProperty({
@@ -29,6 +30,7 @@ export class QueryProfessorDto {
     description: 'Sort order (asc or desc)',
     required: false,
   })
+  @IsString()
   sortOrder?: 'asc' | 'desc';
 
   @ApiProperty({
