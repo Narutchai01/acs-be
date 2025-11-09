@@ -1,10 +1,17 @@
 import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
 import { IProfessorRepository } from './professor.abstract';
-import { CreateProfessorModel, ProfessorModel } from 'src/models/professor';
+import {
+  CreateProfessorModel,
+  ProfessorModel,
+  IUpdateProfessorModel,
+} from 'src/models/professor';
 import { PrismaService } from 'src/provider/database/prisma/prisma.service';
 import { ProfessorFactory } from './professor.factory';
-import { CreateEducationModel } from 'src/models/education';
-import { CreateExpertField } from 'src/models/expertfields';
+import {
+  CreateEducationModel,
+  IUpdateEducationModel,
+} from 'src/models/education';
+import { CreateExpertField, IUpdateExpertField } from 'src/models/expertfields';
 import { QueryProfessorDto } from 'src/modules/professor/dto/get-professors.dto';
 import calculatePagination from 'src/core/utils/calculatePagination';
 
@@ -196,5 +203,99 @@ export class ProfessorRepository implements IProfessorRepository {
         throw new Error('Unable to count professors: Unknown error occurred');
       }
     }
+  }
+
+  async updateProfessor(
+    id: number,
+    data: Partial<IUpdateProfessorModel>,
+  ): Promise<ProfessorModel> {
+    try {
+      const professor = await this.prisma.professor.update({
+        where: { id },
+        data: {
+          ...data,
+          updatedAt: new Date(),
+        },
+      });
+      return this.professorFactory.mapProfessorEntityToProfessorModel(
+        professor,
+      );
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Update professor failed:', error.message);
+        throw new Error(`Unable to update professor: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to update professor: Unknown error occurred');
+      }
+    }
+  }
+
+  async updateEducation(
+    professorId: number,
+    data: Partial<IUpdateEducationModel>[],
+  ): Promise<void> {
+    await this.prisma.education.updateMany({
+      where: {
+        professorId,
+        deletedAt: null,
+        id: {
+          in: data
+            .map((item) => item.id)
+            .filter((id): id is number => id !== undefined),
+        },
+      },
+      data: {
+        ...data,
+        updatedAt: new Date(),
+      },
+    });
+  }
+
+  async deleteEducationByducationId(educationIds: number[]): Promise<void> {
+    await this.prisma.education.updateMany({
+      where: {
+        id: {
+          in: educationIds,
+        },
+      },
+      data: {
+        deletedAt: new Date(),
+      },
+    });
+  }
+
+  async updateExpertFields(
+    professorId: number,
+    data: Partial<IUpdateExpertField>[],
+  ): Promise<void> {
+    await this.prisma.expertFields.updateMany({
+      where: {
+        professorId,
+        deletedAt: null,
+        id: {
+          in: data
+            .map((item) => item.id)
+            .filter((id): id is number => id !== undefined),
+        },
+      },
+      data: {
+        ...data,
+        updatedAt: new Date(),
+      },
+    });
+  }
+
+  async deleteExpertFields(expertFieldIds: number[]): Promise<void> {
+    await this.prisma.expertFields.updateMany({
+      where: {
+        id: {
+          in: expertFieldIds,
+        },
+      },
+      data: {
+        deletedAt: new Date(),
+      },
+    });
   }
 }

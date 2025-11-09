@@ -11,3 +11,8 @@ export interface CreateExpertField {
   professorId: number;
   field: string;
 }
+
+export interface IUpdateExpertField {
+  id: number;
+  field: string;
+}

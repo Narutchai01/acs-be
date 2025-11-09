@@ -9,6 +9,7 @@ import { MailService } from '../mail/mail.service';
 import { UsersService } from 'src/modules/users/users.service';
 import { Pageable } from 'src/models';
 import { QueryProfessorDto } from './dto/get-professors.dto';
+import { UpdateProfessorDto } from './dto/update-professor.dto';
 
 @Injectable()
 export class ProfessorService {
@@ -177,5 +178,77 @@ export class ProfessorService {
       page: query.page || 1,
       pageSize: query.pageSize || 10,
     };
+  }
+
+  async updateProfessor(
+    id: number,
+    data: UpdateProfessorDto,
+    file?: Express.Multer.File,
+    updatedBy?: number,
+  ): Promise<ProfessorModel> {
+    const userUpdateData = {
+      firstNameTh: data.firstNameTh,
+      lastNameTh: data.lastNameTh,
+      firstNameEn: data.firstNameEn,
+      lastNameEn: data.lastNameEn,
+      email: data.email || undefined,
+      nickName: data.nickName,
+    };
+
+    if (data.deletedEducationIds && data.deletedEducationIds.length > 0) {
+      await this.professorRepository.deleteEducationByducationId(
+        data.deletedEducationIds,
+      );
+    }
+
+    if (data.updatedEducation && data.updatedEducation.length > 0) {
+      await this.professorRepository.updateEducation(id, data.updatedEducation);
+    }
+
+    if (data.newEducation && data.newEducation.length > 0) {
+      await this.professorRepository.createEducations(
+        data.newEducation.map((education) => ({
+          professorId: id,
+          education: education.education,
+          levelId: education.levelId,
+          university: education.university,
+          createdBy: updatedBy || 1,
+          updatedBy: updatedBy || 1,
+        })),
+      );
+    }
+
+    if (data.deletedExpertFieldIds && data.deletedExpertFieldIds.length > 0) {
+      await this.professorRepository.deleteExpertFields(
+        data.deletedExpertFieldIds,
+      );
+    }
+
+    if (data.updatedExpertFields && data.updatedExpertFields.length > 0) {
+      await this.professorRepository.updateExpertFields(
+        id,
+        data.updatedExpertFields,
+      );
+    }
+
+    if (data.newExpertFields && data.newExpertFields.length > 0) {
+      await this.professorRepository.createExpertFields(
+        data.newExpertFields.map((field) => ({
+          professorId: id,
+          field: field,
+        })),
+      );
+    }
+
+    const user = await this.userService.updateUser(
+      id,
+      userUpdateData,
+      file || null,
+      'professor',
+    );
+    return this.professorRepository.updateProfessor(id, {
+      ...data,
+      updatedBy: user.id,
+    });
   }
 }

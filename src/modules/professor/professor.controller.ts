@@ -10,6 +10,7 @@ import {
   Get,
   Param,
   Query,
+  Put,
 } from '@nestjs/common';
 import { ProfessorService } from './professor.service';
 import { CreateProfessorDtoV1 } from './dto/create-professor.dto.v1';
@@ -21,6 +22,8 @@ import { ProfessorFactory } from './professor.factory';
 import { ProfessorDtoV1 } from './dto/professor.dto.v1';
 import { QueryProfessorDto } from './dto/get-professors.dto';
 import { Pageable } from 'src/models';
+import { UpdateProfessorDto } from './dto/update-professor.dto';
+import { CommonAuthGuard } from '../auth/common-auth.guard';
 
 @Controller({
   path: 'professors',
@@ -76,5 +79,25 @@ export class ProfessorController {
     };
 
     return success<Pageable<ProfessorDtoV1>>(data, HttpStatus.OK);
+  }
+
+  @UseGuards(CommonAuthGuard)
+  @Put(':id')
+  @UseInterceptors(FileInterceptor('image'))
+  async updateProfessor(
+    @Param('id') id: number,
+    @UploadedFile() image: Express.Multer.File,
+    @Body() body: UpdateProfessorDto,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    const professor = await this.professorService.updateProfessor(
+      id,
+      body,
+      image,
+      req.user.userId,
+    );
+    const dto =
+      this.professorFactory.mapProfessorModelToProfessorDto(professor);
+    return success(dto, HttpStatus.OK);
   }
 }

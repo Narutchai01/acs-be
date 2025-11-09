@@ -38,6 +38,7 @@ export class ProfessorFactory {
 
   mapEducationModelToEducationDto(data: EducationModel): EducationDtoV1 {
     return {
+      id: data.id,
       education: data.education,
       university: data.university,
       level: this.masterDataFactory.mapEducationModelToDto(data.educationLevel),

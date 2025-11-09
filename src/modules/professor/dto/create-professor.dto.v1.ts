@@ -94,3 +94,23 @@ export class CreateProfessorDtoV1 {
   })
   expertFields: string[];
 }
+
+export class CreateEducationDtoV1 {
+  @ApiProperty()
+  @IsNumber()
+  levelId: number;
+
+  @ApiProperty()
+  @IsString()
+  education: string;
+
+  @ApiProperty()
+  @IsString()
+  university: string;
+}
+
+export class CreateExpertFieldDtoV1 {
+  @ApiProperty()
+  @IsString()
+  expertField: string;
+}

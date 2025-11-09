@@ -20,3 +20,11 @@ export interface CreateEducationModel {
   createdBy: number;
   updatedBy: number;
 }
+
+export interface IUpdateEducationModel {
+  id: number;
+  education?: string;
+  levelId?: number;
+  university?: string;
+  updatedBy: number;
+}

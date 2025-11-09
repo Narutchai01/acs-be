@@ -77,7 +77,7 @@ export class UsersService {
 
   async updateUser(
     id: number,
-    data: UpdateUserModel,
+    data: Partial<UpdateUserModel>,
     file: Express.Multer.File | null,
     role: string,
   ): Promise<UserModel> {
