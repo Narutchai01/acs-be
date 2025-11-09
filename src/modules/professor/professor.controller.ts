@@ -23,7 +23,7 @@ import { ProfessorDtoV1 } from './dto/professor.dto.v1';
 import { QueryProfessorDto } from './dto/get-professors.dto';
 import { Pageable } from 'src/models';
 import { UpdateProfessorDto } from './dto/update-professor.dto';
-import { CommonAuthGuard } from '../auth/common-auth.guard';
+import { JwtCommonAuthGuard } from '../auth/jwt-common.guard';
 
 @Controller({
   path: 'professors',
@@ -81,7 +81,7 @@ export class ProfessorController {
     return success<Pageable<ProfessorDtoV1>>(data, HttpStatus.OK);
   }
 
-  @UseGuards(CommonAuthGuard)
+  @UseGuards(JwtCommonAuthGuard)
   @Put(':id')
   @UseInterceptors(FileInterceptor('image'))
   async updateProfessor(
