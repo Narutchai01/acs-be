@@ -39,5 +39,5 @@ export class QueryCourseDto {
   @IsString()
   @Transform(({ value }: { value: string }) => value.trim())
   @IsOptional()
-  search: string;
+  search?: string;
 }
