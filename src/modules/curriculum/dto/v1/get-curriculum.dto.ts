@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsNumber, IsOptional, IsPositive } from 'class-validator';
+import { IsNumber, IsOptional, IsPositive, IsString } from 'class-validator';
 export class QueryCurriculumDto {
   @ApiProperty({
     required: false,
@@ -39,4 +39,14 @@ export class QueryCurriculumDto {
   })
   @IsOptional()
   sortOrder?: 'asc' | 'desc';
+
+  @ApiProperty({
+    required: false,
+    description: 'Search by year',
+    example: '2021',
+  })
+  @IsOptional()
+  @IsString()
+  @Transform(({ value }: { value: string }) => value.trim())
+  search?: string;
 }

@@ -84,12 +84,24 @@ export class CourseRepository implements ICourseRepository {
 
   async getCourse(query: QueryCourseDto): Promise<CourseModel[]> {
     try {
-      const { page, pageSize, prerequisite } = query;
+      const {
+        page,
+        pageSize,
+        prerequisite,
+        typecourseId,
+        curriculumId,
+        search,
+      } = query;
       const course = await this.prisma.course.findMany({
         where: {
           deletedAt: null,
-          typeCourseId: query.typecourseId,
-          curriculumId: { in: query.curriculumId },
+          typeCourseId: typecourseId,
+          curriculumId: { in: curriculumId },
+          OR: [
+            { courseId: { contains: search, mode: 'insensitive' } },
+            { courseNameTh: { contains: search, mode: 'insensitive' } },
+            { courseNameEn: { contains: search, mode: 'insensitive' } },
+          ],
         },
         ...(pageSize && { take: pageSize }),
         ...(page && pageSize && { skip: calculatePagination(page, pageSize) }),

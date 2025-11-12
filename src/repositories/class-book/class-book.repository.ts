@@ -35,6 +35,7 @@ export class ClassBookRepository implements IClassBookRepository {
       pageSize = 10,
       sortBy = 'classof',
       sortOrder = 'desc',
+      search,
     } = query;
 
     const skip = calculatePagination(page, pageSize);
@@ -45,7 +46,10 @@ export class ClassBookRepository implements IClassBookRepository {
       : { classof: 'desc' as const };
 
     const classBooks = await this.prisma.classBook.findMany({
-      where: { deletedAt: null },
+      where: {
+        deletedAt: null,
+        classof: search || undefined,
+      },
       include: { Student: true },
       orderBy,
       skip,

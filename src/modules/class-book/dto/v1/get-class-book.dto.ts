@@ -40,4 +40,14 @@ export class QueryClassBookDto {
   })
   @IsOptional()
   sortOrder?: 'asc' | 'desc';
+
+  @ApiProperty({
+    required: false,
+    description: 'search by classof ',
+    example: '21',
+  })
+  @IsOptional()
+  @IsNumber()
+  @Transform(({ value }: { value: string }) => parseInt(value, 10))
+  search?: number;
 }

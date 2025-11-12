@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsBoolean, IsNumber, IsOptional } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class QueryCourseDto {
   @ApiProperty()
@@ -34,4 +34,10 @@ export class QueryCourseDto {
     return [parseInt(value)];
   })
   curriculumId: number[];
+
+  @ApiProperty({ required: false, example: 'CSS192' })
+  @IsString()
+  @Transform(({ value }: { value: string }) => value.trim())
+  @IsOptional()
+  search: string;
 }

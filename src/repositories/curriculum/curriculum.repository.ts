@@ -36,6 +36,7 @@ export class CurriculumRepository implements ICurriculumRepository {
       pageSize = 10,
       sortBy = 'createdAt',
       sortOrder = 'desc',
+      search,
     } = query;
 
     const skip = calculatePagination(page, pageSize);
@@ -46,9 +47,9 @@ export class CurriculumRepository implements ICurriculumRepository {
       : { createdAt: 'desc' as const };
 
     const curriculums = await this.prisma.curriculum.findMany({
-      where: { deletedAt: null },
-      include: {
-        courses: false,
+      where: {
+        deletedAt: null,
+        year: search ? { contains: search } : undefined,
       },
       orderBy,
       skip,
