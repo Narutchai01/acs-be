@@ -6,7 +6,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AdminLocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
-import { ConfigModule } from '@nestjs/config';
 import { PasswordModule } from 'src/core/utils/password/password.module';
 import { UsersModule } from '../users/users.module';
 import { AuthControllerV2 } from './auth.controller.v2';
@@ -18,7 +17,6 @@ import { MailModule } from '../mail/mail.module';
   imports: [
     RepositoriesModule,
     PassportModule,
-    ConfigModule,
     PasswordModule,
     UsersModule,
     MailModule,

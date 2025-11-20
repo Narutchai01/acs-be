@@ -6,6 +6,7 @@ export class ClassBookEntity implements ClassBook {
   id: number;
   classof: number;
   firstYearAcademic: string;
+  curriculumId: number;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;

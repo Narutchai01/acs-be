@@ -6,6 +6,7 @@ export interface ClassBookModel extends BaseModel {
   classof: number;
   firstYearAcademic: string;
   image: string;
+  curriculumId: number;
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date | null;
@@ -18,4 +19,5 @@ export interface RequestClassBookModel {
   classof: number;
   firstYearAcademic: string;
   image: string;
+  curriculumId: number;
 }

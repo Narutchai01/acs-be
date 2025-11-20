@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HealthController } from './modules/health/health.controller';
+import appConfig from './config/app.config';
 
 import { PrismaModule } from './provider/database/prisma/prisma.module';
 import { RepositoriesModule } from './repositories/repositories.module';
@@ -22,6 +24,11 @@ import { ProjectModule } from './modules/project/project.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+      load: [appConfig],
+    }),
     PrismaModule,
     RepositoriesModule,
     PasswordModule,

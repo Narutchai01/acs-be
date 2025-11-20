@@ -12,6 +12,7 @@ export class ClassBookFactory {
       classof: entity.classof,
       image: entity.image,
       firstYearAcademic: entity.firstYearAcademic,
+      curriculumId: entity.curriculumId,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
       deletedAt: entity.deletedAt ? entity.deletedAt : null,
