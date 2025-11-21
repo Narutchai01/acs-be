@@ -96,6 +96,7 @@ export class CourseService {
         this.courseRepository.getCourse(query),
         this.courseRepository.count(query),
       ]);
+
       return {
         rows: rows,
         totalRecords: count,

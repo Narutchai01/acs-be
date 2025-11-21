@@ -97,11 +97,13 @@ export class CourseRepository implements ICourseRepository {
           deletedAt: null,
           typeCourseId: typecourseId,
           curriculumId: { in: curriculumId },
-          OR: [
-            { courseId: { contains: search, mode: 'insensitive' } },
-            { courseNameTh: { contains: search, mode: 'insensitive' } },
-            { courseNameEn: { contains: search, mode: 'insensitive' } },
-          ],
+          ...(search && {
+            OR: [
+              { courseId: { contains: search, mode: 'insensitive' } },
+              { courseNameTh: { contains: search, mode: 'insensitive' } },
+              { courseNameEn: { contains: search, mode: 'insensitive' } },
+            ],
+          }),
         },
         ...(pageSize && { take: pageSize }),
         ...(page && pageSize && { skip: calculatePagination(page, pageSize) }),
@@ -114,6 +116,7 @@ export class CourseRepository implements ICourseRepository {
           },
         },
       });
+      console.log('course repo', course);
 
       return course.map((course) =>
         this.CourseFactory.mapCourseEntityToCourseModel(course as CourseEntity),
