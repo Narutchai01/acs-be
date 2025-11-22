@@ -34,6 +34,7 @@ export interface CourseModel extends BaseModel {
   courseNameEn: string;
   credits: string;
   courseDetail: string;
+  typeCourse?: TypeCourseModel | null;
   curriculum?: CurriculumModel | null;
   user?: UserModel | null;
   PrevCourse: PrevCourseModel[];

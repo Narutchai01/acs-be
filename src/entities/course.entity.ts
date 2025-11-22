@@ -18,6 +18,7 @@ export class CourseEntity implements Course {
   createdBy: number;
   updatedBy: number;
   user?: UserEntity | null;
+  TypeCourse?: TypeCourseEntity | null;
   curriculum?: CurriculumEntity | null;
   PrevCourse: PrevCourseEntity[];
   PrerequisiteFor: PrevCourseEntity[];
