@@ -4,6 +4,7 @@ import { CourseEntity, TypeCourseEntity } from 'src/entities/course.entity';
 import { CourseModel, TypeCourseModel } from 'src/models/course';
 import { CurriculumFactory } from '../curriculum/curriculum.factory';
 import { PrevCourseFactory } from '../prevcourse/prevcourse.factory';
+import { TypeCourseFactory } from '../typecourse/typecourse.facoty';
 
 @Injectable()
 export class CourseFactory {
@@ -13,6 +14,8 @@ export class CourseFactory {
     private curriculumFactory: CurriculumFactory,
     @Inject(forwardRef(() => PrevCourseFactory))
     private prevCourseFactory: PrevCourseFactory,
+    @Inject(forwardRef(() => TypeCourseFactory))
+    private typeCourseFactory: TypeCourseFactory,
   ) {}
 
   mapCourseEntitiesToCourseModels(entities: CourseEntity[]): CourseModel[] {
@@ -34,6 +37,11 @@ export class CourseFactory {
       updatedBy: data.updatedBy,
       user: data.user
         ? this.userFactory.mapUserEntityToUserModel(data.user)
+        : null,
+      typeCourse: data.TypeCourse
+        ? this.typeCourseFactory.mapTypeCourseEntityToTypeCourseModel(
+            data.TypeCourse,
+          )
         : null,
       curriculum: data.curriculum
         ? this.curriculumFactory.mapCurriculumEntityToCurriculumModel(

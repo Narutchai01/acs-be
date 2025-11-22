@@ -25,6 +25,7 @@ export class CourseRepository implements ICourseRepository {
       const course = await this.prisma.course.create({
         data,
         include: {
+          TypeCourse: true,
           curriculum: true,
           PrevCourse: {
             include: {
@@ -60,6 +61,7 @@ export class CourseRepository implements ICourseRepository {
         where: { id: id },
         data: updateData,
         include: {
+          TypeCourse: true,
           curriculum: true,
           PrevCourse: {
             include: {
@@ -108,6 +110,7 @@ export class CourseRepository implements ICourseRepository {
         ...(pageSize && { take: pageSize }),
         ...(page && pageSize && { skip: calculatePagination(page, pageSize) }),
         include: {
+          TypeCourse: true,
           curriculum: true,
           PrevCourse: {
             include: {
@@ -143,6 +146,7 @@ export class CourseRepository implements ICourseRepository {
           deletedAt: null,
         },
         include: {
+          TypeCourse: true,
           curriculum: true,
           PrevCourse: {
             include: {
