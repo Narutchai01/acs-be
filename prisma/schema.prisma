@@ -285,22 +285,23 @@ model ExpertFields {
 }
 
 model ClassBook {
-  id                Int        @id @default(autoincrement()) @map("id")
-  classof           Int        @unique @map("classof")
-  firstYearAcademic String     @map("first_year_academic")
-  image             String     @map("image")
-  curriculumId      Int        @map("curriculum_id")
-  createdAt         DateTime   @default(now()) @map("created_at")
-  updatedAt         DateTime   @updatedAt @map("updated_at")
-  deletedAt         DateTime?  @map("deleted_at")
-  createdBy         Int        @map("created_by")
-  updatedBy         Int        @map("updated_by")
+  id                Int         @id @default(autoincrement()) @map("id")
+  classof           Int         @unique @map("classof")
+  firstYearAcademic String      @map("first_year_academic")
+  image             String      @map("image")
+  curriculumId      Int?        @map("curriculum_id")
+  createdAt         DateTime    @default(now()) @map("created_at")
+  updatedAt         DateTime    @updatedAt @map("updated_at")
+  deletedAt         DateTime?   @map("deleted_at")
+  createdBy         Int         @map("created_by")
+  updatedBy         Int         @map("updated_by")
   Student           Student[]
-  curriculum        Curriculum @relation(fields: [curriculumId], references: [id])
+  curriculum        Curriculum? @relation(fields: [curriculumId], references: [id])
 
   @@map("class_books")
 }
 
+// TODO: make curriculum relation required later
 model Student {
   id            Int             @id @default(autoincrement()) @map("id")
   userId        Int             @unique @map("user_id")
