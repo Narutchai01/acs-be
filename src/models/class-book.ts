@@ -6,7 +6,7 @@ export interface ClassBookModel extends BaseModel {
   classof: number;
   firstYearAcademic: string;
   image: string;
-  curriculumId: number;
+  curriculumId: number | null;
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date | null;

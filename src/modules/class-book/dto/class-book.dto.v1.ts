@@ -3,7 +3,7 @@ export class ClassBookDtoV1 {
   firstYearAcademic: string;
   classof: number;
   image: string;
-  curriculumId: number;
+  curriculumId: number | null;
   createdAt: Date;
   updatedAt: Date;
   createdBy: number;

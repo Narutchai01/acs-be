@@ -13,7 +13,7 @@ export class ClassBookFactory {
       id: model.id,
       firstYearAcademic: model.firstYearAcademic,
       image: model.image,
-      curriculumId: model.curriculumId,
+      curriculumId: model.curriculumId ? model.curriculumId : null,
       classof: model.classof,
       createdAt: model.createdAt,
       updatedAt: model.updatedAt,
