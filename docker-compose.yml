@@ -1,7 +1,8 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
 services:
   database:
     container_name: acs-website-database
-    image: postgres:latest
+    image: postgres:18
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
@@ -9,39 +10,20 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - ./databasepg:/var/lib/postgresql/data
+      - ./databasepg:/var/lib/postgresql
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U admin -d acs-website']
       interval: 10s
       timeout: 5s
       retries: 5
 
-  # servers:
-  #   container_name: acs-website-server
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #     target: development
-  #   image: acs-website-server:development
-  #   ports:
-  #     - '${PORT}:${PORT}'
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     PORT: ${PORT}
-  #     DATABASE_URL: postgres://admin:admin@acs-website-database:5432/acs-website
-  #     NODE_ENV: development
-  #   depends_on:
-  #     database:
-  #       condition: service_healthy
-
-  servers-prod:
-    container_name: acs-website-server-prod
+  servers:
+    container_name: acs-website-server
     build:
       context: .
       dockerfile: Dockerfile
-      target: production
-    image: acs-website-server:production
+      target: development
+    image: acs-website-server:development
     ports:
       - '${PORT}:${PORT}'
     env_file:
@@ -49,7 +31,7 @@ services:
     environment:
       PORT: ${PORT}
       DATABASE_URL: postgres://admin:admin@acs-website-database:5432/acs-website
-      NODE_ENV: production
+      NODE_ENV: development
     depends_on:
       database:
         condition: service_healthy
