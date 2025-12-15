@@ -69,3 +69,4 @@ RUN sed -i 's/\r$//' /usr/local/bin/entrypoint.sh \
 
 USER node
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["node", "dist/src/main.js"]
