@@ -1,7 +1,6 @@
 # syntax=docker/dockerfile:1.7
 FROM node:24.5.0-alpine AS base
-RUN apk update && apk upgrade --no-cache && \
-    apk add --no-cache libc6-compat openssl curl ca-certificates
+RUN apk add --no-cache libc6-compat openssl curl ca-certificates
 WORKDIR /usr/src/app
 
 # ---------- deps ----------
@@ -70,4 +69,3 @@ RUN sed -i 's/\r$//' /usr/local/bin/entrypoint.sh \
 
 USER node
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-CMD ["node", "dist/src/main.js"]
