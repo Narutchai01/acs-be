@@ -96,7 +96,7 @@ export const listTypes: Array<
     typeId: 4,
   },
   {
-    name: 'newshigtlight',
+    name: 'newshighlight',
     typeId: 4,
   },
   {
