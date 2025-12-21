@@ -104,4 +104,10 @@ export class QueryProjectDto {
     return [];
   })
   courses?: number[];
+
+ @ApiProperty({ required: false })
+ @IsString()
+ @IsOptional()
+ @Transform(({ value }) => (value ? value : null))
+ search?: string;
 }

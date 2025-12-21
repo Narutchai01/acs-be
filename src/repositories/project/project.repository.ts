@@ -46,6 +46,7 @@ export class ProjectRepository implements IProjectRepository {
       fields,
       courses,
       types,
+      search,
     } = query;
 
     const projectEntities = await this.prisma.project.findMany({
@@ -63,6 +64,8 @@ export class ProjectRepository implements IProjectRepository {
         ...(types && {
           ProjectTypes: { every: { listTypeId: { in: types } } },
         }),
+        ...(search && {
+          title: { contains: search, mode: 'insensitive' }}),
       },
       take: pageSize,
       ...(pageSize && { take: pageSize }),
