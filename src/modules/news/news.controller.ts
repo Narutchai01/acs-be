@@ -27,6 +27,7 @@ import { NewsMediaDto } from './dto/newsmedia.dto';
 import { NewsDto } from './dto/news.dto';
 import { Pageable } from 'src/models';
 import { AuthenticatedRequest } from 'src/models/auth';
+import { JwtCommonAuthGuard } from '../auth/jwt-common.guard';
 
 @Controller({
   path: 'news',
@@ -38,7 +39,7 @@ export class NewsController {
     private readonly newsFactory: NewsFactory,
   ) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtCommonAuthGuard)
   @Post()
   @UseInterceptors(FileInterceptor('image'))
   async createNews(
@@ -73,7 +74,7 @@ export class NewsController {
     return success<Pageable<NewsDto>>(data, HttpStatus.OK);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtCommonAuthGuard)
   @Post('news-media/:type')
   @UseInterceptors(FileInterceptor('image'))
   async createNewsMedia(
