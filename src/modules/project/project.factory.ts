@@ -42,6 +42,11 @@ export class ProjectFactory {
           id: field.id,
           name: field.name,
         })) || [],
+      projectTypes:
+        model.projectTypes?.map((type) => ({
+          id: type.id,
+          name: type.name,
+        })) || [],  
       courses: model.projectCourses
         ? this.courseFactory.mapCourseModelsToCourseDtos(model.projectCourses)
         : [],
