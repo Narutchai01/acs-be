@@ -94,6 +94,7 @@ model ListType {
   // ProjectCategory ProjectCategory[]
   ProjectCategory ProjectCategory[]
   ProjectFields   ProjectFields[]
+  ProjectType     ProjectType[]
 
   @@map("list_types")
 }
@@ -355,6 +356,7 @@ model Project {
   ProjectCategories ProjectCategory[]
   ProjectFields     ProjectFields[]
   ProjectCourse     ProjectCourse[]
+  ProjectTypes      ProjectType[]
 
   @@map("projects")
 }
@@ -417,7 +419,20 @@ model ProjectCategory {
 
   @@map("project_categories")
 }
+model ProjectType {
+  id         Int       @id @default(autoincrement()) @map("id")
+  projectId  Int       @map("project_id")
+  listTypeId Int       @map("list_type_id")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  deletedAt  DateTime? @map("deleted_at")
+  createdBy  Int       @map("created_by")
+  updatedBy  Int       @map("updated_by")
+  project    Project   @relation(fields: [projectId], references: [id])
+  listType   ListType  @relation(fields: [listTypeId], references: [id])
 
+  @@map("project_type")
+}
 model ProjectCourse {
   id        Int       @id @default(autoincrement()) @map("id")
   projectId Int       @map("project_id")

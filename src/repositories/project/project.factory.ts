@@ -5,6 +5,7 @@ import {
   ProjectCategoryEntity,
   ProjectFieldEntity,
   ProjectCourseEntity,
+  ProjectTypeEntity
 } from 'src/entities/project.entity';
 import {
   ProjectAssetModel,
@@ -12,6 +13,7 @@ import {
   ProjectCategoryModel,
   ProjectFieldModel,
   ProjectCourseModel,
+  ProjectTypeModel
 } from 'src/models/project';
 import { StudentFactory } from '../student/student.factory';
 import { CourseFactory } from '../course/course.factory';
@@ -51,6 +53,13 @@ export class ProjectFactory {
       fieldEntities.length > 0
         ? fieldEntities.filter((entity) => entity !== null)
         : [];
+    
+    const typeEntities = entity.ProjectTypes?.map((pf) => pf.listType) || [];
+
+    const typeModels =
+      typeEntities.length > 0
+        ? typeEntities.filter((entity) => entity !== null)
+        : [];
 
     const courseEntities = entity.ProjectCourse?.map((pc) => pc.course) || [];
 
@@ -77,6 +86,7 @@ export class ProjectFactory {
       projectMembers: studentModels,
       projectCategories: categoryModels,
       projectFields: fieldModels,
+      projectTypes: typeModels,
       projectCourses: courseModels,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
@@ -155,6 +165,30 @@ export class ProjectFactory {
   ): ProjectFieldModel[] {
     return entities.map((entity) =>
       this.mapProjectFieldEntityToProjectFieldModel(entity),
+    );
+  }
+
+    mapProjectTypeEntityToProjectTypeModel(
+    data: ProjectTypeEntity,
+  ): ProjectTypeModel {
+    return {
+      id: data.id,
+      projectId: data.projectId,
+      listTypeId: data.listTypeId,
+      listType: data.listType,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+      deletedAt: data.deletedAt,
+      createdBy: data.createdBy,
+      updatedBy: data.updatedBy,
+    };
+  }
+
+  mapProjectTypeEntitiesToProjectTypeModels(
+    entities: ProjectTypeEntity[],
+  ): ProjectTypeModel[] {
+    return entities.map((entity) =>
+      this.mapProjectTypeEntityToProjectTypeModel(entity),
     );
   }
 

@@ -22,6 +22,7 @@ export interface ProjectModel extends BaseModel {
   projectCategories?: ListTypeModel[];
   projectFields?: ListTypeModel[];
   projectCourses?: CourseModel[];
+  projectTypes?: ListTypeModel[];
 }
 
 export interface CreateProjectModel {
@@ -121,6 +122,24 @@ export interface ProjectFieldModel {
   listType: ListTypeModel;
 }
 export interface CreateProjectFieldModel {
+  projectId: number;
+  listTypeId: number;
+  createdBy: number;
+  updatedBy: number;
+}
+
+export interface ProjectTypeModel {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
+  createdBy: number;
+  updatedBy: number;
+  projectId: number;
+  listTypeId: number;
+  listType: ListTypeModel;
+}
+export interface CreateProjectTypeModel {
   projectId: number;
   listTypeId: number;
   createdBy: number;

@@ -7,6 +7,7 @@ import {
   CreateProjectCategoryModel,
   CreateProjectFieldModel,
   CreateProjectCourseModel,
+  CreateProjectTypeModel
 } from 'src/models/project';
 import { IProjectRepository } from 'src/repositories/project/project.abstract';
 import { CreateProjectDto } from './dto/v1/create-project.dto';
@@ -62,6 +63,8 @@ export class ProjectService {
     await this.createProjectCategory(data.categories, project.id, createdBy);
 
     await this.createProjectFields(data.fields, project.id, createdBy);
+
+    await this.createProjectType(data.types, project.id, createdBy);
 
     await this.createProjectCourses(data.courses, project.id, createdBy);
 
@@ -167,6 +170,25 @@ export class ProjectService {
       };
     });
     await this.projectRepository.createProjectField(data);
+  }
+
+    async createProjectType(
+    types: number[],
+    projectId: number,
+    createdBy: number,
+  ): Promise<void> {
+    if (!types || !Array.isArray(types) || types.length === 0) {
+      return;
+    }
+    const data: CreateProjectTypeModel[] = types.map((type) => {
+      return {
+        projectId,
+        listTypeId: type,
+        createdBy,
+        updatedBy: createdBy,
+      };
+    });
+    await this.projectRepository.createProjectType(data);
   }
 
   async createProjectCourses(

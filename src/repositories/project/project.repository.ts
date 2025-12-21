@@ -10,6 +10,7 @@ import {
   CreateProjectCategoryModel,
   CreateProjectFieldModel,
   CreateProjectCourseModel,
+  CreateProjectTypeModel
 } from 'src/models/project';
 import { QueryProjectDto } from 'src/modules/project/dto/v1/get-project.dto';
 import calculatePagination from 'src/core/utils/calculatePagination';
@@ -44,6 +45,8 @@ export class ProjectRepository implements IProjectRepository {
       categories,
       fields,
       courses,
+      types,
+      search,
     } = query;
 
     const projectEntities = await this.prisma.project.findMany({
@@ -58,6 +61,11 @@ export class ProjectRepository implements IProjectRepository {
         ...(courses && {
           ProjectCourse: { every: { courseId: { in: courses } } },
         }),
+        ...(types && {
+          ProjectTypes: { every: { listTypeId: { in: types } } },
+        }),
+        ...(search && {
+          title: { contains: search, mode: 'insensitive' }}),
       },
       take: pageSize,
       ...(pageSize && { take: pageSize }),
@@ -69,6 +77,7 @@ export class ProjectRepository implements IProjectRepository {
         ProjectCategories: { include: { listType: true } },
         ProjectFields: { include: { listType: true } },
         ProjectCourse: { include: { course: true } },
+        ProjectTypes: { include: { listType:true } },
       },
     });
 
@@ -89,6 +98,7 @@ export class ProjectRepository implements IProjectRepository {
         ProjectCategories: { include: { listType: true } },
         ProjectFields: { include: { listType: true } },
         ProjectCourse: { include: { course: true } },
+        ProjectTypes: { include: { listType:true } },
       },
     });
 
@@ -116,6 +126,10 @@ export class ProjectRepository implements IProjectRepository {
 
   async createProjectField(data: CreateProjectFieldModel[]): Promise<void> {
     await this.prisma.projectFields.createMany({ data });
+  }
+
+  async createProjectType(data: CreateProjectTypeModel[]): Promise<void> {
+    await this.prisma.projectType.createMany({ data });
   }
 
   async createProjectCourse(data: CreateProjectCourseModel[]): Promise<void> {

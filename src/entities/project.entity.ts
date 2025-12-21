@@ -5,6 +5,7 @@ import {
   ProjectCategory,
   ProjectFields,
   ProjectCourse,
+  ProjectType
 } from '@prisma/client';
 import { StudentEntity } from './student.entity';
 import { ListTypeEntity } from './type.entity';
@@ -30,6 +31,7 @@ export class ProjectEntity implements Project {
   ProjectCategories: ProjectCategoryEntity[];
   ProjectFields: ProjectFieldEntity[];
   ProjectCourse: ProjectCourseEntity[];
+  ProjectTypes: ProjectTypeEntity[];
 }
 
 export class ProjectAssetEntity implements ProjectAsset {
@@ -83,6 +85,18 @@ export class ProjectFieldEntity implements ProjectFields {
   listType: ListTypeEntity;
 }
 
+export class ProjectTypeEntity implements ProjectType {
+  id: number;
+  projectId: number;
+  listTypeId: number;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
+  createdBy: number;
+  updatedBy: number;
+  project: ProjectEntity;
+  listType: ListTypeEntity;
+}
 export class ProjectCourseEntity implements ProjectCourse {
   id: number;
   createdAt: Date;

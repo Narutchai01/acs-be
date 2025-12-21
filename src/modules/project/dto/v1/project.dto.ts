@@ -17,5 +17,6 @@ export class ProjectDto extends BaseDto {
   projectMembers: StudentDto[];
   projectCategories: ListTypeDto[];
   projectFields: ListTypeDto[];
+  projectTypes: ListTypeDto[];
   courses: CourseDto[];
 }
