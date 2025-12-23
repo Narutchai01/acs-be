@@ -80,11 +80,11 @@ export const listTypes: Array<
   },
 
   {
-    name: 'ข่าวและกิจกรรม',
+    name: 'ข่าวประชาสัมพันธ์',
     typeId: 4,
   },
   {
-    name: 'ความสำเร็จ',
+    name: 'ความสำเร็จนักศึกษา',
     typeId: 4,
   },
   {
