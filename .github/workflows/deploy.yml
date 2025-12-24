@@ -3,7 +3,7 @@ name: CI - Build & Push to GHCR
 on:
   push:
     tags:
-      - 'v*' # เช่น v1.0.0
+      - "v*" # เช่น v1.0.0
 
 permissions:
   contents: read
@@ -14,8 +14,27 @@ env:
   IMAGE_NAME: ${{ github.repository }} # owner/repo
 
 jobs:
-  docker:
+  test-and-lint:
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "24"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm run test
+
+  build-and-push:
+    runs-on: ubuntu-latest
+    needs: test-and-lint
 
     steps:
       - name: Checkout
