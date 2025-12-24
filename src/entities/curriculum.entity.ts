@@ -7,9 +7,9 @@ export class CurriculumEntity implements Curriculum {
   fileUrl: string;
   imageUrl: string;
   description: string;
-  createdDate: Date;
-  updatedDate: Date;
-  deletedDate: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
   createdBy: number;
   updatedBy: number;
   courses?: CourseEntity[];

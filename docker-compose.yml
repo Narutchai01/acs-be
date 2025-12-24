@@ -1,8 +1,7 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
 services:
   database:
     container_name: acs-website-database
-    image: postgres:18
+    image: postgres:latest
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
@@ -12,7 +11,7 @@ services:
     volumes:
       - ./databasepg:/var/lib/postgresql
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U admin -d acs-website']
+      test: [ 'CMD-SHELL', 'pg_isready -U admin -d acs-website' ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -23,7 +22,6 @@ services:
       context: .
       dockerfile: Dockerfile
       target: development
-    image: acs-website-server:development
     ports:
       - '${PORT}:${PORT}'
     env_file:
@@ -35,3 +33,8 @@ services:
     depends_on:
       database:
         condition: service_healthy
+    healthcheck:
+      test: [ 'CMD-SHELL', 'curl -f http://localhost:${PORT}/api/v1/health || exit 1' ]
+      interval: 30s
+      timeout: 10s
+      retries: 5

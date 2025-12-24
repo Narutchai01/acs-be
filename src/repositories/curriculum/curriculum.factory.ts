@@ -22,16 +22,8 @@ export class CurriculumFactory {
     data: CurriculumEntity,
   ): CurriculumModel {
     return {
-      id: data.id,
-      year: data.year,
-      fileUrl: data.fileUrl,
-      imageUrl: data.imageUrl,
-      description: data.description,
-      createdDate: data.createdDate,
-      updatedDate: data.updatedDate,
-      deletedDate: data.deletedDate,
-      createdBy: data.createdBy,
-      updatedBy: data.updatedBy,
+      ...data,
+      deletedAt: data.deletedAt ?? undefined,
       courses: data.courses
         ? this.courseFactory.mapCourseEntitiesToCourseModels(data.courses)
         : [],

@@ -33,3 +33,21 @@ export interface NewsModel extends BaseModel {
   category: ListTypeModel;
   user: UserModel;
 }
+
+export interface NewsMediaModel extends BaseModel {
+  id: number;
+  image: string;
+  newsId: number;
+  typeId: number;
+  news: NewsModel;
+  type?: ListTypeModel | null;
+  user?: UserModel | null;
+}
+
+export interface CreateNewsMediaModel extends BaseModel {
+  image: string;
+  newsId: number;
+  typeId: number;
+  createdBy: number;
+  updatedBy: number;
+}

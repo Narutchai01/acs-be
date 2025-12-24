@@ -18,6 +18,9 @@ import { AuthenticatedRequest } from '../../models/auth';
 import { QueryCourseDto } from './dto/get-course.dto';
 import { CourseFactory } from './course.factory';
 import { UpdateCourseDto } from './dto/update-course.dto';
+import { success } from 'src/core/interceptors/response.helper';
+import { CourseDto } from './dto/course.dto';
+import { Pageable } from 'src/models';
 
 @Controller('course')
 export class CourseController {
@@ -34,10 +37,7 @@ export class CourseController {
   ) {
     const result = await this.courseService.createCourse(body, req.user.userId);
     const dto = this.courseFactory.mapCourseModelToCourseDto(result);
-    return {
-      statusCode: HttpStatus.CREATED,
-      data: dto,
-    };
+    return success<CourseDto>(dto, HttpStatus.CREATED);
   }
 
   @Get()
@@ -47,20 +47,15 @@ export class CourseController {
     const dto = this.courseFactory.mapCourseModelsToCourseDtos(rows);
 
     const data = { page, totalRecords, pageSize, rows: dto };
-    return {
-      statusCode: HttpStatus.OK,
-      data: data,
-    };
+    return success<Pageable<CourseDto>>(data, HttpStatus.OK);
+    // return success(query, HttpStatus.OK);
   }
 
   @Get(':id')
   async getCourseById(@Param('id') id: number) {
     const course = await this.courseService.getById(id);
     const dto = this.courseFactory.mapCourseModelToCourseDto(course);
-    return {
-      statusCode: HttpStatus.OK,
-      data: dto,
-    };
+    return success<CourseDto>(dto, HttpStatus.OK);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -77,10 +72,7 @@ export class CourseController {
       req.user.userId,
     );
     const dto = this.courseFactory.mapCourseModelToCourseDto(result);
-    return {
-      statusCode: HttpStatus.OK,
-      data: dto,
-    };
+    return success<CourseDto>(dto, HttpStatus.OK);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -91,9 +83,6 @@ export class CourseController {
   ) {
     const result = await this.courseService.deleteCoruse(id, req.user.userId);
     const dto = this.courseFactory.mapCourseModelToCourseDto(result);
-    return {
-      statusCode: HttpStatus.OK,
-      data: dto,
-    };
+    return success<CourseDto>(dto, HttpStatus.OK);
   }
 }

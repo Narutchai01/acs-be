@@ -1,0 +1,27 @@
+import { Injectable } from '@nestjs/common';
+import {
+  ProjectModel,
+  CreateProjectModel,
+  CreateProjectAssetModel,
+  CreateProjectMemberModel,
+  CreateProjectCategoryModel,
+  CreateProjectFieldModel,
+  CreateProjectCourseModel,
+  CreateProjectTypeModel
+} from 'src/models/project';
+import { QueryProjectDto } from 'src/modules/project/dto/v1/get-project.dto';
+
+@Injectable()
+export abstract class IProjectRepository {
+  abstract createProject(data: CreateProjectModel): Promise<ProjectModel>;
+  abstract createProjectAsset(data: CreateProjectAssetModel[]): Promise<void>;
+  abstract getProjects(query: QueryProjectDto): Promise<ProjectModel[]>;
+  abstract getProjectById(id: number): Promise<ProjectModel>;
+  abstract createProjectMember(data: CreateProjectMemberModel[]): Promise<void>;
+  abstract createProjectCategory(
+    data: CreateProjectCategoryModel[],
+  ): Promise<void>;
+  abstract createProjectField(data: CreateProjectFieldModel[]): Promise<void>;
+  abstract createProjectCourse(data: CreateProjectCourseModel[]): Promise<void>;
+  abstract createProjectType(data: CreateProjectTypeModel[]) : Promise<void>;
+}

@@ -6,15 +6,15 @@ import { CurriculumDto } from './dto/curriculum.dto';
 export class CurriculumFactory {
   constructor() {}
 
+  mapCurriculumModelsToCurriculumDtos(
+    data: CurriculumModel[],
+  ): CurriculumDto[] {
+    return data.map((item) => this.mapCurriculumModelToCurriculumDto(item));
+  }
+
   mapCurriculumModelToCurriculumDto(data: CurriculumModel): CurriculumDto {
     const dto: CurriculumDto = {
-      id: data.id,
-      year: data.year,
-      fileUrl: data.fileUrl,
-      createdBy: data.createdBy,
-      updatedBy: data.updatedBy,
-      createdDate: data.createdDate,
-      updatedDate: data.updatedDate,
+      ...data,
     };
 
     return dto;

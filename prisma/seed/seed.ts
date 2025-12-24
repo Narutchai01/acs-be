@@ -2,7 +2,9 @@ import { executeRole } from './role';
 import { executeListType, executeType } from './type';
 import { PrismaClient } from '@prisma/client';
 import { executeTypeCourse } from './course';
-// import { PrismaClient } from 'generated/prisma';
+import { executeAcademicPosition } from './academicposition';
+import { executeeducationLevelSeed } from './education-level';
+import { executeMajorPosition } from './majorposition';
 const prisma = new PrismaClient();
 
 async function main() {
@@ -10,6 +12,9 @@ async function main() {
   await executeType(prisma);
   await executeListType(prisma);
   await executeTypeCourse(prisma);
+  await executeAcademicPosition(prisma);
+  await executeeducationLevelSeed(prisma);
+  await executeMajorPosition(prisma);
 }
 
 main()

@@ -1,0 +1,68 @@
+import { Injectable, Inject, forwardRef } from '@nestjs/common';
+import { UserFactory } from '../user/user.factory';
+import { ProfessorEntity } from 'src/entities/professor.entity';
+import { ProfessorModel } from 'src/models/professor';
+import { EducationFactory } from '../education/education.factory';
+import { ExpertFieldsFactory } from '../expertfields/expertfields.factory';
+import { AcademicPositionFactory } from '../academicposition/academicposition.factory';
+import { MajorPositionFactory } from '../majorposition/majorposition.factory';
+
+@Injectable()
+export class ProfessorFactory {
+  constructor(
+    private userFactory: UserFactory,
+    @Inject(forwardRef(() => EducationFactory))
+    private educationFactory: EducationFactory,
+    @Inject(forwardRef(() => ExpertFieldsFactory))
+    private expertFieldFactory: ExpertFieldsFactory,
+    private academicPositionFactory: AcademicPositionFactory,
+    private majorPositionFactory: MajorPositionFactory,
+  ) {}
+
+  mapProfessorEntitiesToProfessorModels(
+    entities: ProfessorEntity[],
+  ): ProfessorModel[] {
+    return entities.map((entity) =>
+      this.mapProfessorEntityToProfessorModel(entity),
+    );
+  }
+
+  mapProfessorEntityToProfessorModel(data: ProfessorEntity): ProfessorModel {
+    return {
+      id: data.id,
+      userId: data.userId,
+      academicPositionId: data.academicPositionId,
+      majorPositionId: data.majorPositionId,
+      profRoom: data.profRoom,
+      phone: data.phone,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+      deletedAt: data.deletedAt,
+      createdBy: data.createdBy,
+      updatedBy: data.updatedBy,
+      user: data.user
+        ? this.userFactory.mapUserEntityToUserModel(data.user)
+        : null,
+      education: data.education
+        ? this.educationFactory.mapEducationEntitiesToEducationModels(
+            data.education,
+          )
+        : [],
+      expertFields: data.expertFields
+        ? this.expertFieldFactory.mapExpertFieldEntitiesToExpertFieldModels(
+            data.expertFields,
+          )
+        : [],
+      academicPosition: data.academicPosition
+        ? this.academicPositionFactory.mapAcademicPositionEntityToAcademicPositionModel(
+            data.academicPosition,
+          )
+        : null,
+      majorPosition: data.majorPosition
+        ? this.majorPositionFactory.mapMajorPositionEntityToMajorPositionModel(
+            data.majorPosition,
+          )
+        : null,
+    };
+  }
+}

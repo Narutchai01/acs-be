@@ -39,6 +39,9 @@ export class SupabaseService {
     fileBuffer: Express.Multer.File,
     dirName: string,
   ): Promise<string> {
+    if (!fileBuffer.buffer) {
+      throw new Error('File buffer is required');
+    }
     const fileName = `${uuidv4()}`;
     const filePath = `${dirName}/${fileName}.jpg`; // Assuming the file is a JPEG image, adjust as necessary
     const { error } = await this.storage

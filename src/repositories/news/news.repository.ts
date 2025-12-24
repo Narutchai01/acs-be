@@ -1,6 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { INewsRepository } from './news.abstract';
-import { CreateNewsModel, NewsModel, UpdateNewsModel } from 'src/models/news';
+import {
+  CreateNewsModel,
+  NewsModel,
+  UpdateNewsModel,
+  NewsMediaModel,
+  CreateNewsMediaModel,
+} from 'src/models/news';
 import { PrismaService } from 'src/provider/database/prisma/prisma.service';
 import { NewsFactory } from './news.factory';
 import { QueryNewsDto } from 'src/modules/news/dto/get-news.dto';
@@ -36,13 +42,16 @@ export class NewsRepository implements INewsRepository {
 
   async getNews(quey: QueryNewsDto): Promise<NewsModel[]> {
     try {
-      const { page, pageSize, category } = quey;
+      const { page, pageSize, category, title } = quey;
       const safeCategory = category ?? '';
       const categories = safeCategory.split(',').map((cat) => cat.trim());
 
       // condition query
       const whereClause = {
-        deletedDate: null,
+        title: title
+          ? { contains: title, mode: 'insensitive' as const }
+          : undefined,
+        deletedAt: null,
         ...(safeCategory !== '' && {
           category: {
             name: { in: categories },
@@ -76,7 +85,7 @@ export class NewsRepository implements INewsRepository {
       const newsEntity = await this.prisma.news.findUnique({
         where: {
           id: id,
-          deletedDate: null, // Ensure we only fetch non-deleted news
+          deletedAt: null, // Ensure we only fetch non-deleted news
         },
         include: {
           category: true,
@@ -130,7 +139,7 @@ export class NewsRepository implements INewsRepository {
       const newsEntity = await this.prisma.news.update({
         where: { id: id },
         data: {
-          deletedDate: new Date(),
+          deletedAt: new Date(),
           updatedBy: userId,
         },
         include: {
@@ -152,17 +161,23 @@ export class NewsRepository implements INewsRepository {
 
   async count(query: QueryNewsDto): Promise<number> {
     try {
-      const { category } = query;
+      const { category, title } = query;
       const safeCategory = category ?? '';
       const categories = safeCategory.split(',').map((cat) => cat.trim());
+
+      // condition query
       const whereClause = {
-        deletedDate: null,
+        title: title
+          ? { contains: title, mode: 'insensitive' as const }
+          : undefined,
+        deletedAt: null,
         ...(safeCategory !== '' && {
           category: {
             name: { in: categories },
           },
         }),
       };
+
       return this.prisma.news.count({
         where: whereClause,
       });
@@ -173,6 +188,69 @@ export class NewsRepository implements INewsRepository {
       } else {
         console.error('Unknown error:', error);
         throw new Error('Unable to count news: Unknown error occurred');
+      }
+    }
+  }
+
+  async createNewsMedia(data: CreateNewsMediaModel): Promise<NewsMediaModel> {
+    try {
+      const newsMedia = await this.prisma.newsMedia.create({
+        data,
+        include: {
+          news: {
+            include: {
+              category: true,
+              user: true,
+            },
+          },
+          type: true,
+          user: true,
+        },
+      });
+      return this.newsFactory.mapNewsMediaEntityToNewsMediaModel(newsMedia);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Create news media failed:', error.message);
+        throw new Error(`Unable to create news media: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to create news media: Unknown error occurred');
+      }
+    }
+  }
+
+  async getNewsMedia(
+    typeId: number,
+    isUser: boolean,
+    pageSize: number,
+  ): Promise<NewsMediaModel[]> {
+    try {
+      const newsMediaEntities = await this.prisma.newsMedia.findMany({
+        where: { typeId: typeId, deletedAt: null },
+        orderBy: { createdAt: 'desc' },
+        include: {
+          news: {
+            include: {
+              category: true,
+              user: true,
+            },
+          },
+          type: true,
+          user: isUser,
+        },
+        take: pageSize,
+      });
+
+      return this.newsFactory.mapNewsMediaEntitiesToNewsMediaModels(
+        newsMediaEntities,
+      );
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Get news media failed:', error.message);
+        throw new Error(`Unable to get news media: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to get news media: Unknown error occurred');
       }
     }
   }

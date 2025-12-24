@@ -3,6 +3,8 @@ import { TypeFactory } from '../type/type.factory';
 import { UserFactory } from '../user/user.factory';
 import { NewsEntity } from 'src/entities/news.entity';
 import { NewsModel } from 'src/models/news';
+import { NewsMediaEntity } from 'src/entities/news.entity';
+import { NewsMediaModel } from 'src/models/news';
 
 // Type for News with included relations
 
@@ -19,18 +21,8 @@ export class NewsFactory {
 
   mapNewsEntityToNewsModel(data: NewsEntity): NewsModel {
     const newsModel = {
-      id: data.id,
-      title: data.title,
-      image: data.image,
-      detail: data.detail,
-      categoryId: data.categoryId,
-      startDate: data.startDate,
-      dueDate: data.dueDate,
-      createdAt: data.createdDate,
-      updatedAt: data.updatedDate,
-      deletedAt: data.deletedDate,
-      createdBy: data.createdBy,
-      updatedBy: data.updatedBy,
+      ...data,
+      deletedAt: data.deletedAt || null,
       category: this.typeFactory.mapListTypeEntityToListTypeModel(
         data.category,
       ),
@@ -38,5 +30,29 @@ export class NewsFactory {
     };
 
     return newsModel;
+  }
+
+  mapNewsMediaEntitiesToNewsMediaModels(
+    entities: NewsMediaEntity[],
+  ): NewsMediaModel[] {
+    return entities.map((entity) =>
+      this.mapNewsMediaEntityToNewsMediaModel(entity),
+    );
+  }
+
+  mapNewsMediaEntityToNewsMediaModel(data: NewsMediaEntity): NewsMediaModel {
+    const newsMediaModel = {
+      ...data,
+      deletedAt: data.deletedAt || undefined,
+      news: this.mapNewsEntityToNewsModel(data.news),
+      type: data.type
+        ? this.typeFactory.mapListTypeEntityToListTypeModel(data.type)
+        : null,
+      user: data.user
+        ? this.userFactory.mapUserEntityToUserModel(data.user)
+        : null,
+    };
+
+    return newsMediaModel;
   }
 }

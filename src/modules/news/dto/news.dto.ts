@@ -1,6 +1,6 @@
 import { BaseDto } from 'src/models/dto/base.dto';
-import { ListTypeDto } from 'src/modules/type/dto/type.dto';
 import { ApiProperty } from '@nestjs/swagger';
+import { ListTypeDto } from 'src/modules/masterdata/dto/typelist.v1.dto';
 
 export class NewsDto extends BaseDto {
   @ApiProperty()

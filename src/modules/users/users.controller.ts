@@ -1,24 +1,49 @@
-import { Body, Controller, Post, Query, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpStatus,
+  Post,
+  UseInterceptors,
+  Query,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { CreateUserDto } from './dto/create-user';
+import { success } from 'src/core/interceptors/response.helper';
+import { UsersFactory } from './users.factory';
 
-@Controller('users')
+@Controller({
+  path: 'users',
+  version: '1',
+})
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private userFactory: UsersFactory,
+  ) {}
   @Post()
   @UseInterceptors(AnyFilesInterceptor())
-  createUser(
+  async createUser(
     @Body() createUserDto: CreateUserDto,
     @Query('role') role: string,
   ) {
-    try {
-      return this.usersService.createUser(createUserDto, role);
-    } catch (error) {
-      return {
-        statusCode: 500,
-        message: `Failed to create user: ${error instanceof Error ? error.message : error}`,
-      };
-    }
+    const newUser = {
+      firstNameTh: createUserDto.firstNameTh,
+      lastNameTh: createUserDto.lastNameTh,
+      firstNameEn: createUserDto.firstNameEn ?? null,
+      lastNameEn: createUserDto.lastNameEn ?? null,
+      email: createUserDto.email,
+      nickName: createUserDto.nickName ?? null,
+      password: createUserDto.password,
+    };
+    const user = await this.usersService.createUser(newUser, role);
+    const dto = this.userFactory.mapUserModelToUserDto(user);
+    return success(dto, HttpStatus.CREATED);
+  }
+
+  @Post('super-user')
+  async createSuperUser(@Body() createUserDto: CreateUserDto) {
+    const user = await this.usersService.createSuperUser(createUserDto);
+    return success(user, HttpStatus.CREATED);
   }
 }

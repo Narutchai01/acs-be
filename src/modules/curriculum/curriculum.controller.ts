@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   UploadedFile,
   UseGuards,
@@ -17,19 +18,20 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { CurriculumService } from './curriculum.service';
 import { CreateCurriculumDto } from './dto/create-curriculum.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { Request as ExpressRequest } from 'express';
 import { UpdateCurriculumDto } from './dto/update-curriculum.dto';
-
-interface AuthenticatedRequest extends ExpressRequest {
-  user: {
-    userId: number;
-    roleId: number;
-  };
-}
+import { AuthenticatedRequest } from 'src/models/auth';
+import { CurriculumFactory } from './curriculum.factory';
+import { success } from 'src/core/interceptors/response.helper';
+import { CurriculumDto } from './dto/curriculum.dto';
+import { Pageable } from 'src/models';
+import { QueryCurriculumDto } from './dto/v1/get-curriculum.dto';
 
 @Controller('curriculum')
 export class CurriculumController {
-  constructor(private readonly curriculumService: CurriculumService) {}
+  constructor(
+    private readonly curriculumService: CurriculumService,
+    private readonly curriculumFactory: CurriculumFactory,
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()
@@ -42,16 +44,29 @@ export class CurriculumController {
     if (!file) {
       throw new HttpException('Image file is required', HttpStatus.BAD_REQUEST);
     }
-    return this.curriculumService.createCurriculum(
+
+    const data = await this.curriculumService.createCurriculum(
       createCurriculumDto,
       req.user.userId,
       file,
     );
+
+    const dto = this.curriculumFactory.mapCurriculumModelToCurriculumDto(data);
+    return success<CurriculumDto>(dto, HttpStatus.CREATED);
   }
 
   @Get()
-  async getCurriculums() {
-    return this.curriculumService.getCurriculums();
+  async getCurriculums(@Query() query: QueryCurriculumDto) {
+    const { rows, ...data } =
+      await this.curriculumService.getCurriculums(query);
+    const dtos =
+      this.curriculumFactory.mapCurriculumModelsToCurriculumDtos(rows);
+
+    const result = {
+      ...data,
+      rows: dtos,
+    };
+    return success<Pageable<CurriculumDto>>(result, HttpStatus.OK);
   }
 
   @Get(':id')
@@ -63,7 +78,12 @@ export class CurriculumController {
         HttpStatus.BAD_REQUEST,
       );
     }
-    return this.curriculumService.getCurriculumById(curriculumId);
+    const data = await this.curriculumService.getCurriculumById(curriculumId);
+    if (!data) {
+      throw new HttpException('Curriculum not found', HttpStatus.NOT_FOUND);
+    }
+    const dto = this.curriculumFactory.mapCurriculumModelToCurriculumDto(data);
+    return success<CurriculumDto>(dto, HttpStatus.OK);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -82,12 +102,17 @@ export class CurriculumController {
         HttpStatus.BAD_REQUEST,
       );
     }
-    return this.curriculumService.updateCurriculum(
+    const data = await this.curriculumService.updateCurriculum(
       curriculumId,
       updateCurriculumDto,
       req.user.userId,
       file,
     );
+    if (!data) {
+      throw new HttpException('Curriculum not found', HttpStatus.NOT_FOUND);
+    }
+    const dto = this.curriculumFactory.mapCurriculumModelToCurriculumDto(data);
+    return success<CurriculumDto>(dto, HttpStatus.OK);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -103,9 +128,15 @@ export class CurriculumController {
         HttpStatus.BAD_REQUEST,
       );
     }
-    return this.curriculumService.deleteCurriculum(
+    const result = await this.curriculumService.deleteCurriculum(
       curriculumId,
       req.user.userId,
     );
+    if (!result) {
+      throw new HttpException('Curriculum not found', HttpStatus.NOT_FOUND);
+    }
+    const dto =
+      this.curriculumFactory.mapCurriculumModelToCurriculumDto(result);
+    return success<CurriculumDto>(dto, HttpStatus.OK);
   }
 }

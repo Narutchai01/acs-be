@@ -5,9 +5,9 @@ export class PrevCourseEntity implements PrevCourse {
   id: number;
   courseId: number;
   prevCourseId: number;
-  createdDate: Date;
-  updatedDate: Date;
-  deletedDate: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
   createdBy: number;
   updatedBy: number;
   PrevCourse: CourseEntity;

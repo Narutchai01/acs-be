@@ -1,57 +1,125 @@
 import { Injectable } from '@nestjs/common';
-import { UserModel } from 'src/models/user';
+import { UpdateUserModel, UserModel } from 'src/models/user';
 import { IUserRepository } from 'src/repositories/user/user.abstract';
 import { CreateUserDto } from './dto/create-user';
 import { IRoleRepository } from 'src/repositories/role/role.abtract';
-import { IAdminRepository } from 'src/repositories/admin/admin.abstract';
 import { PasswordService } from 'src/core/utils/password/password.service';
+import { CreateUserModel } from 'src/models/user';
+import { SupabaseService } from 'src/provider/store/supabase/supabase.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     private userRepository: IUserRepository,
     private roleRepository: IRoleRepository,
-    private adminRepository: IAdminRepository,
     private passwordService: PasswordService,
+    private supabaseService: SupabaseService,
   ) {}
-  async createUser(
-    data: CreateUserDto,
-    role: string,
-  ): Promise<UserModel | Error> {
-    const roleResult = await this.roleRepository.getByName(role);
-    if (roleResult instanceof Error) {
-      throw new Error(`Failed to get role: ${roleResult.message}`);
+  async createUser(data: CreateUserDto, role: string): Promise<UserModel> {
+    const hashPassword = await this.passwordService.hashPassword(data.password);
+    const newUser = {
+      firstNameTh: data.firstNameTh,
+      lastNameTh: data.lastNameTh,
+      firstNameEn: data.firstNameEn ?? null,
+      lastNameEn: data.lastNameEn ?? null,
+      email: data.email,
+      nickName: data.nickName ?? null,
+      password: hashPassword,
+    };
+    const user = await this.userRepository.createUser(newUser);
+
+    const existingRole = await this.roleRepository.getByName(role);
+    if (existingRole instanceof Error) {
+      throw existingRole;
+    }
+    await this.roleRepository.createUserRole({
+      userId: user.id,
+      roleId: existingRole.id,
+      createdBy: user.id,
+      updatedBy: user.id,
+    });
+    return user;
+  }
+
+  async createUserV2(
+    data: CreateUserModel,
+    file?: Express.Multer.File,
+    role: string = 'user',
+    isPassword: boolean = false,
+  ): Promise<{ user: UserModel; password?: string }> {
+    let imageUrl: string | undefined;
+    let hashPassword: string | undefined;
+    let password: string | undefined;
+    if (isPassword) {
+      password = await this.passwordService.generateRandomPassword(8);
+      hashPassword = await this.passwordService.hashPassword(password);
+    }
+    if (file) {
+      imageUrl = await this.supabaseService.uploadFile(file, role);
     }
 
-    if (!roleResult) {
-      throw new Error(`Role '${role}' not found`);
-    }
     const newData = {
       ...data,
-      password: await this.passwordService.hashPassword(data.password),
+      password: isPassword ? hashPassword : null,
+      ...(imageUrl ? { imageUrl } : null),
     };
     const user = await this.userRepository.createUser(newData);
+    return { user, password };
+  }
 
-    const UserRoles = await this.roleRepository.createUserRole({
-      userId: user.id,
-      roleId: roleResult.id,
-    });
+  async getUserByEmail(email: string): Promise<UserModel> {
+    return this.userRepository.getUserEmail(email);
+  }
 
-    if (UserRoles instanceof Error) {
-      throw new Error(`Failed to assign role to user: ${UserRoles.message}`);
+  async getUserById(id: number): Promise<UserModel> {
+    return this.userRepository.getUserById(id);
+  }
+
+  async updateUser(
+    id: number,
+    data: Partial<UpdateUserModel>,
+    file: Express.Multer.File | null,
+    role: string,
+  ): Promise<UserModel> {
+    let imageUrl: string | undefined;
+    const user = await this.getUserById(id);
+    if (!user) {
+      throw new Error(`User with id ${id} not found`);
     }
-    if (role === 'admin') {
-      const admin = await this.adminRepository.create(user.id);
 
-      if (admin instanceof Error) {
-        throw new Error(`Failed to create admin: ${admin.message}`);
-      }
+    if (file) {
+      imageUrl = await this.supabaseService.uploadFile(file, role);
     }
 
-    if (UserRoles instanceof Error) {
-      throw new Error(`Failed to assign role to user: ${UserRoles.message}`);
-    }
+    const updateData: UpdateUserModel = {
+      firstNameTh: data.firstNameTh ? data.firstNameTh : user.firstNameTh,
+      lastNameTh: data.lastNameTh ? data.lastNameTh : user.lastNameTh,
+      firstNameEn: data.firstNameEn ? data.firstNameEn : user.firstNameEn,
+      lastNameEn: data.lastNameEn ? data.lastNameEn : user.lastNameEn,
+      email: data.email ? data.email : user.email,
+      imageUrl: imageUrl ?? (user.imageUrl || null),
+      nickName: data.nickName ? data.nickName : user.nickName,
+    };
+    return this.userRepository.update(id, updateData);
+  }
 
+  async createSuperUser(data: CreateUserDto): Promise<UserModel> {
+    const hashPassword = await this.passwordService.hashPassword(data.password);
+    const newUser = {
+      firstNameTh: data.firstNameTh,
+      lastNameTh: data.lastNameTh,
+      firstNameEn: data.firstNameEn ?? null,
+      lastNameEn: data.lastNameEn ?? null,
+      email: data.email,
+      nickName: data.nickName ?? null,
+      password: hashPassword,
+    };
+    const user = await this.userRepository.createUser(newUser);
     return user;
+  }
+
+  async updatePassword(id: number, password: string): Promise<UserModel> {
+    const hashPassword = await this.passwordService.hashPassword(password);
+    return this.userRepository.updatePassword(id, hashPassword);
   }
 }

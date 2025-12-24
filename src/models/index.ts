@@ -1,9 +1,9 @@
 export interface BaseModel {
-  createdDate?: Date;
+  createdAt?: Date;
   createdBy?: number;
-  updatedDate?: Date;
-  updatedBy?: number | null;
-  deletedDate?: Date | null;
+  updatedAt?: Date;
+  updatedBy?: number;
+  deletedAt?: Date | null;
 }
 
 export interface Pageable<T> {

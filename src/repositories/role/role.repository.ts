@@ -11,13 +11,9 @@ export class RoleRepository implements IRoleRepository {
     protected roleFactory: RoleFactory,
   ) {}
 
-  async getList(): Promise<RoleModel[] | Error> {
-    try {
-      const data = await this.prisma.role.findMany();
-      return this.roleFactory.mapRoleEntitiesToRoleModels(data);
-    } catch (error) {
-      return new Error(`Failed to fetch roles: ${error}`);
-    }
+  async getList(): Promise<RoleModel[]> {
+    const data = await this.prisma.role.findMany();
+    return this.roleFactory.mapRoleEntitiesToRoleModels(data);
   }
 
   async getByName(name: string): Promise<RoleModel | Error> {
@@ -37,13 +33,14 @@ export class RoleRepository implements IRoleRepository {
   async createUserRole(data: {
     userId: number;
     roleId: number;
+    createdBy: number;
   }): Promise<UserRoleModel> {
     const userRole = await this.prisma.userRole.create({
       data: {
         user: { connect: { id: data.userId } },
         role: { connect: { id: data.roleId } },
-        createdBy: data.userId, // or set to the appropriate user id
-        updatedBy: data.userId, // or set to the appropriate user id
+        createdBy: data.createdBy,
+        updatedBy: data.userId,
       },
       include: {
         user: true,

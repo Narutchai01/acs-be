@@ -27,6 +27,11 @@ export class QueryNewsDto {
     example: 'Technology',
     default: null,
   })
+  @IsOptional()
+  @IsString()
+  @Transform(({ value }) => (value ? value.trim() : null))
+  title?: string;
+
   @IsString()
   @IsOptional()
   @Transform(({ value }) => (value ? value.trim() : null))

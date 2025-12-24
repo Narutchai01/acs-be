@@ -1,80 +1,72 @@
-FROM node:20.10.0-alpine AS base
-
-# Install openssl for Prisma and build dependencies for native modules
-RUN apk add --no-cache \
-    openssl \
-    libc6-compat \
-    python3 \
-    make \
-    g++ \
-    git \
-    dumb-init
-
-# Create app directory and user
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nodejs -u 1001 -G nodejs
-
-# Install dependencies
-FROM base AS dependencies
-
+# syntax=docker/dockerfile:1.7
+FROM node:24.5.0-alpine AS base
+RUN apk add --no-cache libc6-compat openssl curl ca-certificates
 WORKDIR /usr/src/app
 
-# Copy package files first for better caching
-COPY package*.json ./
+# ---------- deps ----------
+FROM base AS deps
+COPY package.json package-lock.json ./
+RUN --mount=type=cache,target=/root/.npm npm ci --ignore-scripts
 
-# Clear npm cache and install all dependencies (including dev for build)
-RUN npm cache clean --force
+# ---------- build ----------
+FROM base AS builder
+COPY --from=deps /usr/src/app/node_modules ./node_modules
+COPY prisma ./prisma
+COPY tsconfig*.json nest-cli.json package.json ./
+COPY src ./src
 
-# Install dependencies with fallback for native modules and skip postinstall
-RUN npm ci --no-audit --no-fund --verbose --ignore-scripts || \
-    (npm config set python python3 && npm ci --no-audit --no-fund --verbose --ignore-scripts --build-from-source)
-
-# Copy prisma schema
-COPY prisma ./prisma/
-
-# Generate Prisma Client for the container architecture
+# generate Prisma Client ตอน build (ใช้ CLI จาก devDeps ใน image นี้ได้ เพราะเรายังไม่ได้ omit)
 RUN npx prisma generate
+RUN npm run prebuild || true
+RUN npm run build
 
-# Development stage
-FROM dependencies AS development
+#---------dev-deps----------
+FROM base AS dev-deps
+COPY package.json package-lock.json ./
+RUN --mount=type=cache,target=/root/.npm npm ci --ignore-scripts
+RUN npm install -g ts-node typescript @nestjs/cli
+# ---------- development ----------
+FROM base AS development
+ENV NODE_ENV=development
+COPY --from=dev-deps /usr/src/app/node_modules ./node_modules
+COPY --from=builder   /usr/src/app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder   /usr/src/app/node_modules/@prisma ./node_modules/@prisma
+COPY --from=builder   /usr/src/app/dist ./dist
+COPY prisma ./prisma
+COPY package.json ./
+COPY tsconfig*.json nest-cli.json ./
+COPY src ./src
+COPY ./scripts /usr/local/bin/
 
-WORKDIR /usr/src/app
+# ป้องกัน CRLF และตั้งสิทธิ์ก่อนสลับ USER
+RUN sed -i 's/\r$//' /usr/local/bin/entrypoint.sh \
+    && chmod +x /usr/local/bin/entrypoint.sh \
+    && chown -R node:node /usr/src/app
 
-# Copy source code
-COPY . ./
+USER node
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["npm", "run", "start:dev"]
 
-# Build the application
-RUN npm run prebuild && npm run build
+# --------- prod-deps ----------
+FROM base AS prod-deps
+COPY package.json package-lock.json ./
+RUN --mount=type=cache,target=/root/.npm npm ci --omit=dev --ignore-scripts
 
-# Make scripts executable (if you have the script)
-# RUN chmod +x scripts/start.sh
-
-# CMD ["./scripts/start.sh"]
-
-CMD ["sh", "-c", "npx prisma db push && npm run db:seed && npm run start"]
-
-# Production image
+# ---------- production ----------
 FROM base AS production
+ENV NODE_ENV=production
+COPY --from=prod-deps /usr/src/app/node_modules ./node_modules
+COPY --from=builder   /usr/src/app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder   /usr/src/app/node_modules/@prisma ./node_modules/@prisma
+COPY --from=builder   /usr/src/app/dist ./dist
+COPY prisma ./prisma
+COPY package.json ./
+COPY ./scripts /usr/local/bin/
 
-WORKDIR /usr/src/app
+# จัดการ CRLF + สิทธิ์ก่อนสลับ USER
+RUN sed -i 's/\r$//' /usr/local/bin/entrypoint.sh \
+    && chmod +x /usr/local/bin/entrypoint.sh
 
-# Copy package files and install production dependencies
-COPY --from=development /usr/src/app/package*.json ./
-COPY --from=development /usr/src/app/prisma ./prisma/
-
-# Install production dependencies
-RUN npm ci --production --no-audit --no-fund
-
-# Generate Prisma Client for production
-RUN npx prisma generate
-
-# Copy built application
-COPY --from=development /usr/src/app/dist ./dist/
-COPY --from=development /usr/src/app/node_modules/.prisma ./node_modules/.prisma/
-
-# Change ownership to nodejs user
-RUN chown -R nodejs:nodejs /usr/src/app
-USER nodejs
-
-CMD ["sh", "-c", "npx prisma db push && npm run db:seed && npm run start:prod"]
-
+USER node
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["node", "dist/src/main.js"]

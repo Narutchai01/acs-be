@@ -1,13 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl-openssl-3.0.x", "windows", "darwin"]
-  // output   = "../generated/prisma"
 }
 
 datasource db {
@@ -19,11 +12,11 @@ model Example {
   id          Int       @id @default(autoincrement())
   name        String    @unique
   description String
-  createdDate DateTime  @default(now())
-  updatedDate DateTime  @updatedAt
-  deletedDate DateTime?
   createdBy   Int?
   updatedBy   Int?
+  createdAt   DateTime  @default(now())
+  deletedAt   DateTime?
+  updatedAt   DateTime  @updatedAt
 }
 
 model Role {
@@ -33,133 +26,147 @@ model Role {
   updatedAt DateTime   @updatedAt @map("updated_at")
   UserRole  UserRole[]
 
-  @@map("roles") // Optional: maps the model to a table named "roles" in the database
+  @@map("roles")
 }
 
 model UserRole {
-  id          Int       @id @default(autoincrement()) @map("id")
-  userId      Int       @map("user_id")
-  roleId      Int       @map("role_id")
-  createdDate DateTime  @default(now()) @map("created_date")
-  updatedDate DateTime  @updatedAt @map("updated_date")
-  deletedDate DateTime? @map("deleted_date")
-  createdBy   Int       @map("created_by")
-  updatedBy   Int       @map("updated_by")
-  role        Role      @relation(fields: [roleId], references: [id])
-  user        User      @relation(fields: [userId], references: [id])
+  id        Int       @id @default(autoincrement()) @map("id")
+  createdBy Int       @map("created_by")
+  roleId    Int       @map("role_id")
+  updatedBy Int       @map("updated_by")
+  userId    Int       @map("user_id")
+  createdAt DateTime  @default(now()) @map("created_at")
+  deletedAt DateTime? @map("deleted_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  role      Role      @relation(fields: [roleId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
 
-  @@map("user_roles") // Optional: maps the model to a table named "user_roles" in the database
+  @@map("user_roles")
 }
 
 model User {
-  id          Int        @id @default(autoincrement()) @map("id")
-  firstNameTh String     @map("first_name_th")
-  lastNameTh  String     @map("last_name_th")
-  firstNameEn String?    @map("first_name_en")
-  lastNameEn  String?    @map("last_name_en")
-  email       String     @unique @map("email")
-  nickName    String?    @map("nick_name")
-  imageUrl    String?    @map("image_url")
-  password    String     @map("password")
-  createdDate DateTime   @default(now()) @map("created_date")
-  updatedDate DateTime   @default(now()) @updatedAt @map("updated_date")
-  deletedDate DateTime?  @map("deleted_date")
-  createdBy   Int?       @map("created_by")
-  updatedBy   Int?       @map("updated_by")
-  UserRole    UserRole[]
-  Admin       Admin?
-  News        News[]
-  Course      Course[]
-  Student     Student?
-  Professer   Professer?
+  id             Int         @id @default(autoincrement()) @map("id")
+  email          String      @unique @map("email")
+  password       String?     @map("password")
+  createdBy      Int?        @map("created_by")
+  firstNameEn    String?     @map("first_name_en")
+  firstNameTh    String      @map("first_name_th")
+  imageUrl       String?     @map("image_url")
+  lastNameEn     String?     @map("last_name_en")
+  lastNameTh     String      @map("last_name_th")
+  nickName       String?     @map("nick_name")
+  updatedBy      Int?        @map("updated_by")
+  createdAt      DateTime    @default(now()) @map("created_at")
+  deletedAt      DateTime?   @map("deleted_at")
+  updatedAt      DateTime    @updatedAt @map("updated_at")
+  Course         Course[]
+  News           News[]
+  NewsMedia      NewsMedia[]
+  Professor      Professor?
+  UserRole       UserRole[]
+  Student        Student?
+  refreshTokenId Int?
+  // ProjectMember  ProjectMember[]
 
-  @@map("users") // Optional: maps the model to a table named "users" in the database
-}
-
-model Admin {
-  id          Int       @id @default(autoincrement()) @map("id")
-  userId      Int       @unique @map("user_id")
-  createdDate DateTime  @default(now()) @map("created_date")
-  updatedDate DateTime  @updatedAt @map("updated_date")
-  deletedDate DateTime? @map("deleted_date")
-  createdBy   Int       @map("created_by")
-  updatedBy   Int       @map("updated_by")
-  user        User      @relation(fields: [userId], references: [id])
-
-  @@map("admins") // Optional: maps the model to a table named "admins" in the database
+  @@map("users")
 }
 
 model Type {
-  id          Int        @id @default(autoincrement()) @map("id")
-  name        String     @unique @map("name")
-  createdDate DateTime   @default(now()) @map("created_date")
-  updatedDate DateTime   @updatedAt @map("updated_date")
-  ListType    ListType[]
+  id        Int        @id @default(autoincrement()) @map("id")
+  name      String     @unique @map("name")
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  ListType  ListType[]
 
-  @@map("types") // Optional: maps the model to a table named "types" in the database
+  @@map("types")
 }
 
 model ListType {
-  id          Int      @id @default(autoincrement()) @map("id")
-  name        String   @unique @map("name")
-  typeId      Int      @map("type_id")
-  type        Type     @relation(fields: [typeId], references: [id])
-  createdDate DateTime @default(now()) @map("created_at")
-  updatedDate DateTime @updatedAt @map("updated_at")
-  News        News[]
+  id              Int               @id @default(autoincrement()) @map("id")
+  name            String            @unique @map("name")
+  createdAt       DateTime          @default(now()) @map("created_at")
+  typeId          Int               @map("type_id")
+  updatedAt       DateTime          @updatedAt @map("updated_at")
+  type            Type              @relation(fields: [typeId], references: [id])
+  News            News[]
+  NewsMedia       NewsMedia[]
+  // ProjectFields   ProjectFields[]
+  // ProjectCategory ProjectCategory[]
+  ProjectCategory ProjectCategory[]
+  ProjectFields   ProjectFields[]
+  ProjectType     ProjectType[]
 
   @@map("list_types")
 }
 
 model News {
-  id          Int       @id @default(autoincrement()) @map("id")
-  title       String    @map("title")
-  image       String    @map("image")
-  detail      String    @map("detail")
-  categoryId  Int       @map("category_id")
-  startDate   DateTime  @map("start_date")
-  dueDate     DateTime? @map("due_date")
-  createdDate DateTime  @default(now()) @map("created_at")
-  updatedDate DateTime  @default(now()) @updatedAt @map("updated_at")
-  deletedDate DateTime? @map("deleted_at")
-  createdBy   Int       @map("created_by")
-  updatedBy   Int       @map("updated_by")
-  category    ListType  @relation(fields: [categoryId], references: [id])
-  user        User      @relation(fields: [updatedBy], references: [id])
+  id         Int         @id @default(autoincrement()) @map("id")
+  title      String      @map("title")
+  image      String      @map("image")
+  detail     String      @map("detail")
+  categoryId Int         @map("category_id")
+  startDate  DateTime    @map("start_date")
+  dueDate    DateTime?   @map("due_date")
+  createdAt  DateTime    @default(now()) @map("created_at")
+  updatedAt  DateTime    @default(now()) @updatedAt @map("updated_at")
+  deletedAt  DateTime?   @map("deleted_at")
+  createdBy  Int         @map("created_by")
+  updatedBy  Int         @map("updated_by")
+  category   ListType    @relation(fields: [categoryId], references: [id])
+  user       User        @relation(fields: [updatedBy], references: [id])
+  NewsMedia  NewsMedia[]
 
   @@map("news")
+}
+
+model NewsMedia {
+  id        Int       @id @default(autoincrement()) @map("id")
+  image     String    @map("image")
+  newsId    Int       @map("news_id")
+  typeId    Int       @map("type_id")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  createdBy Int       @map("created_by")
+  updatedBy Int       @map("updated_by")
+  news      News      @relation(fields: [newsId], references: [id])
+  type      ListType  @relation(fields: [typeId], references: [id])
+  user      User      @relation(fields: [updatedBy], references: [id])
+
+  @@map("news_medias")
 }
 
 model TypeCourse {
   id          Int      @id @default(autoincrement()) @map("id")
   name        String   @unique @map("name")
   description String   @map("description")
-  createdDate DateTime @default(now()) @map("created_date")
-  updatedDate DateTime @updatedAt @map("updated_date")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
   Course      Course[]
 
   @@map("type_courses")
 }
 
 model Course {
-  id              Int          @id @default(autoincrement()) @map("id")
-  courseId        String       @map("course_id")
-  credits         String       @map("credits")
-  curriculumId    Int?         @map("curriculum_id")
-  typeCourseId    Int?         @map("type_course_id")
-  courseNameTh    String       @map("course_name_th")
-  courseNameEn    String       @map("course_name_en")
-  courseDetail    String       @map("course_detail")
-  createdDate     DateTime     @default(now()) @map("created_date")
-  updatedDate     DateTime     @updatedAt @map("updated_date")
-  deletedDate     DateTime?    @map("deleted_date")
-  createdBy       Int          @map("created_by")
-  updatedBy       Int          @map("updated_by")
-  user            User         @relation(fields: [updatedBy], references: [id])
-  TypeCourse      TypeCourse?  @relation(fields: [typeCourseId], references: [id])
-  curriculum      Curriculum?  @relation(fields: [curriculumId], references: [id])
+  id              Int             @id @default(autoincrement()) @map("id")
+  courseId        String          @map("course_id")
+  courseDetail    String          @map("course_detail")
+  createdBy       Int             @map("created_by")
+  updatedBy       Int             @map("updated_by")
+  courseNameEn    String          @map("course_name_en")
+  courseNameTh    String          @map("course_name_th")
+  credits         String          @map("credits")
+  typeCourseId    Int?            @map("type_course_id")
+  curriculumId    Int?            @map("curriculum_id")
+  createdAt       DateTime        @default(now()) @map("created_at")
+  deletedAt       DateTime?       @map("deleted_at")
+  updatedAt       DateTime        @updatedAt @map("updated_at")
+  curriculum      Curriculum?     @relation(fields: [curriculumId], references: [id])
+  TypeCourse      TypeCourse?     @relation(fields: [typeCourseId], references: [id])
+  user            User            @relation(fields: [updatedBy], references: [id])
   PrevCourse      PrevCourse[]
-  PrerequisiteFor PrevCourse[] @relation("PrevCourseRelation")
+  PrerequisiteFor PrevCourse[]    @relation("PrevCourseRelation")
+  ProjectCourse   ProjectCourse[]
 
   @@map("courses")
 }
@@ -168,67 +175,289 @@ model PrevCourse {
   id           Int       @id @default(autoincrement()) @map("id")
   courseId     Int       @map("course_id")
   prevCourseId Int       @map("prev_course_id")
-  createdDate  DateTime  @default(now()) @map("created_date")
-  updatedDate  DateTime  @updatedAt @map("updated_date")
-  deletedDate  DateTime? @map("deleted_date")
   createdBy    Int       @map("created_by")
   updatedBy    Int       @map("updated_by")
-  PrevCourse   Course    @relation("PrevCourseRelation", fields: [prevCourseId], references: [id])
+  createdAt    DateTime  @default(now()) @map("created_at")
+  deletedAt    DateTime? @map("deleted_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
   Course       Course    @relation(fields: [courseId], references: [id])
+  PrevCourse   Course    @relation("PrevCourseRelation", fields: [prevCourseId], references: [id])
 
   @@map("prev_courses")
 }
 
-model Student {
-  id                   Int       @id @default(autoincrement()) @map("id")
-  userId               Int       @unique
-  studentId            String    @map("student_id")
-  linkedin             String?   @map("linkedin")
-  facebook             String?   @map("facebook")
-  instagram            String?   @map("instagram")
-  github               String?   @map("github")
-  yearOfFirstAdmission Int       @map("year_of_first_admission")
-  yearOfCompletion     Int?      @map("year_of_completion")
-  classOf              String    @map("class_of")
-  createdDate          DateTime  @default(now()) @map("created_date")
-  updatedDate          DateTime  @updatedAt @map("updated_date")
-  deletedDate          DateTime? @map("deleted_date")
-  createdBy            Int       @map("created_by")
-  updatedBy            Int       @map("updated_by")
-  user                 User      @relation(fields: [userId], references: [id])
-
-  @@map("students")
-}
-
 model Curriculum {
-  id          Int       @id @default(autoincrement()) @map("id")
-  year        String    @map("year")
-  fileUrl     String    @map("file_url")
-  imageUrl    String    @map("image_url")
-  description String    @map("description")
-  createdDate DateTime  @default(now()) @map("created_date")
-  updatedDate DateTime  @updatedAt @map("updated_date")
-  deletedDate DateTime? @map("deleted_date")
-  createdBy   Int       @map("created_by")
-  updatedBy   Int       @map("updated_by")
+  id          Int         @id @default(autoincrement()) @map("id")
+  year        String      @map("year")
+  fileUrl     String      @map("file_url")
+  description String      @map("description")
+  createdBy   Int         @map("created_by")
+  updatedBy   Int         @map("updated_by")
+  imageUrl    String      @map("image_url")
+  createdAt   DateTime    @default(now()) @map("created_at")
+  deletedAt   DateTime?   @map("deleted_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
   courses     Course[]
+  classBooks  ClassBook[]
 
   @@map("curriculums")
 }
 
-model Professer {
-  id                Int       @id @default(autoincrement()) @map("id")
-  userId            Int       @unique
-  academicPosition  Int
-  majorPosition     Int
-  profRoom          String
-  fieldOffexpertise String
-  createdDate       DateTime  @default(now()) @map("created_date")
-  updatedDate       DateTime  @updatedAt @map("updated_date")
-  deletedDate       DateTime? @map("deleted_date")
-  createdBy         Int       @map("created_by")
-  updatedBy         Int       @map("updated_by")
-  user              User      @relation(fields: [userId], references: [id])
+model Professor {
+  id                 Int              @id @default(autoincrement()) @map("id")
+  userId             Int              @unique
+  profRoom           String           @map("prof_room")
+  phone              String           @map("phone")
+  createdBy          Int              @map("created_by")
+  updatedBy          Int              @map("updated_by")
+  academicPositionId Int              @map("academic_position_id")
+  majorPositionId    Int              @map("major_position_id")
+  createdAt          DateTime         @default(now()) @map("created_at")
+  deletedAt          DateTime?        @map("deleted_at")
+  updatedAt          DateTime         @updatedAt @map("updated_at")
+  education          Education[]
+  expertFields       ExpertFields[]
+  academicPosition   AcademicPosition @relation(fields: [academicPositionId], references: [id])
+  majorPosition      MajorPosition    @relation(fields: [majorPositionId], references: [id])
+  user               User             @relation(fields: [userId], references: [id])
 
-  @@map("professers")
+  @@map("professors")
+}
+
+model AcademicPosition {
+  id         Int         @id @default(autoincrement()) @map("id")
+  positionTh String
+  positionEn String
+  createdAt  DateTime    @default(now()) @map("created_at")
+  updatedAt  DateTime    @updatedAt @map("updated_at")
+  Professor  Professor[]
+
+  @@map("academic_position")
+}
+
+model EducationLevel {
+  id        Int         @id @default(autoincrement()) @map("id")
+  level     String      @map("level")
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime    @updatedAt @map("updated_at")
+  Education Education[]
+
+  @@map("education_levels")
+}
+
+model Education {
+  id             Int            @id @default(autoincrement()) @map("id")
+  levelId        Int
+  professorId    Int
+  education      String         @map("education")
+  university     String         @map("university")
+  createdBy      Int            @map("created_by")
+  updatedBy      Int            @map("updated_by")
+  createdAt      DateTime       @default(now()) @map("created_at")
+  deletedAt      DateTime?      @map("deleted_at")
+  updatedAt      DateTime       @updatedAt @map("updated_at")
+  educationLevel EducationLevel @relation(fields: [levelId], references: [id])
+  professor      Professor      @relation(fields: [professorId], references: [id])
+
+  @@map("education")
+}
+
+model MajorPosition {
+  id         Int         @id @default(autoincrement()) @map("id")
+  positionEn String      @map("position_en")
+  positionTh String      @map("position_th")
+  createdAt  DateTime    @default(now()) @map("created_at")
+  updatedAt  DateTime    @updatedAt @map("updated_at")
+  Professor  Professor[]
+
+  @@map("majorPosition")
+}
+
+model ExpertFields {
+  id          Int       @id @default(autoincrement()) @map("id")
+  professorId Int       @map("professor_id")
+  field       String    @map("field")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  deletedAt   DateTime? @map("deleted_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  professor   Professor @relation(fields: [professorId], references: [id])
+
+  @@map("expert_fields")
+}
+
+model ClassBook {
+  id                Int         @id @default(autoincrement()) @map("id")
+  classof           Int         @unique @map("classof")
+  firstYearAcademic String      @map("first_year_academic")
+  image             String      @map("image")
+  curriculumId      Int?        @map("curriculum_id")
+  createdAt         DateTime    @default(now()) @map("created_at")
+  updatedAt         DateTime    @updatedAt @map("updated_at")
+  deletedAt         DateTime?   @map("deleted_at")
+  createdBy         Int         @map("created_by")
+  updatedBy         Int         @map("updated_by")
+  Student           Student[]
+  curriculum        Curriculum? @relation(fields: [curriculumId], references: [id])
+
+  @@map("class_books")
+}
+
+// TODO: make curriculum relation required later
+model Student {
+  id            Int             @id @default(autoincrement()) @map("id")
+  userId        Int             @unique @map("user_id")
+  studentId     String          @map("student_id")
+  linkedin      String?         @map("linkedin")
+  facebook      String?         @map("facebook")
+  instagram     String?         @map("instagram")
+  github        String?         @map("github")
+  classBookId   Int             @map("class_book_id")
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @updatedAt @map("updated_at")
+  deletedAt     DateTime?       @map("deleted_at")
+  createdBy     Int             @map("created_by")
+  updatedBy     Int             @map("updated_by")
+  classBook     ClassBook       @relation(fields: [classBookId], references: [id])
+  user          User            @relation(fields: [userId], references: [id])
+  // ProjectMember ProjectMember[]
+  ProjectMember ProjectMember[]
+
+  @@map("students")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid()) @map("id")
+  token     String   @map("token")
+  userId    Int      @unique @map("user_id")
+  expiry    DateTime @map("expiry")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("refresh_tokens")
+}
+
+model Project {
+  id                Int               @id @default(autoincrement()) @map("id")
+  title             String            @map("title")
+  thumbnail         String            @map("thumbnail")
+  detail            String            @map("detail")
+  github            String?           @map("github")
+  presentation      String?           @map("presentation")
+  document          String?           @map("document")
+  figma             String?           @map("figma")
+  youtube           String?           @map("youtube")
+  createdAt         DateTime          @default(now()) @map("created_at")
+  updatedAt         DateTime          @updatedAt @map("updated_at")
+  deletedAt         DateTime?         @map("deleted_at")
+  createdBy         Int               @map("created_by")
+  updatedBy         Int               @map("updated_by")
+  ProjectAsset      ProjectAsset[]
+  ProjectMember     ProjectMember[]
+  ProjectCategories ProjectCategory[]
+  ProjectFields     ProjectFields[]
+  ProjectCourse     ProjectCourse[]
+  ProjectTypes      ProjectType[]
+
+  @@map("projects")
+}
+
+model ProjectAsset {
+  id        Int       @id @default(autoincrement()) @map("id")
+  projectId Int       @map("project_id")
+  asset     String    @map("asset")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  createdBy Int       @map("created_by")
+  updatedBy Int       @map("updated_by")
+  project   Project   @relation(fields: [projectId], references: [id])
+
+  @@map("project_assets")
+}
+
+model ProjectMember {
+  id        Int       @id @default(autoincrement()) @map("id")
+  projectId Int       @map("project_id")
+  studentId Int       @map("student_id")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  createdBy Int       @map("created_by")
+  updatedBy Int       @map("updated_by")
+  project   Project   @relation(fields: [projectId], references: [id])
+  student   Student   @relation(fields: [studentId], references: [id])
+
+  @@map("project_members")
+}
+
+model ProjectFields {
+  id         Int       @id @default(autoincrement()) @map("id")
+  projectId  Int       @map("project_id")
+  listTypeId Int       @map("list_type_id")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  deletedAt  DateTime? @map("deleted_at")
+  createdBy  Int       @map("created_by")
+  updatedBy  Int       @map("updated_by")
+  project    Project   @relation(fields: [projectId], references: [id])
+  listType   ListType  @relation(fields: [listTypeId], references: [id])
+
+  @@map("project_fields")
+}
+
+model ProjectCategory {
+  id         Int       @id @default(autoincrement()) @map("id")
+  projectId  Int       @map("project_id")
+  listTypeId Int       @map("list_type_id")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  deletedAt  DateTime? @map("deleted_at")
+  createdBy  Int       @map("created_by")
+  updatedBy  Int       @map("updated_by")
+  project    Project   @relation(fields: [projectId], references: [id])
+  listType   ListType  @relation(fields: [listTypeId], references: [id])
+
+  @@map("project_categories")
+}
+model ProjectType {
+  id         Int       @id @default(autoincrement()) @map("id")
+  projectId  Int       @map("project_id")
+  listTypeId Int       @map("list_type_id")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  deletedAt  DateTime? @map("deleted_at")
+  createdBy  Int       @map("created_by")
+  updatedBy  Int       @map("updated_by")
+  project    Project   @relation(fields: [projectId], references: [id])
+  listType   ListType  @relation(fields: [listTypeId], references: [id])
+
+  @@map("project_type")
+}
+model ProjectCourse {
+  id        Int       @id @default(autoincrement()) @map("id")
+  projectId Int       @map("project_id")
+  courseId  Int       @map("course_id")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  createdBy Int       @map("created_by")
+  updatedBy Int       @map("updated_by")
+  project   Project   @relation(fields: [projectId], references: [id])
+  course    Course    @relation(fields: [courseId], references: [id])
+
+  @@map("project_courses")
+}
+
+model ForgetPasswordCredential {
+  id             Int       @id @default(autoincrement()) @map("id")
+  refferenceCode String    @unique @map("reference") @db.Uuid
+  userId         Int       @map("user_id")
+  expiredAt      DateTime  @default(dbgenerated("NOW() + INTERVAL '5 minutes'")) @map("expired_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  deletedAt      DateTime? @map("deleted_at")
+  createdBy      Int       @map("created_by")
+  updatedBy      Int       @map("updated_by")
+
+  @@map("forget_password_credentials")
 }

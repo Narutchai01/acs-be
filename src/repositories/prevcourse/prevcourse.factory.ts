@@ -25,9 +25,9 @@ export class PrevCourseFactory {
       id: data.id,
       courseId: data.courseId,
       prevCourseId: data.prevCourseId,
-      createdDate: data.createdDate,
-      updatedDate: data.updatedDate,
-      deletedDate: data.deletedDate,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+      deletedAt: data.deletedAt,
       createdBy: data.createdBy,
       updatedBy: data.updatedBy,
       PrevCourse: data.PrevCourse

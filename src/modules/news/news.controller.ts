@@ -3,7 +3,6 @@ import {
   Controller,
   Get,
   Post,
-  Res,
   Request,
   UploadedFile,
   UseGuards,
@@ -12,32 +11,35 @@ import {
   Param,
   Patch,
   Delete,
+  HttpStatus,
 } from '@nestjs/common';
 import { NewsService } from './news.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CreateNewsDto } from './dto/creat-news.dto';
-import { Request as ExpressRequest } from 'express';
+import { CreateNewsDto, CreateNewsMediaDto } from './dto/creat-news.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Response } from 'express';
 import { NewsFactory } from './news.factory';
 import { QueryNewsDto } from './dto/get-news.dto';
 import { UpdateNewsDto } from './dto/update-news.dto';
+import { QueryNewsMediaDto } from './dto/get-newsmedia.dto';
+import { success } from 'src/core/interceptors/response.helper';
+import { NewsMediaDto } from './dto/newsmedia.dto';
+import { NewsDto } from './dto/news.dto';
+import { Pageable } from 'src/models';
+import { AuthenticatedRequest } from 'src/models/auth';
+import { JwtCommonAuthGuard } from '../auth/jwt-common.guard';
 
-interface AuthenticatedRequest extends ExpressRequest {
-  user: {
-    userId: number;
-    roleId: number;
-  };
-}
-
-@Controller('news')
+@Controller({
+  path: 'news',
+  version: '1',
+})
 export class NewsController {
   constructor(
     private readonly newsService: NewsService,
     private readonly newsFactory: NewsFactory,
   ) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtCommonAuthGuard)
   @Post()
   @UseInterceptors(FileInterceptor('image'))
   async createNews(
@@ -51,11 +53,12 @@ export class NewsController {
       req.user.userId,
     );
 
-    return result;
+    const dto = this.newsFactory.mapNewsModelToNewsDto(result);
+    return success<NewsDto>(dto, HttpStatus.CREATED);
   }
 
   @Get()
-  async getNews(@Res() res: Response, @Query() quey: QueryNewsDto) {
+  async getNews(@Query() quey: QueryNewsDto) {
     const news = await this.newsService.getNews(quey);
     const dto = news.rows.map((item) =>
       this.newsFactory.mapNewsModelToNewsDto(item),
@@ -68,23 +71,44 @@ export class NewsController {
       pageSize: news.pageSize,
     };
 
-    return res.json({
-      status: true,
-      data: data,
-      error: null,
-    });
+    return success<Pageable<NewsDto>>(data, HttpStatus.OK);
+  }
+
+  @UseGuards(JwtCommonAuthGuard)
+  @Post('news-media/:type')
+  @UseInterceptors(FileInterceptor('image'))
+  async createNewsMedia(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() body: CreateNewsMediaDto,
+    @Request() req: AuthenticatedRequest,
+    @Param('type') type: string,
+  ) {
+    const result = await this.newsService.createNewsMedia(
+      body,
+      file,
+      req.user.userId,
+      type,
+    );
+
+    const dto = this.newsFactory.mapNewsMediaModelToNewsMediaDto(result);
+    return success<NewsMediaDto>(dto, HttpStatus.CREATED);
+  }
+
+  @Get('news-media')
+  async getNewsMedia(@Query() query: QueryNewsMediaDto) {
+    const newsmedia = await this.newsService.getNewsMedia(query);
+    const dto = newsmedia.map((item) =>
+      this.newsFactory.mapNewsMediaModelToNewsMediaDto(item),
+    );
+    return success<NewsMediaDto[]>(dto, HttpStatus.OK);
   }
 
   @Get(':id')
-  async getNewsById(@Res() res: Response, @Param('id') id: string) {
+  async getNewsById(@Param('id') id: string) {
     const IdNumber = Number(id);
     const news = await this.newsService.getNewsById(IdNumber);
     const dto = this.newsFactory.mapNewsModelToNewsDto(news);
-    return res.json({
-      status: true,
-      data: dto,
-      error: null,
-    });
+    return success<NewsDto>(dto, HttpStatus.OK);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -104,7 +128,7 @@ export class NewsController {
       req.user.userId,
     );
 
-    return result;
+    return success<NewsDto>(result, HttpStatus.OK);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -115,6 +139,6 @@ export class NewsController {
   ) {
     const IdNumber = Number(id);
     const result = await this.newsService.deleteNews(IdNumber, req.user.userId);
-    return result;
+    return success<NewsDto>(result, HttpStatus.OK);
   }
 }

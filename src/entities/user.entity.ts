@@ -1,6 +1,12 @@
 import { User } from '@prisma/client';
 import { UserRoleEntity } from './role.entity';
 export class UserEntity implements User {
+  refreshTokenId: number | null;
+  createdBy: number | null;
+  updatedBy: number | null;
+  createdAt: Date;
+  deletedAt: Date | null;
+  updatedAt: Date;
   id: number;
   firstNameTh!: string;
   lastNameTh!: string;
@@ -9,11 +15,6 @@ export class UserEntity implements User {
   email!: string;
   nickName!: string | null;
   imageUrl!: string | null;
-  password!: string;
-  createdDate!: Date;
-  updatedDate!: Date;
-  deletedDate!: Date | null;
-  createdBy!: number | null;
-  updatedBy!: number | null;
+  password!: string | null;
   UserRole?: UserRoleEntity[];
 }
