@@ -22,3 +22,4 @@ databasepg
 dist
 .next
 .cache
+.secrets
