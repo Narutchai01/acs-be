@@ -25,6 +25,7 @@ import { success } from 'src/core/interceptors/response.helper';
 import { CurriculumDto } from './dto/curriculum.dto';
 import { Pageable } from 'src/models';
 import { QueryCurriculumDto } from './dto/v1/get-curriculum.dto';
+import { JwtCommonAuthGuard } from '../auth/jwt-common.guard';
 
 @Controller('curriculum')
 export class CurriculumController {
@@ -33,7 +34,7 @@ export class CurriculumController {
     private readonly curriculumFactory: CurriculumFactory,
   ) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtCommonAuthGuard)
   @Post()
   @UseInterceptors(FileInterceptor('image'))
   async createCurriculum(
