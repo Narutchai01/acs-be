@@ -7,16 +7,18 @@ import {
   Query,
   UseInterceptors,
   Param,
+  Post,
+  Body,
+  UploadedFile,
 } from '@nestjs/common';
 import { ClassBookService } from './class-book.service';
-import { Post, Body, UploadedFile } from '@nestjs/common';
 import { RequestClassBookDtoV1 } from './dto/create-class-book.dto.v1';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AuthenticatedRequest } from 'src/models/auth';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { success } from 'src/core/interceptors/response.helper';
 import { ClassBookFactory } from './class-book.factory';
 import { QueryClassBookDto } from './dto/v1/get-class-book.dto';
+import { JwtCommonAuthGuard } from '../auth/jwt-common.guard';
 
 @Controller({
   path: 'class-book',
@@ -27,7 +29,7 @@ export class ClassBookController {
     private readonly classBookService: ClassBookService,
     private readonly classFactory: ClassBookFactory,
   ) {}
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtCommonAuthGuard)
   @Post()
   @UseInterceptors(FileInterceptor('image'))
   async createClassBook(
