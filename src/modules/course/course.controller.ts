@@ -21,15 +21,16 @@ import { UpdateCourseDto } from './dto/update-course.dto';
 import { success } from 'src/core/interceptors/response.helper';
 import { CourseDto } from './dto/course.dto';
 import { Pageable } from 'src/models';
+import { JwtCommonAuthGuard } from '../auth/jwt-common.guard';
 
 @Controller('course')
 export class CourseController {
   constructor(
     private readonly courseService: CourseService,
-    private courseFactory: CourseFactory,
+    private readonly courseFactory: CourseFactory,
   ) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtCommonAuthGuard)
   @Post()
   async createCourse(
     @Body() body: CreateCourseDto,
