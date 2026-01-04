@@ -21,6 +21,7 @@ export class CurriculumService {
   ): Promise<CurriculumModel> {
     const imageUrl = await this.storage.uploadFile(file, 'curriculum');
     const newsData = {
+      title: curriculumData.title,
       year: curriculumData.year,
       fileUrl: curriculumData.fileUrl,
       description: curriculumData.description,
@@ -62,6 +63,7 @@ export class CurriculumService {
 
     const updateData = {
       year: data.year,
+      title: data.title,
       fileUrl: data.fileUrl,
       description: data.description,
       updatedBy,

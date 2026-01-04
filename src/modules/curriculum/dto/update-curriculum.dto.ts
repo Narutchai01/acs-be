@@ -5,6 +5,10 @@ export class UpdateCurriculumDto {
   @IsOptional()
   year: string;
 
+  @IsOptional()
+  @IsString()
+  title: string;
+
   @IsString()
   @IsOptional()
   fileUrl: string;

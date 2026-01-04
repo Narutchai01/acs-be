@@ -189,6 +189,7 @@ model PrevCourse {
 model Curriculum {
   id          Int         @id @default(autoincrement()) @map("id")
   year        String      @map("year")
+  title       String      @map("title")
   fileUrl     String      @map("file_url")
   description String      @map("description")
   createdBy   Int         @map("created_by")
@@ -419,6 +420,7 @@ model ProjectCategory {
 
   @@map("project_categories")
 }
+
 model ProjectType {
   id         Int       @id @default(autoincrement()) @map("id")
   projectId  Int       @map("project_id")
@@ -433,6 +435,7 @@ model ProjectType {
 
   @@map("project_type")
 }
+
 model ProjectCourse {
   id        Int       @id @default(autoincrement()) @map("id")
   projectId Int       @map("project_id")

@@ -6,6 +6,10 @@ export class CreateCurriculumDto {
   @IsString()
   year: string;
 
+  @ApiProperty({ example: 'Curriculum Title', description: 'Title' })
+  @IsString()
+  title: string;
+
   @ApiProperty({
     example: 'http://example.com/curriculum.pdf',
     description: 'File URL',
