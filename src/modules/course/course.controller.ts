@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { JwtCommonAuthGuard } from '../auth/jwt-common.guard';
 import { AuthenticatedRequest } from '../../models/auth';
 import { QueryCourseDto } from './dto/get-course.dto';
 import { CourseFactory } from './course.factory';
@@ -21,7 +21,6 @@ import { UpdateCourseDto } from './dto/update-course.dto';
 import { success } from 'src/core/interceptors/response.helper';
 import { CourseDto } from './dto/course.dto';
 import { Pageable } from 'src/models';
-import { JwtCommonAuthGuard } from '../auth/jwt-common.guard';
 
 @Controller('course')
 export class CourseController {
@@ -59,7 +58,7 @@ export class CourseController {
     return success<CourseDto>(dto, HttpStatus.OK);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtCommonAuthGuard)
   @Patch(':id')
   async updateCourse(
     @Param('id') id: number,
@@ -76,7 +75,7 @@ export class CourseController {
     return success<CourseDto>(dto, HttpStatus.OK);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtCommonAuthGuard)
   @Delete(':id')
   async deleteCourse(
     @Param('id') id: number,

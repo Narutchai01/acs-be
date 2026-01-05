@@ -17,7 +17,6 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CurriculumService } from './curriculum.service';
 import { CreateCurriculumDto } from './dto/create-curriculum.dto';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UpdateCurriculumDto } from './dto/update-curriculum.dto';
 import { AuthenticatedRequest } from 'src/models/auth';
 import { CurriculumFactory } from './curriculum.factory';
@@ -87,7 +86,7 @@ export class CurriculumController {
     return success<CurriculumDto>(dto, HttpStatus.OK);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtCommonAuthGuard)
   @Patch(':id')
   @UseInterceptors(FileInterceptor('image'))
   async updateCurriculum(
@@ -116,7 +115,7 @@ export class CurriculumController {
     return success<CurriculumDto>(dto, HttpStatus.OK);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtCommonAuthGuard)
   @Delete(':id')
   async deleteCurriculum(
     @Param('id') id: string,
