@@ -16,7 +16,6 @@ import {
 import { NewsService } from './news.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateNewsDto, CreateNewsMediaDto } from './dto/creat-news.dto';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Response } from 'express';
 import { NewsFactory } from './news.factory';
 import { QueryNewsDto } from './dto/get-news.dto';
@@ -111,7 +110,7 @@ export class NewsController {
     return success<NewsDto>(dto, HttpStatus.OK);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtCommonAuthGuard)
   @Patch(':id')
   @UseInterceptors(FileInterceptor('image'))
   async updateNews(
@@ -131,7 +130,7 @@ export class NewsController {
     return success<NewsDto>(result, HttpStatus.OK);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtCommonAuthGuard)
   @Delete(':id')
   async deleteNews(
     @Param('id') id: string,

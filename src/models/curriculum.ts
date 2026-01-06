@@ -3,6 +3,7 @@ import { BaseModel } from '.';
 
 export interface CreateCurriculumModel {
   year: string;
+  title: string;
   fileUrl: string;
   imageUrl: string;
   description: string;
@@ -12,6 +13,7 @@ export interface CreateCurriculumModel {
 
 export interface CurriculumModel extends BaseModel {
   id: number;
+  title: string;
   year: string;
   fileUrl: string;
   imageUrl: string;
@@ -21,6 +23,7 @@ export interface CurriculumModel extends BaseModel {
 
 export interface UpdateCurriculumModel {
   year: string;
+  title: string;
   fileUrl: string;
   imageUrl: string;
   description: string;
