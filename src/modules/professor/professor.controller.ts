@@ -35,7 +35,7 @@ export class ProfessorController {
     private readonly professorFactory: ProfessorFactory,
   ) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtCommonAuthGuard)
   @Post()
   @UseInterceptors(FileInterceptor('image'))
   async createProfessor(
