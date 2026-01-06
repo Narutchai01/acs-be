@@ -14,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/v1/create-student.dto';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { JwtCommonAuthGuard } from '../auth/jwt-common.guard';
 import { AuthenticatedRequest } from 'src/models/auth';
 import { QueryStudentsDto } from './dto/v1/get-student.dto';
 import { StudentFactory } from './students.factory';
@@ -32,7 +32,7 @@ export class StudentsController {
     private studentFactory: StudentFactory,
   ) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtCommonAuthGuard)
   @Post()
   async createStudent(
     @Body() createStudentDto: CreateStudentDto,
@@ -71,7 +71,7 @@ export class StudentsController {
     return success(dto, HttpStatus.OK);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtCommonAuthGuard)
   @UseInterceptors(FileInterceptor('image'))
   @Put(':id')
   async updateStudent(

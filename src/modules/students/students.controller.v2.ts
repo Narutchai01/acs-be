@@ -13,12 +13,12 @@ import {
 } from '@nestjs/common';
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/v1/create-student.dto';
+import { JwtCommonAuthGuard } from '../auth/jwt-common.guard';
 import { AuthenticatedRequest } from 'src/models/auth';
 import { StudentFactory } from './students.factory';
 import { success } from 'src/core/interceptors/response.helper';
 import { UpdateStudentDto } from './dto/v1/update-student.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { JwtCommonAuthGuard } from '../auth/jwt-common.guard';
 
 @Controller({
   path: 'students',
