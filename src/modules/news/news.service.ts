@@ -1,6 +1,10 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateNewsDto, CreateNewsMediaDto } from './dto/creat-news.dto';
-import { NewsModel, NewsMediaModel } from 'src/models/news';
+import {
+  NewsModel,
+  NewsMediaModel,
+  UpsertNewsMediaModel,
+} from 'src/models/news';
 import { INewsRepository } from 'src/repositories/news/news.abstract';
 import { SupabaseService } from 'src/provider/store/supabase/supabase.service';
 import { QueryNewsDto } from './dto/get-news.dto';
@@ -8,13 +12,14 @@ import { UpdateNewsDto } from './dto/update-news.dto';
 import { Pageable } from 'src/models';
 import { ITypeRepository } from 'src/repositories/type/type.abstact';
 import { QueryNewsMediaDto } from './dto/get-newsmedia.dto';
+import { UpsertNewsMediaDTO } from './dto/news_media/usert-news-media.dto';
 
 @Injectable()
 export class NewsService {
   constructor(
-    private newsRepository: INewsRepository,
-    private storage: SupabaseService,
-    private typeRepository: ITypeRepository,
+    private readonly newsRepository: INewsRepository,
+    private readonly storage: SupabaseService,
+    private readonly typeRepository: ITypeRepository,
   ) {}
 
   async createNews(
@@ -124,5 +129,24 @@ export class NewsService {
       query.isUser,
       query.pageSize,
     );
+  }
+
+  async upsertNewsMedia(
+    data: UpsertNewsMediaDTO,
+    image: Express.Multer.File,
+    createBy: number,
+  ): Promise<NewsMediaModel> {
+    const image_url = await this.storage.uploadFile(image, 'news-media');
+
+    const dataToUpsert: UpsertNewsMediaModel = {
+      id: data.id,
+      newsId: data.newsId,
+      typeId: data.typeId,
+      image: image_url,
+      createdBy: createBy,
+      updatedBy: createBy,
+    };
+
+    return this.newsRepository.upsertNewsMediaV2(dataToUpsert);
   }
 }
