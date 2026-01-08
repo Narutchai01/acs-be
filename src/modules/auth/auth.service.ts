@@ -17,14 +17,14 @@ import { appDominain } from 'src/config/config';
 @Injectable()
 export class AuthService {
   constructor(
-    private userRepository: IUserRepository,
-    private RoleRepository: IRoleRepository,
-    private jwtService: JwtService,
-    private passwordService: PasswordService,
-    private usersService: UsersService,
-    private refresherTokenRepository: IRefresherTokenRepository,
-    private authRepository: IAuthRepository,
-    private emailService: MailService,
+    private readonly userRepository: IUserRepository,
+    private readonly RoleRepository: IRoleRepository,
+    private readonly jwtService: JwtService,
+    private readonly passwordService: PasswordService,
+    private readonly usersService: UsersService,
+    private readonly refresherTokenRepository: IRefresherTokenRepository,
+    private readonly authRepository: IAuthRepository,
+    private readonly emailService: MailService,
   ) {}
 
   async validateUser(

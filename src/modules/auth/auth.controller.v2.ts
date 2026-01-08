@@ -33,8 +33,8 @@ interface CommonJwtRequest {
 })
 export class AuthControllerV2 {
   constructor(
-    private authService: AuthService,
-    private userFactory: UsersFactory,
+    private readonly authService: AuthService,
+    private readonly userFactory: UsersFactory,
   ) {}
 
   @UseGuards(CommonAuthGuard)
@@ -70,5 +70,17 @@ export class AuthControllerV2 {
     const { userId } = req.user;
     const user = await this.authService.getUserData(userId);
     return success(user, HttpStatus.OK);
+  }
+
+  @UseGuards(JwtCommonAuthGuard)
+  @Post('logout')
+  logout(
+    @Request() req: CommonJwtRequest,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    res.clearCookie('refreshToken');
+    res.clearCookie('accessToken');
+
+    return success(null, HttpStatus.OK);
   }
 }
