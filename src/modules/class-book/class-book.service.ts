@@ -12,7 +12,7 @@ export class ClassBookService {
   constructor(
     private classBookRepository: IClassBookRepository,
     private supabaseService: SupabaseService,
-  ) {}
+  ) { }
   async createClassBook(
     data: RequestClassBookDtoV1,
     createdBy: number,
@@ -46,25 +46,30 @@ export class ClassBookService {
     return this.classBookRepository.getClassBookById(id);
   }
 
-    async updateClassBook(
-      id: number,
-      body: UpdateClassBookDtoV1,
-      updatedBy: number,
-      file?: Express.Multer.File,
-    ): Promise<ClassBookModel> {
-      const image = file
+  async updateClassBook(
+    id: number,
+    body: UpdateClassBookDtoV1,
+    updatedBy: number,
+    file?: Express.Multer.File,
+  ): Promise<ClassBookModel> {
+    const image = file
       ? await this.supabaseService.uploadFile(file, 'classBook')
       : '';
-  
-      const updateData = {
-        classof: Number(body.classof),
-        firstYearAcademic: body.firstYearAcademic,
-        curriculumId: Number(body.curriculumId),
-        image,
-        updatedBy: updatedBy,
-      };
-  
-      return this.classBookRepository.updateClassBook( id, updateData);
-    }
+
+    const updateData = {
+      classof: Number(body.classof),
+      firstYearAcademic: body.firstYearAcademic,
+      curriculumId: Number(body.curriculumId),
+      image,
+      updatedBy: updatedBy,
+    };
+
+    return this.classBookRepository.updateClassBook(id, updateData);
+  }
+
+  async deleteClassBook( id: number, updatedBy: number ): Promise<ClassBookModel> {
+    return this.classBookRepository.deleteClassBook(id, updatedBy);
+  }
+
 
 }
