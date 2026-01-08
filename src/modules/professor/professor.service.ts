@@ -14,12 +14,12 @@ import { UpdateProfessorDto } from './dto/update-professor.dto';
 @Injectable()
 export class ProfessorService {
   constructor(
-    private professorRepository: IProfessorRepository,
-    private userRepository: IUserRepository,
-    private passwordService: PasswordService,
-    private supabaseService: SupabaseService,
-    private mailService: MailService,
-    private userService: UsersService,
+    private readonly professorRepository: IProfessorRepository,
+    private readonly userRepository: IUserRepository,
+    private readonly passwordService: PasswordService,
+    private readonly supabaseService: SupabaseService,
+    private readonly mailService: MailService,
+    private readonly userService: UsersService,
   ) {}
 
   //TODO: clean after demo
@@ -102,28 +102,20 @@ export class ProfessorService {
     createBy: number,
     file?: Express.Multer.File,
   ) {
-    const {
-      firstNameTh,
-      lastNameTh,
-      firstNameEn,
-      lastNameEn,
-      email,
-      nickName,
-    } = data;
-
     const { user, password } = await this.userService.createUserV2(
       {
-        firstNameTh,
-        lastNameTh,
-        firstNameEn,
-        lastNameEn,
-        email,
-        nickName,
+        firstNameTh: data.firstNameTh,
+        lastNameTh: data.lastNameTh,
+        firstNameEn: data.firstNameEn,
+        lastNameEn: data.lastNameEn,
+        email: data.email,
+        nickName: data.nickName,
         createdBy: createBy,
         updatedBy: createBy,
       },
       file,
       'professor',
+      false,
     );
 
     let professor: ProfessorModel;
