@@ -5,6 +5,7 @@ import { RequestClassBookDtoV1 } from './dto/create-class-book.dto.v1';
 import { SupabaseService } from 'src/provider/store/supabase/supabase.service';
 import { QueryClassBookDto } from './dto/v1/get-class-book.dto';
 import { Pageable } from 'src/models';
+import { UpdateClassBookDtoV1 } from './dto/update-class-book.dto.v1';
 
 @Injectable()
 export class ClassBookService {
@@ -44,4 +45,26 @@ export class ClassBookService {
   async getClassBookById(id: number): Promise<ClassBookModel> {
     return this.classBookRepository.getClassBookById(id);
   }
+
+    async updateClassBook(
+      id: number,
+      body: UpdateClassBookDtoV1,
+      updatedBy: number,
+      file?: Express.Multer.File,
+    ): Promise<ClassBookModel> {
+      const image = file
+      ? await this.supabaseService.uploadFile(file, 'classBook')
+      : '';
+  
+      const updateData = {
+        classof: Number(body.classof),
+        firstYearAcademic: body.firstYearAcademic,
+        curriculumId: Number(body.curriculumId),
+        image,
+        updatedBy: updatedBy,
+      };
+  
+      return this.classBookRepository.updateClassBook( id, updateData);
+    }
+
 }
