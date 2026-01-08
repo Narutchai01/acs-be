@@ -1,6 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { IClassBookRepository } from './class-book.abstract';
-import { ClassBookModel, RequestClassBookModel } from 'src/models/class-book';
+import { ClassBookModel, RequestClassBookModel, UpdateClassBookModel } from 'src/models/class-book';
 import { PrismaService } from 'src/provider/database/prisma/prisma.service';
 import { ClassBookFactory } from './class-book.factory';
 import { QueryClassBookDto } from 'src/modules/class-book/dto/v1/get-class-book.dto';
@@ -74,4 +74,53 @@ export class ClassBookRepository implements IClassBookRepository {
       where: { deletedAt: null },
     });
   }
+
+  async updateClassBook( 
+    id: number, 
+    data: UpdateClassBookModel 
+  ): Promise<ClassBookModel> {
+    try {
+      const updateData = {
+        ...data,
+        updatedBy: data.updatedBy === null ? undefined : data.updatedBy,
+
+      };
+      const classBookEntity = await this.prisma.classBook.update({
+        where: { id },
+        data: updateData,
+      });
+      return this.classBookFactory.mapEntityToModel(classBookEntity);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Update classBook failed:', error.message);
+        throw new Error(`Unable to update classBook: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to update classBook: Unknown error occurred');
+      }
+    }
+  }
+
+    async deleteClassBook(id: number , userId: number): Promise<ClassBookModel> {
+     try {
+      const classBookEntity = await this.prisma.classBook.update({
+        where: { id: id },
+        data: {
+          deletedAt: new Date(),
+          updatedBy: userId,
+        }
+      });
+      return this.classBookFactory.mapEntityToModel(classBookEntity);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Delete classBook failed:', error.message);
+        throw new Error(`Unable to delete classBook: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to delete classBook: Unknown error occurred');
+      }
+    }
+  }
+
+
 }
