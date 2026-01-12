@@ -21,3 +21,11 @@ export interface RequestClassBookModel {
   image: string;
   curriculumId: number;
 }
+
+export interface UpdateClassBookModel {
+  classof?: number;
+  firstYearAcademic?: string;
+  image?: string;
+  curriculumId?: number;
+  updatedBy: number;
+}
