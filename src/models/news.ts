@@ -51,3 +51,12 @@ export interface CreateNewsMediaModel extends BaseModel {
   createdBy: number;
   updatedBy: number;
 }
+
+export interface UpsertNewsMediaModel extends BaseModel {
+  id?: number;
+  image: string;
+  newsId: number;
+  typeId: number;
+  createdBy: number;
+  updatedBy: number;
+}

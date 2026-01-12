@@ -5,6 +5,7 @@ import {
   UpdateNewsModel,
   NewsMediaModel,
   CreateNewsMediaModel,
+  UpsertNewsMediaModel,
 } from 'src/models/news';
 import { QueryNewsDto } from 'src/modules/news/dto/get-news.dto';
 
@@ -23,4 +24,8 @@ export abstract class INewsRepository {
     isUser: boolean,
     pageSize: number,
   ): Promise<NewsMediaModel[]>;
+
+  abstract upsertNewsMediaV2(
+    data: UpsertNewsMediaModel,
+  ): Promise<NewsMediaModel>;
 }

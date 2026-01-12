@@ -12,11 +12,11 @@ import {
   Patch,
   Delete,
   HttpStatus,
+  Put,
 } from '@nestjs/common';
 import { NewsService } from './news.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateNewsDto, CreateNewsMediaDto } from './dto/creat-news.dto';
-import { Response } from 'express';
 import { NewsFactory } from './news.factory';
 import { QueryNewsDto } from './dto/get-news.dto';
 import { UpdateNewsDto } from './dto/update-news.dto';
@@ -27,6 +27,7 @@ import { NewsDto } from './dto/news.dto';
 import { Pageable } from 'src/models';
 import { AuthenticatedRequest } from 'src/models/auth';
 import { JwtCommonAuthGuard } from '../auth/jwt-common.guard';
+import { UpsertNewsMediaDTO } from './dto/news_media/usert-news-media.dto';
 
 @Controller({
   path: 'news',
@@ -139,5 +140,22 @@ export class NewsController {
     const IdNumber = Number(id);
     const result = await this.newsService.deleteNews(IdNumber, req.user.userId);
     return success<NewsDto>(result, HttpStatus.OK);
+  }
+
+  @UseGuards(JwtCommonAuthGuard)
+  @Put('news-media')
+  @UseInterceptors(FileInterceptor('image'))
+  async updateNewsMedia(
+    @Body() body: UpsertNewsMediaDTO,
+    @Request() req: AuthenticatedRequest,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    const result = await this.newsService.upsertNewsMedia(
+      body,
+      file,
+      req.user.userId,
+    );
+    const dto = this.newsFactory.mapNewsMediaModelToNewsMediaDto(result);
+    return success<NewsMediaDto>(dto, HttpStatus.OK);
   }
 }

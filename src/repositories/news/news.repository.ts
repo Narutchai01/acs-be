@@ -6,6 +6,7 @@ import {
   UpdateNewsModel,
   NewsMediaModel,
   CreateNewsMediaModel,
+  UpsertNewsMediaModel,
 } from 'src/models/news';
 import { PrismaService } from 'src/provider/database/prisma/prisma.service';
 import { NewsFactory } from './news.factory';
@@ -251,6 +252,48 @@ export class NewsRepository implements INewsRepository {
       } else {
         console.error('Unknown error:', error);
         throw new Error('Unable to get news media: Unknown error occurred');
+      }
+    }
+  }
+
+  async upsertNewsMediaV2(data: UpsertNewsMediaModel): Promise<NewsMediaModel> {
+    try {
+      const newsMedia = await this.prisma.newsMedia.upsert({
+        where: {
+          id: data.id ?? -1,
+        },
+        create: {
+          newsId: data.newsId,
+          typeId: data.typeId,
+          image: data.image,
+          createdBy: data.createdBy,
+          updatedBy: data.updatedBy,
+        },
+        update: {
+          newsId: data.newsId,
+          typeId: data.typeId,
+          image: data.image,
+          updatedBy: data.updatedBy,
+        },
+        include: {
+          news: {
+            include: {
+              category: true,
+              user: true,
+            },
+          },
+          type: true,
+          user: true,
+        },
+      });
+      return this.newsFactory.mapNewsMediaEntityToNewsMediaModel(newsMedia);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Upsert news media failed:', error.message);
+        throw new Error(`Unable to upsert news media: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to upsert news media: Unknown error occurred');
       }
     }
   }
