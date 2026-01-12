@@ -101,4 +101,26 @@ export class ClassBookRepository implements IClassBookRepository {
     }
   }
 
+    async deleteClassBook(id: number , userId: number): Promise<ClassBookModel> {
+     try {
+      const classBookEntity = await this.prisma.classBook.update({
+        where: { id: id },
+        data: {
+          deletedAt: new Date(),
+          updatedBy: userId,
+        }
+      });
+      return this.classBookFactory.mapEntityToModel(classBookEntity);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Delete classBook failed:', error.message);
+        throw new Error(`Unable to delete classBook: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to delete classBook: Unknown error occurred');
+      }
+    }
+  }
+
+
 }

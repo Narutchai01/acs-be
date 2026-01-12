@@ -11,6 +11,8 @@ import {
   Body,
   UploadedFile,
   Patch,
+  Delete,
+  HttpException
 } from '@nestjs/common';
 import { ClassBookService } from './class-book.service';
 import { RequestClassBookDtoV1 } from './dto/create-class-book.dto.v1';
@@ -92,4 +94,19 @@ export class ClassBookController {
     const dto = this.classFactory.mapClassBookModelToClassBookDto(result);
     return success<ClassBookDtoV1>(dto, HttpStatus.OK);
   }
+
+  @UseGuards(JwtCommonAuthGuard)
+  @Delete(':id')
+  async deleteClassBook(
+    @Param('id') id: number,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    const result = await this.classBookService.deleteClassBook(id, req.user.userId);
+    if (!result) {
+      throw new HttpException('Classbook not found', HttpStatus.NOT_FOUND);
+    }
+    const dto = this.classFactory.mapClassBookModelToClassBookDto(result);
+    return success<ClassBookDtoV1>(dto, HttpStatus.OK);
+  }
+
 }

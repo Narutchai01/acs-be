@@ -15,4 +15,6 @@ export abstract class IClassBookRepository {
     id: number,
     data: UpdateClassBookModel,
   ): Promise<ClassBookModel>;
+  abstract deleteClassBook( id: number, userId: number): Promise<ClassBookModel>;
+
 }
