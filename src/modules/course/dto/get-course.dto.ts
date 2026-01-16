@@ -4,12 +4,12 @@ import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class QueryCourseDto {
   @ApiProperty()
-  @Transform(({ value }: { value: string }) => parseInt(value))
+  @Transform(({ value }: { value: string }) => Number.parseInt(value))
   @IsOptional()
   page: number;
 
   @ApiProperty()
-  @Transform(({ value }: { value: string }) => parseInt(value))
+  @Transform(({ value }: { value: string }) => Number.parseInt(value))
   @IsOptional()
   pageSize: number;
 
@@ -21,7 +21,7 @@ export class QueryCourseDto {
 
   @ApiProperty({ required: true })
   @IsNumber()
-  @Transform(({ value }: { value: string }) => parseInt(value))
+  @Transform(({ value }: { value: string }) => Number.parseInt(value))
   @IsOptional()
   typecourseId: number;
 
@@ -29,9 +29,9 @@ export class QueryCourseDto {
   @IsNumber({}, { each: true })
   @Transform(({ value }: { value: string | string[] }) => {
     if (Array.isArray(value)) {
-      return value.map((v) => parseInt(v));
+      return value.map((v) => Number.parseInt(v));
     }
-    return [parseInt(value)];
+    return [Number.parseInt(value)];
   })
   curriculumId: number[];
 
@@ -40,4 +40,16 @@ export class QueryCourseDto {
   @Transform(({ value }: { value: string }) => value.trim())
   @IsOptional()
   search?: string;
+
+  @ApiProperty({ required: false, example: '' })
+  @IsString()
+  @Transform(({ value }: { value: string }) => value.trim())
+  @IsOptional()
+  sortBy?: string;
+
+  @ApiProperty({ required: false, example: 'asc' })
+  @IsString()
+  @Transform(({ value }: { value: string }) => value.trim())
+  @IsOptional()
+  sortOrder?: 'asc' | 'desc' = 'asc';
 }

@@ -9,13 +9,13 @@ import { TypeCourseFactory } from '../typecourse/typecourse.facoty';
 @Injectable()
 export class CourseFactory {
   constructor(
-    private userFactory: UserFactory,
+    private readonly userFactory: UserFactory,
     @Inject(forwardRef(() => CurriculumFactory))
-    private curriculumFactory: CurriculumFactory,
+    private readonly curriculumFactory: CurriculumFactory,
     @Inject(forwardRef(() => PrevCourseFactory))
-    private prevCourseFactory: PrevCourseFactory,
+    private readonly prevCourseFactory: PrevCourseFactory,
     @Inject(forwardRef(() => TypeCourseFactory))
-    private typeCourseFactory: TypeCourseFactory,
+    private readonly typeCourseFactory: TypeCourseFactory,
   ) {}
 
   mapCourseEntitiesToCourseModels(entities: CourseEntity[]): CourseModel[] {
