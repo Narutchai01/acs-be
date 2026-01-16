@@ -93,6 +93,8 @@ export class CourseRepository implements ICourseRepository {
         typecourseId,
         curriculumId,
         search,
+        sortBy,
+        sortOrder,
       } = query;
       const course = await this.prisma.course.findMany({
         where: {
@@ -107,6 +109,12 @@ export class CourseRepository implements ICourseRepository {
             ],
           }),
         },
+        ...(sortBy &&
+          sortOrder && {
+            orderBy: {
+              [sortBy]: sortOrder,
+            },
+          }),
         ...(pageSize && { take: pageSize }),
         ...(page && pageSize && { skip: calculatePagination(page, pageSize) }),
         include: {
