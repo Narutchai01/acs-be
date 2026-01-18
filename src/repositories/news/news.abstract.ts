@@ -28,4 +28,6 @@ export abstract class INewsRepository {
   abstract upsertNewsMediaV2(
     data: UpsertNewsMediaModel,
   ): Promise<NewsMediaModel>;
+
+  abstract getNewsMediaById(id: number): Promise<NewsMediaModel>;
 }

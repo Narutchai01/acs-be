@@ -297,4 +297,41 @@ export class NewsRepository implements INewsRepository {
       }
     }
   }
+
+  async getNewsMediaById(id: number): Promise<NewsMediaModel> {
+    try {
+      const newsMediaEntity = await this.prisma.newsMedia.findUnique({
+        where: {
+          id: id,
+          deletedAt: null, // Ensure we only fetch non-deleted news media
+        },
+        include: {
+          news: {
+            include: {
+              category: true,
+              user: true,
+            },
+          },
+          type: true,
+          user: true,
+        },
+      });
+      if (!newsMediaEntity) {
+        throw new Error(`News media not found for ID ${id}`);
+      }
+      return this.newsFactory.mapNewsMediaEntityToNewsMediaModel(
+        newsMediaEntity,
+      );
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Get news media by ID failed:', error.message);
+        throw new Error(`Unable to get news media by ID: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error(
+          'Unable to get news media by ID: Unknown error occurred',
+        );
+      }
+    }
+  }
 }
