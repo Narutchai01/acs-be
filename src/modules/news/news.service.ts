@@ -149,4 +149,8 @@ export class NewsService {
 
     return this.newsRepository.upsertNewsMediaV2(dataToUpsert);
   }
+
+  async getNewsMediaById(id: number): Promise<NewsMediaModel> {
+    return this.newsRepository.getNewsMediaById(id);
+  }
 }

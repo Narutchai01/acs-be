@@ -158,4 +158,12 @@ export class NewsController {
     const dto = this.newsFactory.mapNewsMediaModelToNewsMediaDto(result);
     return success<NewsMediaDto>(dto, HttpStatus.OK);
   }
+
+  @Get('news-media/:id')
+  async getNewsMediaById(@Param('id') id: string) {
+    const IdNumber = Number(id);
+    const newsmedia = await this.newsService.getNewsMediaById(IdNumber);
+    const dto = this.newsFactory.mapNewsMediaModelToNewsMediaDto(newsmedia);
+    return success<NewsMediaDto>(dto, HttpStatus.OK);
+  }
 }
