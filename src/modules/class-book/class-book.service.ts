@@ -50,26 +50,31 @@ export class ClassBookService {
     id: number,
     body: UpdateClassBookDtoV1,
     updatedBy: number,
-    file?: Express.Multer.File,
+    file: Express.Multer.File,
   ): Promise<ClassBookModel> {
-    const image = file
-      ? await this.supabaseService.uploadFile(file, 'classBook')
-      : '';
+    const existingClassBook = await this.getClassBookById(id);
+    let image_url = existingClassBook.image;
+
+    if (file) {
+      image_url = await this.supabaseService.uploadFile(file, 'classBook');
+    }
 
     const updateData = {
       classof: Number(body.classof),
       firstYearAcademic: body.firstYearAcademic,
       curriculumId: Number(body.curriculumId),
-      image,
+      image: image_url,
       updatedBy: updatedBy,
     };
 
     return this.classBookRepository.updateClassBook(id, updateData);
   }
 
-  async deleteClassBook( id: number, updatedBy: number ): Promise<ClassBookModel> {
+  async deleteClassBook(
+    id: number,
+    updatedBy: number,
+  ): Promise<ClassBookModel> {
     return this.classBookRepository.deleteClassBook(id, updatedBy);
   }
-
 
 }
