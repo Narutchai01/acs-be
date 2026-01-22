@@ -10,8 +10,8 @@ import { QueryCurriculumDto } from './dto/v1/get-curriculum.dto';
 @Injectable()
 export class CurriculumService {
   constructor(
-    private curriculumRepository: ICurriculumRepository,
-    private storage: SupabaseService,
+    private readonly curriculumRepository: ICurriculumRepository,
+    private readonly storage: SupabaseService,
   ) {}
   @Post()
   async createCurriculum(
@@ -55,11 +55,14 @@ export class CurriculumService {
     curriculumId: number,
     data: UpdateCurriculumDto,
     updatedBy: number,
-    file?: Express.Multer.File,
+    file: Express.Multer.File,
   ): Promise<CurriculumModel> {
-    const imageUrl = file
-      ? await this.storage.uploadFile(file, 'curriculum')
-      : '';
+    const existingCurriculum = await this.curriculumRepository.getById(curriculumId);
+    let image_url: string = existingCurriculum.imageUrl;
+
+    if (file) {
+      image_url = await this.storage.uploadFile(file, 'curriculum');
+    }
 
     const updateData = {
       year: data.year,
@@ -67,7 +70,7 @@ export class CurriculumService {
       fileUrl: data.fileUrl,
       description: data.description,
       updatedBy,
-      imageUrl,
+      imageUrl: image_url,
     };
 
     return this.curriculumRepository.update(curriculumId, updateData);
