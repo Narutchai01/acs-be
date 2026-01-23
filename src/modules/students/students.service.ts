@@ -12,14 +12,12 @@ import { Pageable } from 'src/models';
 import { IRoleRepository } from 'src/repositories/role/role.abtract';
 import { UpdateStudentDto } from './dto/v1/update-student.dto';
 import { UpdateUserModel } from 'src/models/user';
-import { SupabaseService } from 'src/provider/store/supabase/supabase.service';
 @Injectable()
 export class StudentsService {
   constructor(
-    private studentRepository: IStudentRepository,
-    private userService: UsersService,
-    private roleRepository: IRoleRepository,
-    private supabase: SupabaseService,
+    private readonly studentRepository: IStudentRepository,
+    private readonly userService: UsersService,
+    private readonly roleRepository: IRoleRepository,
   ) {}
 
   async createStudent(
@@ -181,5 +179,9 @@ export class StudentsService {
       updatedBy,
     };
     return this.studentRepository.update(id, updateStudentData);
+  }
+
+  async delete(id: number): Promise<StudentModel> {
+    return this.studentRepository.delete(id);
   }
 }

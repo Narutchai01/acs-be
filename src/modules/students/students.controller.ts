@@ -11,6 +11,7 @@ import {
   Put,
   UseInterceptors,
   UploadedFile,
+  Delete,
 } from '@nestjs/common';
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/v1/create-student.dto';
@@ -29,7 +30,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 export class StudentsController {
   constructor(
     private readonly studentsService: StudentsService,
-    private studentFactory: StudentFactory,
+    private readonly studentFactory: StudentFactory,
   ) {}
 
   @UseGuards(JwtCommonAuthGuard)
@@ -88,5 +89,13 @@ export class StudentsController {
     );
     const dto = this.studentFactory.mapStudentModelToStudentDto(student);
     return success(dto, HttpStatus.OK);
+  }
+
+  @UseGuards(JwtCommonAuthGuard)
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    const student = await this.studentsService.delete(Number(id));
+    const dto = this.studentFactory.mapStudentModelToStudentDto(student);
+    return success(dto, 201);
   }
 }
