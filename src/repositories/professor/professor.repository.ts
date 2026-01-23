@@ -18,8 +18,8 @@ import calculatePagination from 'src/core/utils/calculatePagination';
 @Injectable()
 export class ProfessorRepository implements IProfessorRepository {
   constructor(
-    private prisma: PrismaService,
-    private professorFactory: ProfessorFactory,
+    private readonly prisma: PrismaService,
+    private readonly professorFactory: ProfessorFactory,
   ) {}
 
   async createProfessor(data: CreateProfessorModel): Promise<ProfessorModel> {
@@ -297,5 +297,27 @@ export class ProfessorRepository implements IProfessorRepository {
         deletedAt: new Date(),
       },
     });
+  }
+
+  async deleteProfessor(id: number): Promise<ProfessorModel> {
+    try {
+      const professor = await this.prisma.professor.update({
+        where: { id },
+        data: {
+          deletedAt: new Date(),
+        },
+      });
+      return this.professorFactory.mapProfessorEntityToProfessorModel(
+        professor,
+      );
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Delete professor failed:', error.message);
+        throw new Error(`Unable to delete professor: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to delete professor: Unknown error occurred');
+      }
+    }
   }
 }
