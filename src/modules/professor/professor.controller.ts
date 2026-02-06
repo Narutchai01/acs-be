@@ -11,13 +11,13 @@ import {
   Param,
   Query,
   Put,
+  Delete,
 } from '@nestjs/common';
 import { ProfessorService } from './professor.service';
 import { CreateProfessorDtoV1 } from './dto/create-professor.dto.v1';
 import { success } from 'src/core/interceptors/response.helper';
 import { FileInterceptor } from '@nestjs/platform-express/multer/interceptors/file.interceptor';
 import { AuthenticatedRequest } from 'src/models/auth';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ProfessorFactory } from './professor.factory';
 import { ProfessorDtoV1 } from './dto/professor.dto.v1';
 import { QueryProfessorDto } from './dto/get-professors.dto';
@@ -99,5 +99,18 @@ export class ProfessorController {
     const dto =
       this.professorFactory.mapProfessorModelToProfessorDto(professor);
     return success(dto, HttpStatus.OK);
+  }
+
+  @UseGuards(JwtCommonAuthGuard)
+  @Delete(':id')
+  async delete(@Param('id') id: string, @Req() req: AuthenticatedRequest) {
+    const professor = await this.professorService.deleteProfessor(
+      Number(id),
+      req.user.userId,
+    );
+    const dto =
+      this.professorFactory.mapProfessorModelToProfessorDto(professor);
+
+    return success<ProfessorDtoV1>(dto, 201);
   }
 }
