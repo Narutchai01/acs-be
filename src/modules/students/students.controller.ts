@@ -93,8 +93,11 @@ export class StudentsController {
 
   @UseGuards(JwtCommonAuthGuard)
   @Delete(':id')
-  async delete(@Param('id') id: string) {
-    const student = await this.studentsService.delete(Number(id));
+  async delete(@Param('id') id: string, @Req() req: AuthenticatedRequest) {
+    const student = await this.studentsService.delete(
+      Number(id),
+      req.user.userId,
+    );
     const dto = this.studentFactory.mapStudentModelToStudentDto(student);
     return success(dto, 201);
   }

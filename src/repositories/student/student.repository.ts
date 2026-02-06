@@ -103,12 +103,13 @@ export class StudentRepository implements IStudentRepository {
     return this.studentFactory.mapStudentEntityToStudentModel(entity);
   }
 
-  async delete(id: number): Promise<StudentModel> {
+  async delete(id: number, userId: number): Promise<StudentModel> {
     try {
       const student = await this.prisma.student.update({
         where: { id },
         data: {
           deletedAt: new Date(),
+          updatedBy: userId,
         },
       });
       return this.studentFactory.mapStudentEntityToStudentModel(student);

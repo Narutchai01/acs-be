@@ -17,5 +17,5 @@ export abstract class IStudentRepository {
     id: number,
     student: UpdateStudentModel,
   ): Promise<StudentModel>;
-  abstract delete(id: number): Promise<StudentModel>;
+  abstract delete(id: number, userId: number): Promise<StudentModel>;
 }

@@ -181,7 +181,7 @@ export class StudentsService {
     return this.studentRepository.update(id, updateStudentData);
   }
 
-  async delete(id: number): Promise<StudentModel> {
-    return this.studentRepository.delete(id);
+  async delete(id: number, userId: number): Promise<StudentModel> {
+    return this.studentRepository.delete(id, userId);
   }
 }
