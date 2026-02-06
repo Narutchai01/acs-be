@@ -13,8 +13,8 @@ import calculatePagination from 'src/core/utils/calculatePagination';
 @Injectable()
 export class StudentRepository implements IStudentRepository {
   constructor(
-    private studentFactory: StudentFactory,
-    private prisma: PrismaService,
+    private readonly studentFactory: StudentFactory,
+    private readonly prisma: PrismaService,
   ) {}
 
   async create(student: RequestStudentModel): Promise<StudentModel> {
@@ -101,5 +101,26 @@ export class StudentRepository implements IStudentRepository {
       include: { user: true, classBook: true },
     });
     return this.studentFactory.mapStudentEntityToStudentModel(entity);
+  }
+
+  async delete(id: number, userId: number): Promise<StudentModel> {
+    try {
+      const student = await this.prisma.student.update({
+        where: { id },
+        data: {
+          deletedAt: new Date(),
+          updatedBy: userId,
+        },
+      });
+      return this.studentFactory.mapStudentEntityToStudentModel(student);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Delete student failed:', error.message);
+        throw new Error(`Unable to delete student: ${error.message}`);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('Unable to delete student: Unknown error occurred');
+      }
+    }
   }
 }
