@@ -103,8 +103,11 @@ export class ProfessorController {
 
   @UseGuards(JwtCommonAuthGuard)
   @Delete(':id')
-  async delete(@Param('id') id: string) {
-    const professor = await this.professorService.deleteProfessor(Number(id));
+  async delete(@Param('id') id: string, @Req() req: AuthenticatedRequest) {
+    const professor = await this.professorService.deleteProfessor(
+      Number(id),
+      req.user.userId,
+    );
     const dto =
       this.professorFactory.mapProfessorModelToProfessorDto(professor);
 

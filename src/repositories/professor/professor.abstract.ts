@@ -33,5 +33,5 @@ export abstract class IProfessorRepository {
     data: Partial<IUpdateExpertField>[],
   ): Promise<void>;
   abstract deleteExpertFields(expertFieldIds: number[]): Promise<void>;
-  abstract deleteProfessor(id: number): Promise<ProfessorModel>;
+  abstract deleteProfessor(id: number, userId: number): Promise<ProfessorModel>;
 }

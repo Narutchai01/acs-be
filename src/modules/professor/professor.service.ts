@@ -244,7 +244,7 @@ export class ProfessorService {
     });
   }
 
-  async deleteProfessor(id: number): Promise<ProfessorModel> {
-    return this.professorRepository.deleteProfessor(id);
+  async deleteProfessor(id: number, userId: number): Promise<ProfessorModel> {
+    return this.professorRepository.deleteProfessor(id, userId);
   }
 }

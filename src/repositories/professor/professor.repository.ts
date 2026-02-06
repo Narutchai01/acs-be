@@ -299,12 +299,13 @@ export class ProfessorRepository implements IProfessorRepository {
     });
   }
 
-  async deleteProfessor(id: number): Promise<ProfessorModel> {
+  async deleteProfessor(id: number, userId: number): Promise<ProfessorModel> {
     try {
       const professor = await this.prisma.professor.update({
         where: { id },
         data: {
           deletedAt: new Date(),
+          updatedBy: userId,
         },
       });
       return this.professorFactory.mapProfessorEntityToProfessorModel(
